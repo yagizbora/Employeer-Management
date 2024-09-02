@@ -4,3 +4,6 @@ C:\Users\ShadowDefender\Desktop\Yeni klasör\Test123\NodejsConsoleApp1\bin\Micro
 C:\Users\ShadowDefender\Desktop\Yeni klasör\Employeer\Backend\obj\Debug\Employeer List BackEnd.njsproj.AssemblyReference.cache
 C:\Users\ShadowDefender\Desktop\Yeni klasör\Employeer\Backend\obj\Debug\Employeer List BackEnd.njsproj.CoreCompileInputs.cache
 C:\Users\ShadowDefender\Desktop\Yeni klasör\Employeer\Backend\bin\Microsoft.NodejsTools.WebRole.dll
+C:\Users\ShadowDefender\Desktop\Yeni klasör\Employeer\Employeer-Management\Backend\obj\Debug\Employeer List BackEnd.njsproj.AssemblyReference.cache
+C:\Users\ShadowDefender\Desktop\Yeni klasör\Employeer\Employeer-Management\Backend\obj\Debug\Employeer List BackEnd.njsproj.CoreCompileInputs.cache
+C:\Users\ShadowDefender\Desktop\Yeni klasör\Employeer\Employeer-Management\Backend\bin\Microsoft.NodejsTools.WebRole.dll
