@@ -158,8 +158,8 @@ onMounted(FetchData);
             </div>
         </div>
         <Dialog v-model:visible="AddEmployeerDialog" modal header="Add Employeer">
-            <div class="flex">
-                <div class="col-6 w-full-max">
+            <div class="col-12 xl:flex">
+                <div class=" col-12 xl:col-6 w-full-max">
                     <div class="flex flex-column">
                         <label>Name Surname</label>
                         <InputText placeholder="Name Surname" v-model="formData.name" />
@@ -170,7 +170,7 @@ onMounted(FetchData);
                             optionLabel="Departman" optionValue="id" />
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 xl:col-6">
                     <div class="flex flex-column w-full-max">
                         <label>Position</label>
                         <InputText placeholder="Position" v-model="formData.position" />
@@ -186,8 +186,8 @@ onMounted(FetchData);
             </div>
         </Dialog>
         <Dialog v-model:visible="EditEmployeerDialog" modal header="Edit Employeer">
-            <div class="flex">
-                <div class="col-6 w-full-max">
+            <div class="col-12 xl:flex">
+                <div class="col-12 xl:col-6 w-full-max">
                     <div class="flex flex-column">
                         <label>Name Surname</label>
                         <InputText placeholder="Name Surname" v-model="editData.Name" />
@@ -198,7 +198,7 @@ onMounted(FetchData);
                             optionLabel="Departman" optionValue="id"  />
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 xl:col-6">
                     <div class="flex flex-column w-full-max">
                         <label>Position</label>
                         <InputText placeholder="Position" v-model="editData.Position" />

@@ -67,7 +67,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="col-12">
+    <div class="xl:col-12 ">
         <div class="card">
             <Chart type="bar" class="chart" :data="data" :options="chartOptions" />
         </div>
@@ -75,7 +75,5 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.chart {
-width: 70%;
-}
+
 </style>

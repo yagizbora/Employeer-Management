@@ -52,7 +52,8 @@ onMounted(salarystatics);
                             <Button label="Employeer Management"></Button>
                         </RouterLink>
                     </template>
-                </Toolbar>
+                </Toolbar>  
+                
                 <SalaryChart />
                 <div class="card-body">
                     <DataTable :value=data>

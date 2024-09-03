@@ -4,6 +4,8 @@ import { onMounted } from "vue";
 import Swal from 'sweetalert2';
 const departmantservice = new DepartmantService();
 import { ref, defineAsyncComponent } from 'vue';
+import ExcelJS from 'exceljs'
+import { saveAs } from 'file-saver';
 const DepartmantTable = defineAsyncComponent(() => import('./DepartmantTable.vue'));
 const data = ref([])
 const FormData = ref([])
@@ -20,6 +22,7 @@ const toast = useToast();
 const fetchdata = async () => {
     const response = await departmantservice.getdepartmant()
     data.value = response.data
+    console.log(data.value)
 }
 
 const Adddata = async (data) => {
@@ -64,10 +67,46 @@ const deletedepartmant = async (data) => {
     })
 }
 
+const downloadExcel = async () => {
+
+    if (!data || !Array.isArray(data.value) || data.value.length === 0) {
+        Swal.fire({
+            title: 'Error',
+            text: 'No data to download',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+        console.log('Data:', data); 
+        console.log('Data.value:', data.value); 
+        return;
+    }
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Departmanlar');
+
+    worksheet.columns = [
+        { header: 'Departman', key: 'Departman', width: 25 }
+    ];
+
+    data.value.forEach(item => {
+        worksheet.addRow({
+            Departman: item.Departman
+        });
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    saveAs(blob, 'departmanlar.xlsx');
+};
+
 const editdepartmant = async (data) => {
     try {
         const response = await departmantservice.getdepartmantbyid(data)
-        editData.value = response
+        editData.value = {
+            id: response.id,
+            departman: response.Departman
+        }
         EditDepartmantDialog.value = true
     } catch (error) {
         console.log(error)
@@ -115,8 +154,13 @@ onMounted(fetchdata)
                             <label>Departmant</label>
                             <InputText placeholder="Departmant" v-model="FormData.departman"></InputText>
                         </div>
-                        <div class="flex flex-column">
-                            <Button label="Add Departmant" icon="pi pi-plus" @click="Adddata"></Button>
+                        <div class="flex gap-2">
+                            <div class="flex-column">
+                                <Button severity="info" label="Excel" @click="downloadExcel"></Button>
+                            </div>
+                            <div>
+                                <Button label="Add Departmant" icon="pi pi-plus" @click="Adddata"></Button>
+                            </div>
                         </div>
                     </div>
                 </div>
