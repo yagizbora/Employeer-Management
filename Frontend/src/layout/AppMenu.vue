@@ -9,9 +9,14 @@ const model = ref([
         icon: 'home',
         items: [
             {
-            label: 'Dashboard',
+                label: 'Dashboard',
+                icon: 'pi pi-users',
+                to: 'home'
+            },
+            {
+                label: 'Employeer-Management',
                 icon: 'pi pi-users ',
-            to: '/'
+                to: 'Employeer-Management'
             }
         ]
     },
@@ -22,7 +27,7 @@ const model = ref([
             {
                 label: 'Departmant',
                 icon: 'pi pi-briefcase',
-                to: 'departmant-management'
+                to: '/departmant/departmant-management'
 
             }
         ]
@@ -34,7 +39,7 @@ const model = ref([
             {
                 label: 'Average and Total Salary Report',
                 icon: 'pi pi-chart-line',
-                to: 'average-and-salary-report'
+                to: '/Report/average-and-salary-report'
             }
         ]
     }

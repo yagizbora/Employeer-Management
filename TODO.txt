@@ -73,6 +73,7 @@ Yükleme İndikatörleri: Veri işlemleri sırasında kullanıcıyı bilgilendir
 Nasıl Uygulanır:
 CSS Frameworks: Bootstrap, Tailwind CSS veya Material UI kullanarak responsive tasarımlar oluşturulabilir.
 Dinamik Bileşenler: React, Vue veya Angular gibi frameworkler ile interaktif ve dinamik arayüzler geliştirilebilir.
+
 10. Performans Optimizasyonu
 Açıklama:
 Uygulamanın hızlı ve verimli çalışmasını sağlar.
@@ -80,13 +81,13 @@ Nasıl Uygulanır:
 Veritabanı Optimizasyonu: İndeksler oluşturma, sorgu optimizasyonu.
 Caching: Sık kullanılan verileri cache'leyerek hızlı erişim sağlama (Redis gibi).
 Lazy Loading: Gerekli olmayan kaynakları daha sonra yükleyerek başlangıç yükünü azaltma.
+
 11. Detaylı Loglama ve Hata İzleme
 Açıklama:
 Uygulama içerisinde oluşan hataların ve olayların detaylı kaydını tutarak sorunları hızlıca tespit etmeyi sağlar.
 Nasıl Uygulanır:
 Logging Kütüphaneleri: Winston, Morgan gibi kütüphaneler kullanarak sunucu tarafında loglama yapılabilir.
 Error Tracking Servisleri: Sentry gibi servisler kullanılarak gerçek zamanlı hata izleme sağlanabilir.
-Örnek Kullanım:
 
 
 12. Güvenlik İyileştirmeleri

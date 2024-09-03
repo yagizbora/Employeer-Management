@@ -7,7 +7,6 @@ const router = createRouter({
         {
             path: '/',
             component: AppLayout,
-            redirect:'home',
             children: [
                 {
                     path: 'home',
@@ -16,47 +15,43 @@ const router = createRouter({
                 },
                 {
                     path: 'Employeer-Management',
-                    name: 'Employeer management',
+                    name: 'employeer-management',
                     component: () => import('@/views/pages/EmployeerManagement/EmployeerManagement.vue')
                 }
             ]
         },
         {
-            path: '/',
+            path: '/departmant',
             component: AppLayout,
-            name: 'departmant',
             children: [
                 {
                     path: 'departmant-management',
-                    name: 'Departmant management',
+                    name: 'departmant-management',
                     component: () => import('@/views/pages/Departmant/Departmant.vue')
                 }
             ]
         },
         {
-            path: '/',
+            path: '/report',
             component: AppLayout,
-            name: 'Report',
             children: [
                 {
                     path: 'average-and-salary-report',
-                    name: 'Average and Total Salary Report',
+                    name: 'average-salary-report',
                     component: () => import('@/views/pages/SalaryReport/SalaryReport.vue')
                 }
             ]
+        },
+        {
+            path: '/auth',
+            children: [
+                {
+                    path: 'login',
+                    name: 'auth-login',
+                    component: () => import('@/views/pages/Auth/Login.vue')
+                }
+            ]
         }
-        // {
-        //     path: '/auth',
-        //     name: 'login',
-        //     component: AppLayout,
-        //     children: [
-        //         {
-        //             path: '/login',
-        //             name: 'login',
-        //             component: () => import('@/views/Auth/Login.vue')
-        //         }
-        //     ]
-        // }
     ]
 });
 
