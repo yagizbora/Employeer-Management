@@ -3,6 +3,6 @@ const router = express.Router();
 const { getOrders } = require('../controllers/orderController');
 
 // Listeleme API'si
-router.get('/orders', getOrders);
+router.get('/getorders', getOrders);
 
 module.exports = router;
