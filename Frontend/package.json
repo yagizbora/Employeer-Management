@@ -10,6 +10,8 @@
     "dependencies": {
         "chart.js": "3.3.2",
         "dayjs": "^1.11.13",
+        "exceljs": "^4.4.0",
+        "file-saver": "^2.0.5",
         "js-loading-overlay": "^1.2.0",
         "primeflex": "^3.3.1",
         "primeicons": "^6.0.1",
