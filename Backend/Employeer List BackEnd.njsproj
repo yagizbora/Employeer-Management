@@ -36,6 +36,9 @@
     <Content Include="controllers\employeerController.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="controllers\OrderController.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="controllers\ReportController.js">
       <SubType>Code</SubType>
     </Content>
@@ -48,6 +51,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="routes\employeerRoutes.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="routes\OrderRoutes.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="routes\ReportRoutes.js">
