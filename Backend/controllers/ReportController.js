@@ -71,7 +71,31 @@ const SalaryAverageAndAllinDepartmans = async (req, res) => {
     }
 };
 
+const getSalaryStatistics = async (req, res) => {
+    try {
+        const pool = await getPool();
+        const result = await pool.request().query(`
+            SELECT 
+                d.Departman AS Departman,
+                AVG(CAST(e.Salary AS DECIMAL(10, 2))) AS AverageSalary,
+                SUM(CAST(e.Salary AS DECIMAL(10, 2))) AS TotalSalary
+            FROM 
+                Employeer_List e
+            JOIN 
+                Departmants d ON e.departmant_id = d.id
+            WHERE 
+                e.IS_DELETED = 0
+            GROUP BY 
+                d.Departman
+        `);
+
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
+    }
+};
+
 
 module.exports = {
-    SalaryAverageAndAllinDepartmans,
+    SalaryAverageAndAllinDepartmans, getSalaryStatistics
 }

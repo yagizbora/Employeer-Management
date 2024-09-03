@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-
 import AppMenuItem from './AppMenuItem.vue';
 
 const model = ref([
@@ -11,12 +10,12 @@ const model = ref([
             {
                 label: 'Dashboard',
                 icon: 'pi pi-users',
-                to: 'home'
+                to: '/home'  // Güncellendi
             },
             {
-                label: 'Employeer-Management',
-                icon: 'pi pi-users ',
-                to: 'Employeer-Management'
+                label: 'Employeer Management',  // İsim düzenlendi
+                icon: 'pi pi-users',
+                to: '/Employeer-Management'  // Güncellendi
             }
         ]
     },
@@ -28,7 +27,6 @@ const model = ref([
                 label: 'Departmant',
                 icon: 'pi pi-briefcase',
                 to: '/departmant/departmant-management'
-
             }
         ]
     },
@@ -39,25 +37,26 @@ const model = ref([
             {
                 label: 'Average and Total Salary Report',
                 icon: 'pi pi-chart-line',
-                to: '/Report/average-and-salary-report'
+                to: '/report/average-and-salary-report'  // Güncellendi
             }
         ]
     }
 ]);
 </script>
 
-<template>
-    <ul class="layout-menu">
-        <template v-for="(item, i) in model" :key="item">
-            <app-menu-item v-if="!item.separator" :item="item" :index="i"></app-menu-item>
-            <li v-if="item.separator" class="menu-separator"></li>
-        </template>
-        <!-- <li>
-            <a href="https://www.primefaces.org/primeblocks-vue/#/" target="_blank">
-                <img src="/layout/images/banner-primeblocks.png" alt="Prime Blocks" class="w-full mt-3" />
-            </a>
-        </li> -->
-    </ul>
-</template>
 
-<style lang="scss" scoped></style>
+    <template>
+        <ul class="layout-menu">
+            <template v-for="(item, i) in model" :key="item">
+                <app-menu-item v-if="!item.separator" :item="item" :index="i"></app-menu-item>
+                <li v-if="item.separator" class="menu-separator"></li>
+            </template>
+            <!-- <li>
+                <a href="https://www.primefaces.org/primeblocks-vue/#/" target="_blank">
+                    <img src="/layout/images/banner-primeblocks.png" alt="Prime Blocks" class="w-full mt-3" />
+                </a>
+            </li> -->
+        </ul>
+    </template>
+
+    <style lang="scss" scoped></style>

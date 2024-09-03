@@ -20,7 +20,6 @@ const AddEmployeerDialog = ref(false);
 const EditEmployeerDialog = ref(false);
 const formData = ref([]);
 const editData = ref({});
-const filterForm = ref({});
 const departman_type = ref([])
 
 const handleaddDialog = async () => {
@@ -105,6 +104,7 @@ const editemployeer = async (data) => {
                 Salary: Number(response.data.Salary) 
             };
             console.log('editData.value:', editData.value);
+            FetchData();
         }
     } catch (error) {
         console.error(error);

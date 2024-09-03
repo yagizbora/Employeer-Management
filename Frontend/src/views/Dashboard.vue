@@ -4,6 +4,12 @@ import { onMounted,ref } from 'vue';
 import EmployeerService from "@/service/EmployeerService"
 import { formatCurrency } from "@/utils/helper"
 const employeerservice = new EmployeerService()
+import ReportService from "@/service/ReportService";
+const reportservice = new ReportService();
+import Chart from 'primevue/chart';
+import SalaryChart from './SalaryChart.vue';
+
+
 
 const data = ref([])
 
@@ -20,14 +26,24 @@ const FetchData = async () => {
     }
 }
 
+const salarystatics = async () => {
+    try {
+        const response = await reportservice.getSalaryStatistics()
+        console.log(response)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 onMounted(FetchData);
+onMounted(salarystatics);
 </script>
 
 <template>
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <h4>Employeer list</h4>
+                <h4>Dashboard</h4>
                 <Toolbar>
                     <template v-slot:start>
                     </template>
@@ -37,6 +53,7 @@ onMounted(FetchData);
                         </RouterLink>
                     </template>
                 </Toolbar>
+                <SalaryChart />
                 <div class="card-body">
                     <DataTable :value=data>
                         <Column field="Name" header="Name"></Column>

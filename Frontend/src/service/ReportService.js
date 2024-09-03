@@ -10,4 +10,13 @@ export default class ReportService {
             console.error(error)
         }
     }
+
+    async getSalaryStatistics() {
+        try {
+            const response = await axiosApp.get('getSalaryStatistics')
+            return response.data
+        } catch (error) {
+            console.error(error)
+        }
+    }
 }
