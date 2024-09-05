@@ -47,11 +47,11 @@ import OrderPassive from './OrderPassive.vue';
                     <h5>Order Management</h5>
                     <div class="card-body">
                         <TabView>
-                            <TabPanel header="Active Orders">
-                                <OrderActive />
-                            </TabPanel>
                             <TabPanel header="Passive Orders">
                                 <OrderPassive />
+                            </TabPanel>
+                            <TabPanel header="Active Orders">
+                                <OrderActive />
                             </TabPanel>
                         </TabView>
                     </div>
