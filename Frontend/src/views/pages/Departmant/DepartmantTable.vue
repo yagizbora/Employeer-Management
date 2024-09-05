@@ -1,17 +1,17 @@
 <script setup>
 
 const props = defineProps({
-    data:Array
-})
+    data: Array
+});
 
 const emit = defineEmits(["deletedepartmant","editdepartmant"]);
 
 const deletedepartmant = (data) => {
     emit("deletedepartmant", data);
-}
+};
 const editdepartmant = (data) => {
     emit("editdepartmant", data);
-}
+};
 </script>
 
 <template>

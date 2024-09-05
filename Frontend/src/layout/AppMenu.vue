@@ -40,6 +40,17 @@ const model = ref([
                 to: '/report/average-and-salary-report'  // Güncellendi
             }
         ]
+    },
+    {
+        label: 'Order',
+        icon: '',
+        items: [
+            {
+                label: 'Order List',
+                icon: 'pi pi-list',
+                to: '/order/order-management'
+            }
+        ]
     }
 ]);
 </script>

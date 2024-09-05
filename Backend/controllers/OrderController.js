@@ -1,30 +1,134 @@
 const { getPool } = require('../database');
 const sql = require('mssql');
 
+
+
 const getOrders = async (req, res) => {
+    const { is_complated } = req.body;
+
+    //console.log('Received is_complated:', is_complated);
+
+    try {
+        const pool = await getPool();
+
+        let query = `
+            SELECT
+                o.id,
+                o.order_name,
+                o.order_description,
+                o.is_complated,
+                o.start_date,
+                o.end_date,
+                o.IS_DELETED,
+                e.Name AS employeer_name,
+                d.Departman AS departman_name,
+                d.id AS departman_id,
+                e.id AS employeer_id
+            FROM
+                [Order] o
+            JOIN
+                Employeer_List e ON o.Employeer_id = e.id
+            JOIN
+                Departmants d ON o.Departman_id = d.id
+            WHERE
+                o.IS_DELETED = 0
+        `;
+
+        if (is_complated !== undefined) {
+            query += ` AND o.is_complated = ${is_complated ? 1 : 0}`;
+        }
+
+        //console.log('Executing query:', query); // Kontrol etmek için
+
+        const result = await pool.request().query(query);
+        res.json({ data: result.recordset });
+    } catch (err) {
+        res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
+    }
+};
+
+
+
+const iscomplatedsetbyid = async (req, res) => {
+    const { is_complated, id } = req.body;
+
+    //let isComplatedValue;
+
+    if (!is_complated == null) {
+        res.json(404).json({message: 'Value cannot be NULL'})
+    }
+
+    if (!req.body) {
+        res.json(404).json({
+            message:'Request cannot be empty!'
+        })
+    }
+
+    console.log(req.body);
+
+    //if (is_complated === true) {
+    //    isComplatedValue = 1; // true için 1
+    //} else if (is_complated === false) {
+    //    isComplatedValue = 0; // false için 0
+    //} else {
+    //    return res.status(400).json({ message: 'Geçersiz is_complated deðeri' });
+    //}
+
+    const query = `UPDATE [Order] SET is_complated = @is_complated WHERE id = @id`;
+
+    try {
+        const pool = await getPool();
+
+        console.log('Executing query:', query);
+
+        await pool.request()
+            .input('id', sql.Int, id)
+            .input('is_complated', sql.Bit, is_complated)
+            .query(query);
+
+        // Güncelleme iþleminden sonra veriyi sorgula
+        const updatedOrder = await pool.request()
+            .input('id', sql.Int, id)
+            .query('SELECT * FROM [Order] WHERE id = @id');
+
+        console.log('Updated order:', updatedOrder.recordset);
+
+        res.status(200).json({ message: 'Güncelleme baþarýlý' });
+    } catch (err) {
+        res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
+    }
+};
+
+
+
+
+
+const getordersbyid = async (req, res) => {
+    const { id } = req.query;
     try {
         const pool = await getPool();
         const result = await pool.request()
-            .query(`
-                SELECT
-                    o.id,
-                    o.order_name,
-                    o.order_description,
-                    o.is_complated,
-                    o.start_date,
-                    o.end_date,
-                    o.IS_DELETED,
-                    e.Name AS employeer_name,
-                    d.Departman AS departman_name
-                FROM
-                    [Order] o
-                JOIN
-                    Employeer_List e ON o.Employeer_id = e.id
-                JOIN
-                    Departmants d ON o.Departman_id = d.id
-                WHERE
-                    o.IS_DELETED = 0
-            `);
+            .input('id', sql.Int, id)  // Bu satýrdaki noktalý virgül kaldýrýlmalý
+            .query(`SELECT
+                        o.id,
+                        o.order_name,
+                        o.order_description,
+                        o.is_complated,
+                        o.start_date,
+                        o.end_date,
+                        o.IS_DELETED,
+                        e.Name AS employeer_name,
+                        d.Departman AS departman_name,
+                        d.id AS departman_id,
+                        e.id AS employeer_id
+                    FROM
+                        [Order] o
+                    JOIN
+                        Employeer_List e ON o.Employeer_id = e.id
+                    JOIN
+                        Departmants d ON o.Departman_id = d.id
+                    WHERE
+                        o.IS_DELETED = 0 AND o.id = @id`);
 
         res.json(result.recordset);
     } catch (err) {
@@ -32,4 +136,5 @@ const getOrders = async (req, res) => {
     }
 };
 
-module.exports = { getOrders };
+
+module.exports = { getOrders, getordersbyid, iscomplatedsetbyid };

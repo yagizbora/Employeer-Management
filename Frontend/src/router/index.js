@@ -43,6 +43,17 @@ const router = createRouter({
             ]
         },
         {
+            path: '/order',
+            component: AppLayout,
+            children: [
+                {
+                    path: 'order-management',
+                    name: 'order-management',
+                    component: () => import('@/views/pages/Order/Order.vue')
+                }
+            ]
+        },
+        {
             path: '/auth',
             children: [
                 {

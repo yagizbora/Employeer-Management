@@ -14,7 +14,7 @@ const editemployeer = (data) => {
 
 const props = defineProps({
     data: Array
-})
+});
 </script>
 
 <template>
