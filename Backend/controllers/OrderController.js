@@ -47,6 +47,31 @@ const getOrders = async (req, res) => {
     }
 };
 
+const createorder = async (req, res) => {
+    const { employeer_id, departman_id, order_name, order_description, is_complated, start_date, end_date } = req.body;
+
+    // Sorgu tanýmlamasý
+    const query = `INSERT INTO [Order] (employeer_id, departman_id, order_name, order_description, is_complated, start_date, end_date, IS_DELETED) 
+    VALUES (@employeer_id, @departman_id, @order_name, @order_description, @is_complated, @start_date, @end_date, 0)`;
+
+    try {
+        const pool = await getPool();
+        await pool.request()
+            .input('employeer_id', sql.Int, employeer_id)
+            .input('departman_id', sql.Int, departman_id) 
+            .input('order_name', sql.NVarChar, order_name)
+            .input('order_description', sql.NVarChar, order_description)
+            .input('is_complated', sql.Bit, is_complated)
+            .input('start_date', sql.Date, start_date)
+            .input('end_date', sql.Date, end_date)
+            .query(query);
+
+        res.status(201).json({ message: 'Order baþarýyla oluþturuldu.' });
+    } catch (err) {
+        res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
+    }
+}
+
 
 
 const iscomplatedsetbyid = async (req, res) => {
@@ -103,6 +128,7 @@ const iscomplatedsetbyid = async (req, res) => {
 
 
 
+
 const getordersbyid = async (req, res) => {
     const { id } = req.query;
     try {
@@ -137,4 +163,4 @@ const getordersbyid = async (req, res) => {
 };
 
 
-module.exports = { getOrders, getordersbyid, iscomplatedsetbyid };
+module.exports = { getOrders, getordersbyid, iscomplatedsetbyid, createorder };

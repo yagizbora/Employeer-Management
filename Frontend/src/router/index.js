@@ -50,6 +50,11 @@ const router = createRouter({
                     path: 'order-management',
                     name: 'order-management',
                     component: () => import('@/views/pages/Order/Order.vue')
+                },
+                {
+                    path: 'create-order',
+                    name: 'create-order',
+                    component: () => import('@/views/pages/Order/CreateOrder/CreateOrder.vue')
                 }
             ]
         },

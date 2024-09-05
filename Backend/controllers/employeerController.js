@@ -68,7 +68,7 @@ const createEmployeer = async (req, res) => {
                 VALUES (@name, @position, @salary, 0, @departmant_id)
             `);
 
-        res.status(201).json({ message: 'Employee added successfully' });
+        res.status(200).json({ message: 'Employee added successfully' });
     } catch (err) {
         res.status(500).json({ message: 'Database error: ' + err.message });
         console.error(err)
@@ -134,11 +134,39 @@ const deleteEmployeerById = async (req, res) => {
     }
 };
 
+const getEmployeersByDepartmantId = async (req, res) => {
+    const departman_id = req.params.id;
+
+    if (!departman_id) {
+        return res.status(400).json({ message: 'Departman ID is required' });
+    }
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('departman_id', sql.Int, departman_id)
+            .query(`
+                SELECT 
+                    e.id AS employeer_id,
+                    e.Name AS employeer_name
+                FROM 
+                    Employeer_List e
+                WHERE 
+                    e.departmant_id = @departman_id 
+                    AND e.IS_DELETED = 0;
+            `);
+
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Database error: ' + err.message });
+    }
+};
 
 module.exports = {
     getEmployeers,
     getEmployeerById,
     createEmployeer,
     deleteEmployeerById,
-    updateemployeer
+    updateemployeer,
+    getEmployeersByDepartmantId
 };

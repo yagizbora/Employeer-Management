@@ -1,5 +1,6 @@
 <script setup lang="js">
 import InputSwitch from 'primevue/inputswitch';
+import { formatDateWithoutTime } from "@/utils/helper.js";
 
 const handleSwitchChange = (data) => {
     console.log('Switch changed for:', data);
@@ -39,8 +40,16 @@ const props = defineProps({
                 <InputSwitch v-model="data.is_complated" @change="handleSwitchChange(data)" />
             </template>
         </Column>
-        <Column field="start_date" header="Start Date"></Column>
-        <Column field="end_date" header="End Date"></Column>
+        <Column field="start_date" header="Start Date">
+        <template #body="{data}">
+            {{formatDateWithoutTime(data.start_date)}}
+        </template>
+        </Column>
+        <Column field="end_date" header="End Date">
+        <template #body="{data}">
+            {{formatDateWithoutTime(data.end_date)}}
+        </template>
+        </Column>
         <Column header="Operations">
             <template #body="{ data }">
                 <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit" @click="editorders(data)" />

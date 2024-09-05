@@ -41,23 +41,31 @@ import OrderPassive from './OrderPassive.vue';
 </script>
 
 <template>
-        <div class="grid">
-            <div class="col-12">
-                <div class="card">
-                    <h5>Order Management</h5>
-                    <div class="card-body">
-                        <TabView>
-                            <TabPanel header="Passive Orders">
-                                <OrderPassive />
-                            </TabPanel>
-                            <TabPanel header="Active Orders">
-                                <OrderActive />
-                            </TabPanel>
-                        </TabView>
-                    </div>
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
+                <h5>Order Management</h5>
+                <div class="card-body">
+                    <Toolbar>
+                        <template #start></template>
+                        <template #end>
+                            <RouterLink to="/order/create-order">
+                                <Button label="Create Order" icon="pi pi-plus" />
+                            </RouterLink>
+                        </template>
+                    </Toolbar>
+                    <TabView>
+                        <TabPanel header="Passive Orders">
+                            <OrderPassive />
+                        </TabPanel>
+                        <TabPanel header="Active Orders">
+                            <OrderActive />
+                        </TabPanel>
+                    </TabView>
                 </div>
             </div>
         </div>
+    </div>
 </template>
 
 <style lang="scss" scoped>
