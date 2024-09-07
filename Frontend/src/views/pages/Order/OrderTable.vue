@@ -34,6 +34,13 @@ const props = defineProps({
 
 <template>
     <DataTable :value="data">
+        <Column field="id" header="Order ID">
+        <template #body = "{ data }">
+            <div>
+                #{{ data.id }}
+            </div>
+        </template>
+        </Column>
         <Column field="departman_name" header="Departman Name"></Column>
         <Column field="employeer_name" header="Employeer Name"></Column>
         <Column field="order_name" header="Order Name"></Column>
