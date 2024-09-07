@@ -48,7 +48,6 @@ const iscomplatedsetbyid = async (data) => {
 const editorders = async (data) => {
     try {
         const response = await orderservice.getordersbyid({ ...data })
-        console.log(data)
         const res = await departmantservice.getdepartmant();
         departmans.value = res.data;
         if (departmans.value && departmans.value.length > 0) {
@@ -57,7 +56,7 @@ const editorders = async (data) => {
             editData.value.departman_id = departmanId; 
 
         }
-        console.log(response.data)
+        // console.log(response.data)
         if (response) {
             editData.value = {
                 ...response.data[0],
@@ -89,7 +88,6 @@ const onDepartmanChange = (event) => {
 const deleteorder = async (data) => {
     try {
         const response = await orderservice.deleteorders(data);
-        console.log(response)
         if (response.status == 200) {
             Swal.fire({
                 title: 'Success',
@@ -121,7 +119,7 @@ const deleteorders = async (data) => {
     });
 }
 
-const handleupdatedata = async (data) => {
+const handleupdatedata = async () => {
     try {
         const response = await orderservice.updateorderbyid({ ...editData.value });
         if (response.status == 201) {

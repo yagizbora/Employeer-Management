@@ -215,4 +215,4 @@ const getordersbyid = async (req, res) => {
 };
 
 
-    module.exports = { getOrders, getordersbyid, iscomplatedsetbyid, updateorderbyid, createorder, deleteorders };
+module.exports = { getOrders, getordersbyid, iscomplatedsetbyid, updateorderbyid, createorder, deleteorders };
