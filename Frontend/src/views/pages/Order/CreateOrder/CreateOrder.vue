@@ -30,7 +30,6 @@ const fetchdepartmans = async () => {
     departmans.value = response.data;
 };
 
-// Employeerları departmana göre al
 const getemployeerwithdepartman = async (data) => {
     if (data) {
         const response = await orderservice.getEmployeersByDepartmantId(data);

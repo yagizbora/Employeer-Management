@@ -20,7 +20,7 @@ const editorders = (data) => {
 
 const props = defineProps({
     data: {
-        type: Array(Object),
+        type: Array,
         required :true
     }
 });

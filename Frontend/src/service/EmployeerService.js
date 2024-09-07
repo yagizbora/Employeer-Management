@@ -16,7 +16,7 @@ export default class EmployeerService {
     async get(data) {
         try {
             const response = await axiosApp.get(`/employeers/${data.id}`);
-            console.log(response.data);  // API'den gelen veriyi kontrol edin
+            console.log(response.data); 
             return response;
         } catch (error) {
             console.log(error);

@@ -7,38 +7,38 @@ const SalaryAverageAndAllinDepartmans = async (req, res) => {
     try {
         const pool = await getPool();
 
-        // Ortalama ve Toplam Maaþlarý Getir
+        // Ortalama ve Toplam Maaï¿½larï¿½ Getir
         const avgAndTotalResult = await pool.request().query(`
             SELECT 
-                d.Departman AS Departman,
-                AVG(CAST(e.Salary AS DECIMAL(10, 2))) AS AverageSalary,
-                SUM(CAST(e.Salary AS DECIMAL(10, 2))) AS TotalSalary
+            d.Departman AS Departman,
+            AVG(CAST(e.Salary AS DECIMAL(10, 2))) AS AverageSalary,
+            SUM(CAST(e.Salary AS DECIMAL(10, 2))) AS TotalSalary
             FROM 
-                Employeer_List e
+            Employeer_List e
             JOIN 
-                Departmants d ON e.departmant_id = d.id
+            Departmants d ON e.departmant_id = d.id
             WHERE 
-                e.IS_DELETED = 0
+            e.IS_DELETED = 0
             GROUP BY 
-                d.Departman;
+            d.Departman;
         `);
 
-        // Çalýþan Detaylarýný Getir
+        // Ã‡alÄ±ÅŸan DetaylarÄ±nÄ± Getir
         const employeeDetailsResult = await pool.request().query(`
             SELECT 
-                e.Name AS Name,
-                e.Salary AS Salary,
-                e.Position AS Position,
-                d.Departman AS Departman
+            e.Name AS Name,
+            e.Salary AS Salary,
+            e.Position AS Position,
+            d.Departman AS Departman
             FROM 
-                Employeer_List e
+            Employeer_List e
             JOIN 
-                Departmants d ON e.departmant_id = d.id
+            Departmants d ON e.departmant_id = d.id
             WHERE 
-                e.IS_DELETED = 0;
+            e.IS_DELETED = 0;
         `);
 
-        // JSON formatýnda veri oluþturma
+        // JSON formatï¿½nda veri oluï¿½turma
         const departments = {};
         avgAndTotalResult.recordset.forEach(row => {
             departments[row.Departman] = {
@@ -67,7 +67,7 @@ const SalaryAverageAndAllinDepartmans = async (req, res) => {
 
         res.json(response);
     } catch (err) {
-        res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
+        res.status(500).json({ message: 'Veritabanï¿½ hatasï¿½: ' + err.message });
     }
 };
 
@@ -76,22 +76,22 @@ const getSalaryStatistics = async (req, res) => {
         const pool = await getPool();
         const result = await pool.request().query(`
             SELECT 
-                d.Departman AS Departman,
-                AVG(CAST(e.Salary AS DECIMAL(10, 2))) AS AverageSalary,
-                SUM(CAST(e.Salary AS DECIMAL(10, 2))) AS TotalSalary
+            d.Departman AS Departman,
+            AVG(CAST(e.Salary AS DECIMAL(10, 2))) AS AverageSalary,
+            SUM(CAST(e.Salary AS DECIMAL(10, 2))) AS TotalSalary
             FROM 
-                Employeer_List e
+            Employeer_List e
             JOIN 
-                Departmants d ON e.departmant_id = d.id
+            Departmants d ON e.departmant_id = d.id
             WHERE 
-                e.IS_DELETED = 0
+            e.IS_DELETED = 0
             GROUP BY 
-                d.Departman
+            d.Departman
         `);
 
         res.json(result.recordset);
     } catch (err) {
-        res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
+        res.status(500).json({ message: 'Veritabanï¿½ hatasï¿½: ' + err.message });
     }
 };
 

@@ -12,45 +12,37 @@ const getOrders = async (req, res) => {
         const pool = await getPool();
 
         let query = `
-            SELECT
-                o.id,
-                o.order_name,
-                o.order_description,
-                o.is_complated,
-                o.start_date,
-                o.end_date,
-                o.IS_DELETED,
-                e.Name AS employeer_name,
-                d.Departman AS departman_name,
-                d.id AS departman_id,
-                e.id AS employeer_id
-            FROM
-                [Order] o
-            JOIN
-                Employeer_List e ON o.Employeer_id = e.id
-            JOIN
-                Departmants d ON o.Departman_id = d.id
-            WHERE
-                o.IS_DELETED = 0
+        SELECT
+        o.*,
+        e.Name AS employeer_name,
+        d.Departman AS departman_name
+        FROM
+        [Order] O
+        JOIN
+        Employeer_List e ON o.employeer_id = e.id
+        JOIN
+        Departmants d ON o.departman_id = d.id
+        WHERE
+        o.IS_DELETED = 0
         `;
 
         if (is_complated !== undefined) {
             query += ` AND o.is_complated = ${is_complated ? 1 : 0}`;
         }
 
-        //console.log('Executing query:', query); // Kontrol etmek için
+        //console.log('Executing query:', query); // Kontrol etmek iï¿½in
 
         const result = await pool.request().query(query);
         res.json({ data: result.recordset });
     } catch (err) {
-        res.status(500).json({ message: 'Veritabanı hatası: ' + err.message });
+        res.status(500).json({ message: 'Veritabanï¿½ hatasï¿½: ' + err.message });
     }
 };
 
 const createorder = async (req, res) => {
     const { employeer_id, departman_id, order_name, order_description, is_complated, start_date, end_date } = req.body;
 
-    // Sorgu tanımlaması
+    // Sorgu tanï¿½mlamasï¿½
     const query = `INSERT INTO [Order] (employeer_id, departman_id, order_name, order_description, is_complated, start_date, end_date, IS_DELETED) 
     VALUES (@employeer_id, @departman_id, @order_name, @order_description, @is_complated, @start_date, @end_date, 0)`;
 
@@ -58,7 +50,7 @@ const createorder = async (req, res) => {
         const pool = await getPool();
         await pool.request()
             .input('employeer_id', sql.Int, employeer_id)
-            .input('departman_id', sql.Int, departman_id) 
+            .input('departman_id', sql.Int, departman_id)
             .input('order_name', sql.NVarChar, order_name)
             .input('order_description', sql.NVarChar, order_description)
             .input('is_complated', sql.Bit, is_complated)
@@ -66,9 +58,9 @@ const createorder = async (req, res) => {
             .input('end_date', sql.Date, end_date)
             .query(query);
 
-        res.status(201).json({ message: 'Order başarıyla oluşturuldu.' });
+        res.status(201).json({ message: 'Order baï¿½arï¿½yla oluï¿½turuldu.' });
     } catch (err) {
-        res.status(500).json({ message: 'Veritabanı hatası: ' + err.message });
+        res.status(500).json({ message: 'Veritabanï¿½ hatasï¿½: ' + err.message });
     }
 }
 
@@ -80,23 +72,23 @@ const iscomplatedsetbyid = async (req, res) => {
     //let isComplatedValue;
 
     if (!is_complated == null) {
-        res.json(404).json({message: 'Value cannot be NULL'})
+        res.json(404).json({ message: 'Value cannot be NULL' })
     }
 
     if (!req.body) {
         res.json(404).json({
-            message:'Request cannot be empty!'
+            message: 'Request cannot be empty!'
         })
     }
 
     console.log(req.body);
 
     //if (is_complated === true) {
-    //    isComplatedValue = 1; // true için 1
+    //    isComplatedValue = 1; // true iï¿½in 1
     //} else if (is_complated === false) {
-    //    isComplatedValue = 0; // false için 0
+    //    isComplatedValue = 0; // false iï¿½in 0
     //} else {
-    //    return res.status(400).json({ message: 'Geçersiz is_complated değeri' });
+    //    return res.status(400).json({ message: 'Geï¿½ersiz is_complated deï¿½eri' });
     //}
 
     const query = `UPDATE [Order] SET is_complated = @is_complated WHERE id = @id`;
@@ -111,16 +103,16 @@ const iscomplatedsetbyid = async (req, res) => {
             .input('is_complated', sql.Bit, is_complated)
             .query(query);
 
-        // Güncelleme işleminden sonra veriyi sorgula
+        // Gï¿½ncelleme iï¿½leminden sonra veriyi sorgula
         const updatedOrder = await pool.request()
             .input('id', sql.Int, id)
             .query('SELECT * FROM [Order] WHERE id = @id');
 
         console.log('Updated order:', updatedOrder.recordset);
 
-        res.status(200).json({ message: 'Güncelleme başarılı' });
+        res.status(200).json({ message: 'Gï¿½ncelleme baï¿½arï¿½lï¿½' });
     } catch (err) {
-        res.status(500).json({ message: 'Veritabanı hatası: ' + err.message });
+        res.status(500).json({ message: 'Veritabanï¿½ hatasï¿½: ' + err.message });
     }
 };
 
@@ -130,23 +122,28 @@ const iscomplatedsetbyid = async (req, res) => {
 
 
 const getordersbyid = async (req, res) => {
-    const { id } = req.query;
+    //const { id } = req.query;
+    const id = req.query.id; 
+
+    if (!id) {
+        res.status(400).json({ message: 'Id is required' })
+        return
+    }
     try {
         const pool = await getPool();
         const result = await pool.request()
-            .input('id', sql.Int, id)  // Bu satırdaki noktalı virgül kaldırılmalı
+            .input('id', sql.Int, id)
             .query(`SELECT
-                        o.id,
-                        o.order_name,
-                        o.order_description,
-                        o.is_complated,
-                        o.start_date,
-                        o.end_date,
-                        o.IS_DELETED,
-                        e.Name AS employeer_name,
-                        d.Departman AS departman_name,
-                        d.id AS departman_id,
-                        e.id AS employeer_id
+                    o.id,
+                    o.order_name,
+                    o.order_description,
+                    o.start_date,
+                    o.end_date,
+                    o.IS_DELETED,
+                    e.Name AS employeer_name,
+                    d.Departman AS departman_name,
+                    d.id AS departman_id,
+                    e.id AS employeer_id
                     FROM
                         [Order] o
                     JOIN
@@ -158,7 +155,7 @@ const getordersbyid = async (req, res) => {
 
         res.json(result.recordset);
     } catch (err) {
-        res.status(500).json({ message: 'Veritabanı hatası: ' + err.message });
+        res.status(500).json({ message: 'Veritabanï¿½ hatasï¿½: ' + err.message });
     }
 };
 

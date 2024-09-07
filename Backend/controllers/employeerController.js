@@ -6,18 +6,18 @@ const getEmployeers = async (req, res) => {
         const pool = await getPool();
         const result = await pool.request().query(`
             SELECT 
-                e.*, 
-                d.Departman AS Department 
+             e.*, 
+             d.Departman AS Department 
             FROM 
-                Employeer_List e
-            LEFT JOIN 
-                Departmants d ON e.departmant_id = d.id 
+            Employeer_List e
+            JOIN 
+            Departmants d ON e.departmant_id = d.id 
             WHERE 
-                e.IS_DELETED = 0;
+            e.IS_DELETED = 0;
         `);
         res.json({ data: result.recordset });
     } catch (err) {
-        res.status(500).json({ message: 'Veritabanı hatası: ' + err.message });
+        res.status(500).json({ message: 'Veritabanï¿½ hatasï¿½: ' + err.message });
     }
 };
 
@@ -35,20 +35,20 @@ const getEmployeerById = async (req, res) => {
             .input('id', sql.Int, id)
             .query(`
                 SELECT 
-                    e.*, 
-                    d.Departman AS Department 
+                e.*, 
+                d.Departman AS Department 
                 FROM 
-                    Employeer_List e
+                Employeer_List e
                 LEFT JOIN 
-                    Departmants d ON e.departmant_id = d.id 
+                Departmants d ON e.departmant_id = d.id 
                 WHERE 
-                    e.id = @id AND e.IS_DELETED = 0
+                e.id = @id AND e.IS_DELETED = 0
                 ORDER BY e.id ASC
                    ;
             `);
         res.json(result.recordset[0]);
     } catch (err) {
-        res.status(500).send('Veritabanı hatası: ' + err.message);
+        res.status(500).send('Veritabanï¿½ hatasï¿½: ' + err.message);
     }
 };
 
@@ -94,9 +94,9 @@ const updateemployeer = async (req, res) => {
             .query(`
                 UPDATE Employeer_List
                 SET Name = @name,
-                    Position = @position,
-                    Salary = @salary,
-                    departmant_id = @departmant_id
+                Position = @position,
+                Salary = @salary,
+                departmant_id = @departmant_id
                 WHERE id = @id;
             `);
 
@@ -106,7 +106,7 @@ const updateemployeer = async (req, res) => {
             res.status(404).json({ message: 'Employeer Not Found' });
         }
     } catch (err) {
-        res.status(500).json({ message: 'Veritabanı hatası: ' + err.message });
+        res.status(500).json({ message: 'Veritabanï¿½ hatasï¿½: ' + err.message });
     }
 };
 
@@ -130,7 +130,7 @@ const deleteEmployeerById = async (req, res) => {
             res.status(404).json({message: 'Employeer is not found'});
         }
     } catch (err) {
-        res.status(500).json({message: 'Veritabanı hatası: ' + err.message});
+        res.status(500).json({message: 'Veritabanï¿½ hatasï¿½: ' + err.message});
     }
 };
 

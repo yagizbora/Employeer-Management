@@ -9,6 +9,14 @@ export default class OrderService {
         const response = await axiosApp.post('iscomplatedsetbyid', body)
         return response;
     }
+    async getordersbyid(data) {
+        const response = await axiosApp.get('getordersbyid', {
+            params: {
+                id: data.id
+            }
+        })
+        return response;
+    }
     async createorder(data) {
         const response = await axiosApp.post('createorder', data)
         return response;
