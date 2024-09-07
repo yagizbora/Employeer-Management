@@ -21,6 +21,12 @@ export default class OrderService {
         const response = await axiosApp.post('createorder', data)
         return response;
     }
+    async deleteorders(data) {
+        const response = await axiosApp.post('deleteorders', {
+            id: data.id
+        })
+        return response;
+    }
     async getEmployeersByDepartmantId(data) {
         const response = await axiosApp.get(`getEmployeersByDepartmantId/${data}`)
         return response;

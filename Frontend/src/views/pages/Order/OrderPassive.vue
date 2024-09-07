@@ -3,7 +3,6 @@ import { formatDateInput } from "@/utils/helper.js";
 import { defineAsyncComponent, ref } from 'vue';
 import OrderService from "@/service/Orderservice";
 import { onMounted } from 'vue';
-import { reactive } from 'vue';
 import Swal from 'sweetalert2';
 import DepartmantService from "@/service/DepartmantService.js";
 const departmantservice = new DepartmantService();
@@ -87,6 +86,42 @@ const onDepartmanChange = (event) => {
     getemployeerwithdepartman(departmanId);
 };
 
+const deleteorder = async (data) => {
+    try {
+        const response = await orderservice.deleteorders(data);
+        console.log(response)
+        if (response.status == 200) {
+            Swal.fire({
+                title: 'Success',
+                text: response.data.message,
+                icon: 'success',
+
+            })
+        }
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const deleteorders = async (data) => {
+    Swal.fire({
+        title: 'Are you sure you want to delete this order?',
+        text: 'You will not be able to recover this order!',
+        icon: 'warning',
+        showCancelButton: true,  // Bu, iptal butonunu göstermek için kullanılır
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',  // İptal butonunun metni
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteorder(data);
+            FetchData();
+        } else if (result.isDismissed) {
+            Swal.fire('Cancelled', '', 'info');
+        }
+    });
+
+}
+
 onMounted(() => {
     FetchData()
 });
@@ -97,7 +132,8 @@ onMounted(() => {
         <div class="col-12">
             <div>
                 <div class="card-body">
-                    <OrderTable :data="data" @iscomplatedsetbyid="iscomplatedsetbyid" @editorders="editorders" />
+                    <OrderTable :data="data" @iscomplatedsetbyid="iscomplatedsetbyid" @editorders="editorders"
+                        @deleteorders="deleteorders" />
                 </div>
             </div>
             <Dialog v-model:visible="EditOrderDialog" modal style="width: 65rem;">

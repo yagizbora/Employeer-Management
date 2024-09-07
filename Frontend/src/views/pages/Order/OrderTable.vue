@@ -8,11 +8,15 @@ const handleSwitchChange = (data) => {
     emit('iscomplatedsetbyid', data);
 };
 
-const emit = defineEmits(["editorders","iscomplatedsetbyid"]);
+const emit = defineEmits(["editorders", "iscomplatedsetbyid","deleteorders"]);
 
 const editorders = (data) => {
     emit("editorders",data)
 };
+const deleteorders = (data) => {
+    emit("deleteorders",data)
+};
+
 
     // const iscomplatedsetbyid = (data) => {
     //     emit('iscomplatedsetbyid', data)
@@ -53,6 +57,7 @@ const props = defineProps({
         <Column header="Operations">
             <template #body="{ data }">
                 <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit" @click="editorders(data)" />
+                <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Edit" @click="deleteorders(data)" />
             </template>
         </Column>
     </DataTable>

@@ -118,6 +118,31 @@ const iscomplatedsetbyid = async (req, res) => {
 
 
 
+const deleteorders = async (req, res) => {
+    const { id } = req.body
+
+    if (!id) {
+        res.status(400).json({ message: 'Id is required' })
+        return
+    }
+    const query = `UPDATE [Order] SET IS_DELETED = 1 WHERE id = @id`
+    try {
+        const pool = await getPool();
+
+        console.log('Executing query:', query);
+
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query);
+        if (result.rowsAffected[0] > 0) {
+            res.status(200).json({ message: 'Employeer is deleted' });
+        } else {
+            res.status(404).json({ message: 'Employeer is not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
+    }
+}
 
 
 
@@ -160,4 +185,4 @@ const getordersbyid = async (req, res) => {
 };
 
 
-module.exports = { getOrders, getordersbyid, iscomplatedsetbyid, createorder };
+module.exports = { getOrders, getordersbyid, iscomplatedsetbyid, createorder, deleteorders };
