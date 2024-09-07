@@ -144,7 +144,37 @@ const deleteorders = async (req, res) => {
     }
 }
 
+const updateorderbyid = async (req, res) => {
+    const { id, employeer_id, departman_id, order_name, order_description, start_date, end_date } = req.body
 
+    if (req.body.length == 0) {
+        res.status(404).json({ message: 'All field must be required' })
+        return
+    }
+    if (!id) {
+        res.status(404).json({ message: 'Id is required' })
+        return
+    }
+    const query = `UPDATE [ORDER] SET employeer_id = @employeer_id, departman_id = @departman_id,order_name = @order_name,order_description = @order_description,start_date = @start_date
+    ,end_date = @end_date WHERE id = @id`
+    try {
+        const pool = await getPool();
+        console.log('Executing query:', query);
+        await pool.request()
+            .input('id', sql.Int, id)
+            .input('employeer_id', sql.Int, employeer_id)
+            .input('departman_id', sql.Int, departman_id)
+            .input('order_name', sql.NVarChar, order_name)
+            .input('order_description', sql.NVarChar, order_description)
+            .input('start_date', sql.Date, start_date)
+            .input('end_date', sql.Date, end_date)
+            .query(query);
+
+        res.status(201).json({ message: 'Order is changed' });
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
+    }
+};
 
 const getordersbyid = async (req, res) => {
     //const { id } = req.query;
@@ -185,4 +215,4 @@ const getordersbyid = async (req, res) => {
 };
 
 
-module.exports = { getOrders, getordersbyid, iscomplatedsetbyid, createorder, deleteorders };
+    module.exports = { getOrders, getordersbyid, iscomplatedsetbyid, updateorderbyid, createorder, deleteorders };

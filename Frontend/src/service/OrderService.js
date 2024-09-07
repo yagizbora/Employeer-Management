@@ -31,4 +31,8 @@ export default class OrderService {
         const response = await axiosApp.get(`getEmployeersByDepartmantId/${data}`)
         return response;
     }
+    async updateorderbyid(data) {
+        const response = await axiosApp.post('updateorderbyid', data)
+        return response;
+    }
 }

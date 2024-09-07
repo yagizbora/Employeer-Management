@@ -122,6 +122,25 @@ const deleteorders = async (data) => {
 
 }
 
+const handleupdatedata = async (data) => {
+    try {
+        const response = await orderservice.updateorderbyid({ ...editData.value });
+        if (response.status == 201) {
+            Swal.fire({
+                title: 'Success',
+                text: response.data.message,
+                icon: 'success',
+                confirmButtonText:'Ok'
+            })
+            FetchData();
+            EditOrderDialog.value = false
+        }
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
 onMounted(() => {
     FetchData()
 });
@@ -185,8 +204,8 @@ onMounted(() => {
                             </div>
                             <div class="col">
                                 <div class="flex flex-column">
-                                    <label>Edit order is disabled please contact IT Departmant</label>
-                                    <Button class="w-max" disabled icon="pi pi-plus" label="Edit Order"></Button>
+                                    <!-- <label>Edit order is disabled please contact IT Departmant</label> -->
+                                    <Button class="w-max" @click="handleupdatedata" icon="pi pi-plus" label="Edit Order"></Button>
                                 </div>
                             </div>
                         </div>
