@@ -18,7 +18,7 @@ const getcomplaints = async (req, res) => {
 const createcomplaints = async (req, res) => {
     const { employeer_id, complaint_title, complaint_description } = req.body
 
-    const query = `INSERT INTO Complaint (employeer_id,complaint_title,complaint_description,IS_DELETED) VALUES  (@employeer_id,@complaint_title,@complaint_description,0)`;
+    const query = `INSERT INTO Complaint (employeer_id,complaint_title,complaint_description,is_deleted) VALUES  (@employeer_id,@complaint_title,@complaint_description,0)`;
     try {
         const pool = await getPool();
         const result = await pool.request()
@@ -26,12 +26,33 @@ const createcomplaints = async (req, res) => {
             .input('complaint_title', sql.VarChar, complaint_title)
             .input('complaint_description',sql.VarChar,complaint_description)
         .query(query);
-        res.status(201).json({ message: 'Order ba?ar?yla olu?turuldu.' });
+        res.status(201).json({ message: 'Complaints creatd is succesfully' });
 
     } catch (err) {
         res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
     }
 };
 
+const deletecomplaintsbyid = async (req, res) => {
+    const { id } = req.body
 
-module.exports = { getcomplaints, createcomplaints };
+
+    const query = `UPDATE Complaint SET IS_DELETED = 1 WHERE id = @id`; 
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+        .input('id',sql.Int, id)
+        .query(query);
+        if (result.rowsAffected[0] > 0) {
+            res.status(200).json({ message: 'Complaint is deleted' });
+        } else {
+            res.status(404).json({ message: 'Complaint is not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Veritabani hatasi: ' + err.message });
+    }
+}
+
+
+module.exports = { getcomplaints, createcomplaints, deletecomplaintsbyid };

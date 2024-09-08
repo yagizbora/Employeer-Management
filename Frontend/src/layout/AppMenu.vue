@@ -60,6 +60,11 @@ const model = ref([
                 label: 'Complaint List',
                 icon: 'pi pi-list',
                 to: '/complaint/complaint'
+            },
+            {
+                label: 'Complaint Create',
+                icon: 'pi pi-plus',
+                to: '/complaint/create-complaint',
             }
         ]
     }
