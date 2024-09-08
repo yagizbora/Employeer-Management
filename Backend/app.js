@@ -6,6 +6,7 @@ const employeerRoutes = require('./routes/employeerRoutes');
 const DepartmantRoutes = require('./routes/DepartmantRoutes');
 const ReportRoutes = require('./routes/ReportRoutes');
 const OrderRoutes = require('./routes/OrderRoutes');
+const ComplaintRoutes = require('./routes/ComplaintRoutes');
 const cors = require('cors');
 
 const app = express();
@@ -20,6 +21,7 @@ getPool()
         app.use('/api', employeerRoutes);
         app.use('/api', DepartmantRoutes);
         app.use('/api', ReportRoutes);
+        app.use('/api', ComplaintRoutes);
 
         app.listen(PORT, () => {
             console.log(`Sunucu http://localhost:${PORT} adresinde çalýþýyor`);

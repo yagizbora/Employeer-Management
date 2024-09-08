@@ -51,6 +51,17 @@ const model = ref([
                 to: '/order/order-management'
             }
         ]
+    },
+    {
+        label: 'Complaint',
+        icon: '',
+        items: [
+            {
+                label: 'Complaint List',
+                icon: 'pi pi-list',
+                to: '/complaint/complaint'
+            }
+        ]
     }
 ]);
 </script>

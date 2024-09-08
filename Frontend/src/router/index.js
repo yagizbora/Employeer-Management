@@ -60,6 +60,18 @@ const router = createRouter({
             ]
         },
         {
+            path: '/complaint',
+            component: AppLayout,
+            children:
+            [
+                {
+                    path: 'complaint',
+                    name: 'complaint',
+                    component: () => import('@/views/pages/Complaint/Complaint.vue')
+                }
+            ]
+        },
+        {
             path: '/auth',
             children: [
                 {

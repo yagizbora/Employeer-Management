@@ -30,6 +30,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.js" />
+    <Content Include="controllers\ComplaintController.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="controllers\DepartmantControler.js">
       <SubType>Code</SubType>
     </Content>
@@ -47,6 +50,9 @@
     </Content>
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="routes\ComplaintRoutes.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="routes\DepartmantRoutes.js">
       <SubType>Code</SubType>
     </Content>
