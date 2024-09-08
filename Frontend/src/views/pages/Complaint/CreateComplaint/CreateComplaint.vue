@@ -23,10 +23,16 @@ const adddata = async () => {
     try {
         const response = await complaintservice.createcomplaint(formData.value)
         if (response.status == 201) {
-            Swal.Fire({
+            Swal.fire({
                 title: 'Success',
                 text: response.data.message,
                 icon: 'success',
+            })
+        }
+        else if (response.status == 500) {
+            Swal.fire({
+                title: 'Error',
+                text: response.data.message,
             })
         }
     } catch (error) {

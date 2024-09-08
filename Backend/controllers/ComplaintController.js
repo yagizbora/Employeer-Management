@@ -18,6 +18,11 @@ const getcomplaints = async (req, res) => {
 const createcomplaints = async (req, res) => {
     const { employeer_id, complaint_title, complaint_description } = req.body
 
+    if (Object.keys(req.body).length < 3) {
+        res.status(500).json({ message: 'All fields must be required'})
+        return
+    }
+
     const query = `INSERT INTO Complaint (employeer_id,complaint_title,complaint_description,is_deleted) VALUES  (@employeer_id,@complaint_title,@complaint_description,0)`;
     try {
         const pool = await getPool();
@@ -36,8 +41,12 @@ const createcomplaints = async (req, res) => {
 const deletecomplaintsbyid = async (req, res) => {
     const { id } = req.body
 
+    if (!id) {
+        res.status(400).json({ message: 'Id is required' });
+        return
+    }
 
-    const query = `UPDATE Complaint SET IS_DELETED = 1 WHERE id = @id`; 
+    const query = `UPDATE Complaint SET is_deleted = 1 WHERE id = @id`; 
 
     try {
         const pool = await getPool();

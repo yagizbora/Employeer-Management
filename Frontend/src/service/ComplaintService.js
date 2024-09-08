@@ -10,4 +10,10 @@ export default class Complaintservice {
         const response = await axiosApp.post('createcomplaints', data)
         return response
     }
+    async deletecomplaint(data) {
+        const response = await axiosApp.post('deletecomplaintsbyid', {
+            id: data.id
+        })
+        return response
+    }
 }
