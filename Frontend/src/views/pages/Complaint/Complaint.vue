@@ -1,10 +1,11 @@
 <script setup>
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 import ComplaintService from "@/service/ComplaintService"
+import Swal from 'sweetalert2';
 const ComplaintTable = defineAsyncComponent(() => import('./ComplaintTable.vue'));
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-import Swal from 'sweetalert2';
+
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -65,7 +66,7 @@ onMounted(() => {
                 <div class="card-header">
                     <h5>Complaints</h5>
                     <div class="card-body">
-                        <ComplaintTable :data="data" @deletecomplaint="deletecomplaint" />
+                        <ComplaintTable :data="data" @deletecomplaint="deletecomplaint"/>
                     </div>
                 </div>
             </div>

@@ -73,6 +73,11 @@ const router = createRouter({
                         path: 'create-complaint',
                         name: 'create-complaint',
                         component: () => import('@/views/pages/Complaint/CreateComplaint/CreateComplaint.vue')
+                    },
+                    {
+                        path: 'edit-complaint/:id',
+                        name: 'Edit Complaint',
+                        component:() => import('@/views/pages/Complaint/EditComplaint/EditComplaint.vue')
                     }
                 ]
         },

@@ -1,10 +1,23 @@
 <script setup>
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
 
 const deletecomplaint = (data) => {
     emit("deletecomplaint", data);
 }
+// const editcomplaint = (data) => {
+//     emit("editcomplaint", data)
+// }
 
-const emit = defineEmits(["deletecomplaint"]);
+
+const editcomplaint = (data) => {
+    if (data && data.id) {
+        router.push({ name: 'Edit Complaint', params: { id: data.id } });
+    }
+}
+
+const emit = defineEmits(["deletecomplaint","editcomplaint"]);
 
 const props = defineProps({
     data: Array
@@ -19,8 +32,12 @@ const props = defineProps({
         <Column field="complaint_description" header="Complaint Description"></Column>
         <Column header="Operations">
             <template #body="{ data }">
-                <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancel"
-                    @click="deletecomplaint(data)" /> </template>
+                <div class="flex">
+                    <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancel"
+                        @click="deletecomplaint(data)" />
+                    <Button severity="info" icon="pi pi-pencil" text rounded aria-label="Edit" @click="editcomplaint(data)"/>
+                </div>
+            </template>
         </Column>
     </DataTable>
 

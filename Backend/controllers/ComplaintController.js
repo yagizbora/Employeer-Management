@@ -62,6 +62,48 @@ const deletecomplaintsbyid = async (req, res) => {
         res.status(500).json({ message: 'Veritabani hatasi: ' + err.message });
     }
 }
+const getcomplaintsbyid = async (req, res) => {
+
+    const { id } = req.query
 
 
-module.exports = { getcomplaints, createcomplaints, deletecomplaintsbyid };
+    if (!id) {
+        res.status(500).json({message: 'Id is required'})
+    }
+
+    const query = `SELECT c.*,e.Name AS Employeer_Name FROM Complaint c JOIN Employeer_List e ON c.employeer_id = e.id WHERE c.is_deleted = 0 AND c.id = @id`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+        .input('id',sql.Int, id)
+            .query(query);
+        res.status(200).json(result.recordset[0] );
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+    }
+}
+
+const updatecomplaintsbyid = async (req, res) => {
+    const { id, employeer_id, complaint_title, complaint_description } = req.body
+
+    if (Object.keys(req.body).length < 4) {
+        res.status(500).json({ message: 'All fields must be required' })
+        return
+    }
+
+    const query = `UPDATE Complaint SET employeer_id = @employeer_id,complaint_title = @complaint_title,complaint_description = @complaint_description WHERE id = @id`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .input('employeer_id', sql.Int, employeer_id)
+            .input('complaint_title', sql.VarChar, complaint_title)
+            .input('complaint_description', sql.VarChar, complaint_description)
+        .query(query)
+        res.status(200).json({ message: 'Complaint Updated' });
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+    }
+}
+
+module.exports = { getcomplaints, createcomplaints, deletecomplaintsbyid, getcomplaintsbyid, updatecomplaintsbyid };
