@@ -53,8 +53,9 @@ onMounted(salarystatics);
                         </RouterLink>
                     </template>
                 </Toolbar>  
-                
-                <SalaryChart />
+                <div class="chart">
+                    <SalaryChart />
+                </div>
                 <div class="card-body">
                     <DataTable :value=data>
                         <Column field="Name" header="Name"></Column>
@@ -73,4 +74,11 @@ onMounted(salarystatics);
 </template>
 
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+
+.chart {
+    @media (max-width:415px) {
+        display: none;
+    }
+}
+</style>
