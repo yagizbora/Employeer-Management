@@ -29,7 +29,11 @@ const getdatabyid = async (id) => {
             const response = await complaintservice.getcomplaintsbyid(id);
             formData.value = response;
         } else {
-            console.warn('ID is required but not provided');
+            Swal.Fire({
+                title: 'Error',
+                text: response.data.message,
+                icon:'Error'
+            })
         }
     } catch (error) {
         console.error(error);
@@ -38,7 +42,8 @@ const getdatabyid = async (id) => {
 
 const handleupdate = async () => {
     try {
-        const response = complaintservice.updatecomplaintsbyid({ ...formData.value })
+        const response = await complaintservice.updatecomplaintsbyid(formData.value)
+        console.log(response)
         if (response.status == 200) {
             Swal.Fire({
                 title: 'Success',

@@ -100,7 +100,7 @@ const updatecomplaintsbyid = async (req, res) => {
             .input('complaint_title', sql.VarChar, complaint_title)
             .input('complaint_description', sql.VarChar, complaint_description)
         .query(query)
-        res.status(200).json({ message: 'Complaint Updated' });
+        res.status(200).json({message: 'Complaint Updated'});
     } catch (err) {
         res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
     }
