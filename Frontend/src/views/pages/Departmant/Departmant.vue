@@ -138,7 +138,7 @@ const editdepartmanthandle = async (data) => {
         console.log(error)
     }
 }
-onMounted(fetchdata)
+onMounted(fetchdata);
 </script>
 
 <template>
@@ -148,17 +148,17 @@ onMounted(fetchdata)
         <div class="col-12">
             <div class="card">
                 <h5>Departmant</h5>
-                <div class="departmant-add">
-                    <div class="departmant-wrapper">
+                <div>
+                    <div>
                         <div class="flex flex-column">
                             <label>Departmant</label>
                             <InputText placeholder="Departmant" v-model="FormData.departman"></InputText>
                         </div>
-                        <div class="flex gap-2">
+                        <div class="col-12 xl:flex gap-1 mt-2">
                             <div class="flex-column">
                                 <Button severity="info" label="Excel" @click="downloadExcel"></Button>
                             </div>
-                            <div>
+                            <div class="flex flex-column">
                                 <Button label="Add Departmant" icon="pi pi-plus" @click="Adddata"></Button>
                             </div>
                         </div>
@@ -188,17 +188,5 @@ onMounted(fetchdata)
 
 
 <style scoped lang="scss">
-.departmant-add {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
-.departmant-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 </style>
