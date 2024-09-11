@@ -62,13 +62,15 @@ const deletecomplaintsbyid = async (req, res) => {
         res.status(500).json({ message: 'Veritabani hatasi: ' + err.message });
     }
 }
+
 const getcomplaintsbyid = async (req, res) => {
 
     const { id } = req.query
 
 
     if (!id) {
-        res.status(500).json({message: 'Id is required'})
+        res.status(500).json({ message: 'Id is required' })
+        return
     }
 
     const query = `SELECT c.*,e.Name AS Employeer_Name FROM Complaint c JOIN Employeer_List e ON c.employeer_id = e.id WHERE c.is_deleted = 0 AND c.id = @id`
@@ -77,6 +79,13 @@ const getcomplaintsbyid = async (req, res) => {
         const result = await pool.request()
         .input('id',sql.Int, id)
             .query(query);
+
+        if (!result.recordset || result.recordset.length === 0) {
+            res.status(404).json({ message: 'Data is not found' });
+            return;
+        }
+
+
         res.status(200).json(result.recordset[0] );
     } catch (err) {
         res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
