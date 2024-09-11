@@ -163,7 +163,7 @@ onMounted(() => {
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body flex">
-                                <div class="col-6">
+                                <div class="col-12 xl:col-6">
                                     <div>
                                         <div class="flex flex-column">
                                             <label>Departman</label>
@@ -181,7 +181,7 @@ onMounted(() => {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-12 xl:col-6">
                                     <div>
                                         <div class="flex flex-column">
                                             <label>Employeer</label>

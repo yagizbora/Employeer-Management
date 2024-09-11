@@ -70,8 +70,8 @@ onMounted(() => {
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Create Order</h5>
-                    <div class="flex">
-                        <div class="col-6">
+                    <div class="xl:flex">
+                        <div class="col-12 xl:col-6">
                             <div class="flex flex-column">
                                 <label>Departman Name:</label>
                                 <Dropdown v-model="FormData.departman_id" :options="departmans" optionLabel="Departman"
@@ -86,7 +86,7 @@ onMounted(() => {
                                 <InputText v-model="FormData.order_name" />
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 xl:col-6">
                             <div class="flex flex-column">
                                 <label>Employeer Name</label>
                                 <Dropdown v-model="FormData.employeer_id" :options="employeer"
