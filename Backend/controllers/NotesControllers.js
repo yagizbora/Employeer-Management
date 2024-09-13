@@ -48,7 +48,7 @@ const updatenotes = async (req, res) => {
             .input('note_description', sql.VarChar, note_description)
             .input('is_important', sql.Bit, is_important)
             .query(query);
-        res.status(200).json(result.recordset);
+        res.status(200).json({message: 'Note is succesfully updated'});
     } catch (err) {
         res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
     }

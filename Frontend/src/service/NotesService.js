@@ -20,12 +20,12 @@ export default class NotesService {
         const response = await axiosApp.post('updatenotes', data)
         return response
     }
-    async getnotesbyid(data) {
+    async getnotesbyid(id) {
         const response = await axiosApp.get('getnotesbyid', {
             params: {
-                id: data.id
+                id
             }
         })
-        return response
+        return response.data[0]
     }
 }

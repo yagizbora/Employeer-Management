@@ -10,8 +10,7 @@ const route = useRoute();
 
 const employeer = ref();
 const formData = ref({});
-const dataid = ref(route.params.id || null); // route'dan id alıyoruz, yoksa null yapıyoruz
-
+const dataid = ref(route.params.id || null); 
 const dataisnull = ref(false)
 
 const employeerservice = new EmployeerService();
