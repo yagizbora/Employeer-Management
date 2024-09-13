@@ -77,7 +77,7 @@ onMounted(salarystatics);
 <style scoped lang="scss">
 
 .chart {
-    @media (max-width:415px) {
+    @media (max-width:420px) {
         display: none;
     }
 }
