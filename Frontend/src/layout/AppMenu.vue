@@ -76,6 +76,11 @@ const model = ref([
                 label: 'Notes List',
                 icon: 'pi pi-book',
                 to: '/notes/notes'
+            },
+            {
+                label: 'Create Notes',
+                icon: 'pi pi-book',
+                to: '/notes/create-notes'
             }
         ]
     }

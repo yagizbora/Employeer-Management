@@ -16,6 +16,81 @@ const getnotes = async (req, res) => {
     }
 };
 
+const getnotesbyid = async (req, res) => {
+    const { id } = req.query
+    
+    if (!id) {
+        res.status(500).json({ message: 'Id is required' })
+        return
+    }
+
+    const query = `SELECT * FROM Notes WHERE is_deleted = 0 AND id = @id`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query);
+        res.status(200).json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+    }
+}
+
+const updatenotes = async (req, res) => {
+    const { id, note_title,note_description, is_important } = req.body
+
+    const query = `UPDATE Notes SET note_title = @note_title,note_description = @note_description, is_important = @is_important WHERE id = @id`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .input('note_title', sql.VarChar, note_title)
+            .input('note_description', sql.VarChar, note_description)
+            .input('is_important', sql.Bit, is_important)
+            .query(query);
+        res.status(200).json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+    }
+}
+
+const createnotes = async (req, res) => {
+    const { note_title, note_description, is_important } = req.body;
+
+    const query = `INSERT INTO Notes (note_title,note_description,is_important,is_deleted) VALUES(@note_title,@note_description,@is_important,0)`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('note_title', sql.VarChar, note_title)
+            .input('note_description', sql.VarChar, note_description)
+            .input('is_important', sql.Bit, is_important)
+            .query(query);
+        res.status(201).json({message: 'Note is created succesfully'});
+    } catch (err) {
+        res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
+    }
+}
+
+const deletenotes = async (req, res) => {
+    const { id } = req.body
+    const query = `UPDATE Notes SET is_deleted = 1 WHERE id = @id`
+    try {   
+        const pool = await getPool();
+
+        console.log('Executing query:', query);
+
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query);
+        if (result.rowsAffected[0] > 0) {
+            res.status(200).json({ message: 'Note is deleted' });
+        } else {
+            res.status(404).json({ message: 'Note is not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
+    }
+}
 
 
-module.exports = { getnotes }
+module.exports = { getnotes, getnotesbyid, updatenotes, createnotes, deletenotes }

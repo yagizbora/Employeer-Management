@@ -1,6 +1,23 @@
 <script setup>
-import { ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
+import NotesService from "@/service/NotesService"
+import { onMounted } from 'vue';
 
+const noteservice = new NotesService()
+
+const NotesTable = defineAsyncComponent(() => import('./NotesTable.vue'))
+
+const data = ref(null)
+
+const getdata = async() => {
+    const response = await noteservice.getnotes()
+    console.log(response)
+    data.value = response
+}
+
+onMounted(() => {
+    getdata()
+});
 </script>
 
 <template>
@@ -11,7 +28,7 @@ import { ref } from 'vue';
                 <h5>
                     Notes List
                 </h5>
-                
+                <NotesTable :data="data" />
             </div>
         </div>
     </div>
