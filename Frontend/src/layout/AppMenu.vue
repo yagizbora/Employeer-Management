@@ -67,6 +67,17 @@ const model = ref([
                 to: '/complaint/create-complaint',
             }
         ]
+    },
+    {
+        label: 'Notes',
+        icon: '',
+        items: [
+            {
+                label: 'Notes List',
+                icon: 'pi pi-book',
+                to: '/notes/notes'
+            }
+        ]
     }
 ]);
 </script>

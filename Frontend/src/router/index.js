@@ -82,6 +82,17 @@ const router = createRouter({
                 ]
         },
         {
+            path: '/notes',
+            component: AppLayout,
+            children: [
+                {
+                    path: 'notes',
+                    name: 'notes',
+                    component: () => import('@/views/pages/Notes/Notes.vue')
+                }
+            ]
+        },
+        {
             path: '/auth',
             children: [
                 {
