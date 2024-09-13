@@ -1,14 +1,15 @@
 <script setup>
-
 import { onMounted } from 'vue';
 
 
+const emit = defineEmits(["deletenotes"])
+
+const deletenotes = (data) => {
+    emit("deletenotes",data)
+}
 
 const props = defineProps({
     data: Array
-});
-
-onMounted(() => {
 });
 </script>
 
@@ -29,7 +30,7 @@ onMounted(() => {
         </Column>
         <Column header="Operations">
             <template #body="{ data }">
-                <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Edit" />
+                <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Edit" @click="deletenotes(data)" />
             </template>
         </Column>
     </DataTable>

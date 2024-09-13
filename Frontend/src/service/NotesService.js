@@ -12,9 +12,7 @@ export default class NotesService {
     }
     async deletenotes(data) {
         const response = await axiosApp.post('deletenotes', {
-            params: {
-                id: data.id
-            }
+            id:data.id
         })
         return response
     }
