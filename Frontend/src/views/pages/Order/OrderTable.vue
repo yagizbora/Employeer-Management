@@ -33,13 +33,13 @@ const props = defineProps({
 </script>
 
 <template>
-    <DataTable :value="data">
+    <DataTable :value="data" paginator :rows="5">
         <Column field="id" header="Order ID">
-        <template #body = "{ data }">
-            <div>
-                #{{ data.id }}
-            </div>
-        </template>
+            <template #body="{ data }">
+                <div>
+                    #{{ data.id }}
+                </div>
+            </template>
         </Column>
         <Column field="departman_name" header="Departman Name"></Column>
         <Column field="employeer_name" header="Employeer Name"></Column>
@@ -52,19 +52,20 @@ const props = defineProps({
             </template>
         </Column>
         <Column field="start_date" header="Start Date">
-        <template #body="{data}">
-            {{formatDateWithoutTime(data.start_date)}}
-        </template>
+            <template #body="{data}">
+                {{formatDateWithoutTime(data.start_date)}}
+            </template>
         </Column>
         <Column field="end_date" header="End Date">
-        <template #body="{data}">
-            {{formatDateWithoutTime(data.end_date)}}
-        </template>
+            <template #body="{data}">
+                {{formatDateWithoutTime(data.end_date)}}
+            </template>
         </Column>
         <Column header="Operations">
             <template #body="{ data }">
                 <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit" @click="editorders(data)" />
-                <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Edit" @click="deleteorders(data)" />
+                <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Edit"
+                    @click="deleteorders(data)" />
             </template>
         </Column>
     </DataTable>

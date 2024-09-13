@@ -23,7 +23,7 @@ const props = defineProps({
 
 
 <template>
-    <DataTable :value="data">
+    <DataTable :value="data" paginator :rows="5">
         <Column field="note_title" header="Note Title"></Column>
         <Column field="note_description" header="Note Description"></Column>
         <Column field="is_important" header="Is important?">

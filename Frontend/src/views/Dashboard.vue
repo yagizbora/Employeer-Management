@@ -52,12 +52,12 @@ onMounted(salarystatics);
                             <Button label="Employeer Management"></Button>
                         </RouterLink>
                     </template>
-                </Toolbar>  
+                </Toolbar>
                 <div class="chart">
                     <SalaryChart />
                 </div>
                 <div class="card-body">
-                    <DataTable :value=data>
+                    <DataTable :value=data paginator :rows="5">
                         <Column field="Name" header="Name"></Column>
                         <Column field="Department" header="Department"></Column>
                         <Column field="Position" header="Position"></Column>

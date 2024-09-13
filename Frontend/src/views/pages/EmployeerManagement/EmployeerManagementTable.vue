@@ -18,7 +18,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <DataTable :value=data>
+    <DataTable :value=data paginator :rows="5">
         <Column field="Name" header="Name"></Column>
         <Column field="Department" header="Department"></Column>
         <Column field="Position" header="Position"></Column>
@@ -30,8 +30,8 @@ const props = defineProps({
         <Column header="Operations">
             <template #body="{ data }">
                 <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancel"
-                    @click="deleteemployeer(data)" />                
-                    <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit"
+                    @click="deleteemployeer(data)" />
+                <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit"
                     @click="editemployeer(data)" />
             </template>
         </Column>
