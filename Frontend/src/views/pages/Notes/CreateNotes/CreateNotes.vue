@@ -13,6 +13,7 @@ const createdata = async () => {
             title: 'Success',
             text: response.data.message,
             icon: 'success',
+            confirmButtonText: response.data.button_name
         })
     }
 }

@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\ShadowDefender\\Desktop\\Yeni klas\u00F6r\\Employeer\\Backend\\",
+  "WorkspaceRootPath": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ShadowDefender\\Desktop\\Yeni klas\u00F6r\\Employeer\\Backend\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ShadowDefender\\Desktop\\Yeni klas\u00F6r\\Employeer\\Backend\\database.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\database.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:database.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
@@ -36,24 +36,23 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "database.js",
-              "DocumentMoniker": "C:\\Users\\ShadowDefender\\Desktop\\Yeni klas\u00F6r\\Employeer\\Backend\\database.js",
+              "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\database.js",
               "RelativeDocumentMoniker": "database.js",
-              "ToolTip": "C:\\Users\\ShadowDefender\\Desktop\\Yeni klas\u00F6r\\Employeer\\Backend\\database.js",
+              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\database.js",
               "RelativeToolTip": "database.js",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAACMAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-08-29T19:40:17.334Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-29T19:40:17.334Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "app.js",
-              "DocumentMoniker": "C:\\Users\\ShadowDefender\\Desktop\\Yeni klas\u00F6r\\Employeer\\Backend\\app.js",
+              "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\app.js",
               "RelativeDocumentMoniker": "app.js",
-              "ToolTip": "C:\\Users\\ShadowDefender\\Desktop\\Yeni klas\u00F6r\\Employeer\\Backend\\app.js",
+              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\app.js",
               "RelativeToolTip": "app.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-08-29T19:39:40.474Z",
               "EditorCaption": ""

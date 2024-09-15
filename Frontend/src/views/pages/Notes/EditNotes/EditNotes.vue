@@ -32,6 +32,7 @@ const editnotes = async (data) => {
                 title: 'Success',
                 text: response.data.message,
                 icon: 'success',
+                confirmButtonText: response.data.button_name
             })
         }
     } catch (error) {

@@ -48,7 +48,7 @@ const updatenotes = async (req, res) => {
             .input('note_description', sql.VarChar, note_description)
             .input('is_important', sql.Bit, is_important)
             .query(query);
-        res.status(200).json({message: 'Note is succesfully updated'});
+        res.status(200).json({message: 'Note is succesfully updated' , button_name: 'Okay good'});
     } catch (err) {
         res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
     }
@@ -65,7 +65,7 @@ const createnotes = async (req, res) => {
             .input('note_description', sql.VarChar, note_description)
             .input('is_important', sql.Bit, is_important)
             .query(query);
-        res.status(201).json({message: 'Note is created succesfully'});
+        res.status(201).json({message: 'Note is created succesfully' , button_name: 'Okay Good'});
     } catch (err) {
         res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
     }

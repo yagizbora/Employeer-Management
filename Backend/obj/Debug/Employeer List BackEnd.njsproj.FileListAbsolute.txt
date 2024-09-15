@@ -7,3 +7,12 @@ C:\Users\ShadowDefender\Desktop\Yeni klasör\Employeer\Backend\bin\Microsoft.Nod
 C:\Users\ShadowDefender\Desktop\Yeni klasör\Employeer\Employeer-Management\Backend\obj\Debug\Employeer List BackEnd.njsproj.AssemblyReference.cache
 C:\Users\ShadowDefender\Desktop\Yeni klasör\Employeer\Employeer-Management\Backend\obj\Debug\Employeer List BackEnd.njsproj.CoreCompileInputs.cache
 C:\Users\ShadowDefender\Desktop\Yeni klasör\Employeer\Employeer-Management\Backend\bin\Microsoft.NodejsTools.WebRole.dll
+C:\Users\yaizb\OneDrive\Desktop\Yazılım\Employeer\Employeer-Management\Backend\obj\Debug\Employeer List BackEnd.njsproj.AssemblyReference.cache
+C:\Users\yaizb\OneDrive\Desktop\Yazılım\Employeer\Employeer-Management\Backend\obj\Debug\Employeer List BackEnd.njsproj.CoreCompileInputs.cache
+C:\Users\yaizb\OneDrive\Desktop\Yazılım\Employeer\Employeer-Management\Backend\bin\Microsoft.NodejsTools.WebRole.dll
+C:\Users\yaizb\OneDrive\Desktop\Employeer\Employeer-Management\Backend\obj\Debug\Employeer List BackEnd.njsproj.AssemblyReference.cache
+C:\Users\yaizb\OneDrive\Desktop\Employeer\Employeer-Management\Backend\obj\Debug\Employeer List BackEnd.njsproj.CoreCompileInputs.cache
+C:\Users\yaizb\OneDrive\Desktop\Employeer\Employeer-Management\Backend\bin\Microsoft.NodejsTools.WebRole.dll
+C:\Users\yaizb\Desktop\Employeer\Employeer-Management\Backend\obj\Debug\Employeer List BackEnd.njsproj.AssemblyReference.cache
+C:\Users\yaizb\Desktop\Employeer\Employeer-Management\Backend\obj\Debug\Employeer List BackEnd.njsproj.CoreCompileInputs.cache
+C:\Users\yaizb\Desktop\Employeer\Employeer-Management\Backend\bin\Microsoft.NodejsTools.WebRole.dll
