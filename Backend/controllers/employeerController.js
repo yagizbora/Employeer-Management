@@ -2,6 +2,9 @@ const { getPool } = require('../database');
 const sql = require('mssql');
 
 const getEmployeers = async (req, res) => {
+
+    const page_count = ['5', '10', '15', '20'];
+    const rows = [ '5' ];
     try {
         const pool = await getPool();
         const result = await pool.request().query(`
@@ -15,7 +18,7 @@ const getEmployeers = async (req, res) => {
             WHERE 
             e.IS_DELETED = 0;
         `);
-        res.json({ data: result.recordset });
+        res.json({ data: result.recordset, page_count: page_count, rows: rows });
     } catch (err) {
         res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
     }

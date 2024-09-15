@@ -124,6 +124,7 @@ const editdepartmanthandle = async (data) => {
                 confirmButtonText: 'Ok',
             })
             EditDepartmantDialog.value = false
+            fetchdata()
         }
         if (response.status == 400) {
             Swal.fire({

@@ -12,7 +12,8 @@ import SalaryChart from './SalaryChart.vue';
 
 
 const data = ref([])
-
+const page_count = ref([])
+const rows = ref([])
 const props = defineProps({
     data: Array
 })
@@ -20,7 +21,9 @@ const props = defineProps({
 const FetchData = async () => {
     try {
         const response = await employeerservice.getEmployeers()
-        data.value = response
+        data.value = response.data.data 
+        page_count.value = response.data.page_count
+        rows.value = response.data.rows
     } catch (error) {
         console.error(error)
     }
@@ -57,7 +60,7 @@ onMounted(salarystatics);
                     <SalaryChart />
                 </div>
                 <div class="card-body">
-                    <DataTable :value=data paginator :rows="5">
+                    <DataTable :value=data paginator :rows=rows :rowsPerPageOptions=page_count>
                         <Column field="Name" header="Name"></Column>
                         <Column field="Department" header="Department"></Column>
                         <Column field="Position" header="Position"></Column>

@@ -3,7 +3,7 @@ import { axiosApp } from "@/utils/axiosAPI";
 export default class EmployeerService {
     async getEmployeers() {
         const response = await axiosApp.get('employeers');
-        return response.data.data;
+        return response;
     }
     async Addemployeer(data) {
         const response = await axiosApp.post('Addemployeers', data);

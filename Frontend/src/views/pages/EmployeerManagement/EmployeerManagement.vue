@@ -16,6 +16,7 @@ const toast = useToast();
 
 
 const data = ref([])
+const page_count = ref([])
 const AddEmployeerDialog = ref(false);
 const EditEmployeerDialog = ref(false);
 const formData = ref([]);
@@ -27,6 +28,7 @@ const handleaddDialog = async () => {
     departman_type.value = response.data
     if (response) {
         AddEmployeerDialog.value = true
+        FormData.value = null
     }
 
 }
@@ -67,7 +69,8 @@ const handledeleteemployeer = async (data) => {
 const FetchData = async () => {
     try {
         const response = await employeerservice.getEmployeers()
-        data.value = response
+        data.value = response.data.data
+        page_count.value = response.data.page_count
     } catch (error) {
         console.error(error)
     }
@@ -84,7 +87,7 @@ const addemployee = async () => {
                 confirmButtonText: 'Ok'
             })
             AddEmployeerDialog.value = false
-            FormData.value = (null)
+            FormData.value = ({})
             FetchData()
         }
     } catch (error) {
@@ -133,7 +136,9 @@ const editemployee = async () => {
 
 
 
-onMounted(FetchData);
+onMounted(() => {
+    FetchData()
+});
 </script>
 
 <template>
@@ -151,7 +156,7 @@ onMounted(FetchData);
                     </template>
                 </Toolbar>
                 <div class="card-body">
-                    <EmployeerManagementTable :data="data" @deleteemployeer="deleteemployeer"
+                    <EmployeerManagementTable :data="data" :page_count="page_count" @deleteemployeer="deleteemployeer"
                         @editemployeer="editemployeer">
                     </EmployeerManagementTable>
                 </div>
@@ -195,7 +200,7 @@ onMounted(FetchData);
                     <div class="flex flex-column">
                         <label>Department</label>
                         <Dropdown placeholder="Department" v-model="editData.departmant_id" :options="departman_type"
-                            optionLabel="Departman" optionValue="id"  />
+                            optionLabel="Departman" optionValue="id" />
                     </div>
                 </div>
                 <div class="col-12 xl:col-6">
