@@ -17,6 +17,7 @@ const toast = useToast();
 
 const data = ref([])
 const page_count = ref([])
+const rows = ref([])
 const AddEmployeerDialog = ref(false);
 const EditEmployeerDialog = ref(false);
 const formData = ref([]);
@@ -71,6 +72,7 @@ const FetchData = async () => {
         const response = await employeerservice.getEmployeers()
         data.value = response.data.data
         page_count.value = response.data.page_count
+        rows.value = response.data.rows
     } catch (error) {
         console.error(error)
     }
@@ -156,7 +158,7 @@ onMounted(() => {
                     </template>
                 </Toolbar>
                 <div class="card-body">
-                    <EmployeerManagementTable :data="data" :page_count="page_count" @deleteemployeer="deleteemployeer"
+                    <EmployeerManagementTable :data="data" :page_count="page_count" :rows=rows @deleteemployeer="deleteemployeer"
                         @editemployeer="editemployeer">
                     </EmployeerManagementTable>
                 </div>
