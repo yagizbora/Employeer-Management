@@ -122,13 +122,19 @@ const editemployee = async () => {
     };
     try {
         const response = await employeerservice.update(payload);
-        if (response.status === 200) {
-            console.log('Employeer updated successfully');
-            EditEmployeerDialog.value = false;
-            FetchData(); // Tabloyu güncelle
+        if (response.data.status == 200) {
+            Swal.fire({
+                title: 'Success',
+                text: response.data.message,
+                icon:'success',
+                confirmButtonText: 'Ok'
+            });
+            AddEmployeerDialog.value = false
+            editData.value = ({})
+            FetchData()
         }
     } catch (error) {
-        console.error('Update error:', error);
+        // console.error('Update error:', error);
     }
 }
 

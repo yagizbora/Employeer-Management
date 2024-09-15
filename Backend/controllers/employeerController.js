@@ -3,8 +3,6 @@ const sql = require('mssql');
 
 const getEmployeers = async (req, res) => {
 
-    const page_count = ['5', '10', '15', '20'];
-    const rows = [ '5' ];
     try {
         const pool = await getPool();
         const result = await pool.request().query(`
@@ -18,7 +16,7 @@ const getEmployeers = async (req, res) => {
             WHERE 
             e.IS_DELETED = 0;
         `);
-        res.json({ data: result.recordset, page_count: page_count, rows: rows });
+        res.json({ data: result.recordset });
     } catch (err) {
         res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
     }
@@ -104,7 +102,7 @@ const updateemployeer = async (req, res) => {
             `);
 
         if (result.rowsAffected[0] > 0) {
-            res.status(200).json({ message: 'Employeer Updated' });
+            res.status(200).json({ message: 'Employeer Updated' , status: '200'});
         } else {
             res.status(404).json({ message: 'Employeer Not Found' });
         }

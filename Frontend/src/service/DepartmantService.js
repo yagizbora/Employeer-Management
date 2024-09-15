@@ -7,7 +7,7 @@ export default class DepartmantService {
     }
     async getdepartmantbyid(data) {
         const response = await axiosApp.get(`departmants/${data.id}`)
-        console.log(response)
+        // console.log(response)
         return response.data
     }
     async createdepartmant(data) {
