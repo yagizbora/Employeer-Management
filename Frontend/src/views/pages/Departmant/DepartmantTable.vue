@@ -15,7 +15,7 @@ const editdepartmant = (data) => {
 </script>
 
 <template>
-    <DataTable :value="data" paginator :rows="5">
+    <DataTable :value="data" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]">
         <Column field="Departman" header="Departmant"></Column>
         <Column header="Operations" class="operations">
             <template #body="{ data }">

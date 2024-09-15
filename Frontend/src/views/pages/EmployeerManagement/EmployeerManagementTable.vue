@@ -14,13 +14,12 @@ const editemployeer = (data) => {
 
 const props = defineProps({
     data: Array,
-    page_count: Array,
-    rows: Array
+
 });
 </script>
 
 <template>
-    <DataTable :value=data paginator :rows=rows :rowsPerPageOptions=page_count>
+    <DataTable :value=data paginator :rows='5' :rowsPerPageOptions="[5, 10, 20, 50]">
         <Column field="Name" header="Name"></Column>
         <Column field="Department" header="Department"></Column>
         <Column field="Position" header="Position"></Column>
