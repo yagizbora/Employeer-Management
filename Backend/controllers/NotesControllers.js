@@ -74,7 +74,7 @@ const createnotes = async (req, res) => {
 const deletenotes = async (req, res) => {
     const { id } = req.body
     const query = `UPDATE Notes SET is_deleted = 1 WHERE id = @id`
-    try {   
+    try {
         const pool = await getPool();
 
         console.log('Executing query:', query);
@@ -90,7 +90,25 @@ const deletenotes = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
     }
-}
+};
+
+const notesimportant = async (req, res) => {
+    const query = `SELECT * FROM Notes WHERE is_deleted = 0 AND is_important = 1`;
+    try {
+        const pool = await getPool();
+
+        const result = await pool.request().query(query);
+
+        if (result.recordset.length > 0) {
+            res.status(200).json({ important_notes: true });
+        } else {
+            res.status(200).json({ important_notes: false });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Veritabaný hatasý: ' + err.message });
+    }
+};
 
 
-module.exports = { getnotes, getnotesbyid, updatenotes, createnotes, deletenotes }
+
+module.exports = { getnotes, getnotesbyid, updatenotes, createnotes, deletenotes, notesimportant }

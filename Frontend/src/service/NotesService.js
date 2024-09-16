@@ -28,4 +28,9 @@ export default class NotesService {
         })
         return response.data[0]
     }
+
+    async notesimportant() {
+        const response = await axiosApp.get('notesimportant')
+        return response
+    }
 }

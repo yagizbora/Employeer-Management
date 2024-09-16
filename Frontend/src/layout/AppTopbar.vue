@@ -3,6 +3,32 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
 
+import NotesService from "@/service/NotesService"
+const noteservice = new NotesService()
+
+const importantnote = ref(false);
+
+const importantnotes = async () => {
+    try {
+        const response = await noteservice.notesimportant();
+
+        if (response.data && response.data.important_notes === true) {
+            importantnote.value = true; // Burada .value ile reaktif değeri güncelliyoruz
+            console.log('Important Notes Found!');
+        } else if (response.data && response.data.important_notes === false) {
+            importantnote.value = false; // Burada da false olarak ayarlıyoruz
+            console.log('No Important Notes.');
+        }
+
+    } catch (error) {
+        console.error('Error fetching important notes:', error);
+    }
+};
+
+onMounted(() => {
+    importantnotes()
+})
+
 const { layoutConfig, onMenuToggle } = useLayout();
 
 const outsideClickListener = ref(null);
@@ -76,14 +102,28 @@ const isOutsideClicked = (event) => {
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <!-- <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-calendar"></i>
-                <span>Calendar</span>
-            </button>
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-user"></i>
-                <span>Profile</span>
-            </button> -->
+            <div v-if="importantnote">
+                <RouterLink to="/notes/notes">
+                    <Button label="You have an important note!" class="p-button-warning"
+                        icon="pi pi-exclamation-triangle" />
+                </RouterLink>
+            </div>
+            <div v-else>
+                <div>
+                    <label class="flex flex-column">
+                        <i class="pi pi-thumbs-up-fill" style="font-size: 2rem" />
+                        <span>Important note is not found</span>
+                    </label>
+                </div>
+            </div>
+            <!-- <button @click=" onTopBarMenuButton()" class="p-link layout-topbar-button">
+                    <i class="pi pi-calendar"></i>
+                    <span>Calendar</span>
+                    </button>
+                    <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
+                        <i class="pi pi-user"></i>
+                        <span>Profile</span>
+                    </button> -->
             <!-- <button class="p-link layout-topbar-button">
                 <i class="pi pi-cog"></i>
                 <span>Settings</span>
@@ -96,4 +136,6 @@ const isOutsideClicked = (event) => {
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

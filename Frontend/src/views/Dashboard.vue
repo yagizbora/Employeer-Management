@@ -29,11 +29,11 @@ const FetchData = async () => {
 const salarystatics = async () => {
     try {
         const response = await reportservice.getSalaryStatistics()
-        console.log(response)
+        // console.log(response)
     } catch (error) {
         console.error(error)
     }
-}
+};
 
 onMounted(FetchData);
 onMounted(salarystatics);
