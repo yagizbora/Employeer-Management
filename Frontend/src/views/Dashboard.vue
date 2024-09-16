@@ -35,8 +35,13 @@ const salarystatics = async () => {
     }
 };
 
-onMounted(FetchData);
-onMounted(salarystatics);
+onMounted(() => {
+    FetchData()
+    salarystatics()  
+})
+
+// onMounted(FetchData);
+// onMounted(salarystatics);
 </script>
 
 <template>
