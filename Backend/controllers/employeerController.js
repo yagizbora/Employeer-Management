@@ -87,7 +87,7 @@ const updateemployeer = async (req, res) => {
     try {
         const pool = await getPool();
         const result = await pool.request()
-            .input('id', sql.Int, id)
+            .input('id', sql.Bit, id)
             .input('name', sql.NVarChar, name)
             .input('position', sql.NVarChar, position)
             .input('salary', sql.Int, salary)

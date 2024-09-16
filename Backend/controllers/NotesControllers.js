@@ -37,7 +37,11 @@ const getnotesbyid = async (req, res) => {
 }
 
 const updatenotes = async (req, res) => {
-    const { id, note_title,note_description, is_important } = req.body
+    const { id, note_title, note_description, is_important } = req.body
+
+    if (!id) {
+        res.status(500).json({message: 'Id is required'})
+    }
 
     const query = `UPDATE Notes SET note_title = @note_title,note_description = @note_description, is_important = @is_important WHERE id = @id`
     try {
@@ -74,6 +78,12 @@ const createnotes = async (req, res) => {
 const deletenotes = async (req, res) => {
     const { id } = req.body
     const query = `UPDATE Notes SET is_deleted = 1 WHERE id = @id`
+
+    if (!id) {
+        res.status(500).json({ message: 'ID is required' })
+        return;
+    }
+
     try {
         const pool = await getPool();
 

@@ -16,7 +16,7 @@ const createdata = async () => {
             confirmButtonText: response.data.button_name
         })
     }
-}
+};
 
 
 </script>
@@ -29,27 +29,29 @@ const createdata = async () => {
                     <h5>Create Note</h5>
                 </div>
                 <div class="card-body">
-                    <div class="col-12">
+                    <div class="col-12 xl:col-6">
                         <div class="flex flex-column">
                             <label class="mb-2"> Is important? </label>
                             <Checkbox v-model="FormData.is_important" :binary="true" />
                         </div>
                     </div>
-                    <div class="flex">
-                        <div class="col-6">
+                    <div class="xl:flex">
+                        <div class="col-12 xl:col-6">
                             <div class="flex flex-column">
                                 <label>Note Title</label>
                                 <InputText type="text" v-model="FormData.note_title" placeholder="Title" />
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 xl:col-6">
                             <div class="flex flex-column">
                                 <label>Note Description</label>
-                                <Textarea type="text" v-model="FormData.note_description" />
+                                <Textarea type="text" v-model="FormData.note_description" autoResize />
                             </div>
                         </div>
                     </div>
-                    <Button @click="createdata" icon="pi pi-plus" label="Create note" />
+                    <div class="col-12 xl:col-12">
+                        <Button @click="createdata" icon="pi pi-plus" label="Create note" />
+                    </div>
                 </div>
             </div>
         </div>

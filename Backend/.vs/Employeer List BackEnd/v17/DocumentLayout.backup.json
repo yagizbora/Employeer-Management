@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C93D1468-882F-4169-A4FC-FA949125EC21}|Employeer List BackEnd.njsproj|C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\NotesRoutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{C93D1468-882F-4169-A4FC-FA949125EC21}|Employeer List BackEnd.njsproj|solutionrelative:routes\\NotesRoutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C93D1468-882F-4169-A4FC-FA949125EC21}|Employeer List BackEnd.njsproj|C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\NotesControllers.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{C93D1468-882F-4169-A4FC-FA949125EC21}|Employeer List BackEnd.njsproj|solutionrelative:controllers\\NotesControllers.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C93D1468-882F-4169-A4FC-FA949125EC21}|Employeer List BackEnd.njsproj|C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\employeerController.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{C93D1468-882F-4169-A4FC-FA949125EC21}|Employeer List BackEnd.njsproj|solutionrelative:controllers\\employeerController.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C93D1468-882F-4169-A4FC-FA949125EC21}|Employeer List BackEnd.njsproj|C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\NotesRoutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{C93D1468-882F-4169-A4FC-FA949125EC21}|Employeer List BackEnd.njsproj|solutionrelative:routes\\NotesRoutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C93D1468-882F-4169-A4FC-FA949125EC21}|Employeer List BackEnd.njsproj|C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\OrderController.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -30,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,13 +46,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "employeerController.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\employeerController.js",
               "RelativeDocumentMoniker": "controllers\\employeerController.js",
               "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\employeerController.js",
               "RelativeToolTip": "controllers\\employeerController.js",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAAGgAAABOAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFkAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-09-14T17:30:22.194Z",
               "EditorCaption": ""
@@ -83,26 +83,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "NotesControllers.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\NotesControllers.js",
               "RelativeDocumentMoniker": "controllers\\NotesControllers.js",
-              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\NotesControllers.js*",
-              "RelativeToolTip": "controllers\\NotesControllers.js*",
-              "ViewState": "AgIAAFcAAAAAAAAAAAAAAHIAAABgAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\NotesControllers.js",
+              "RelativeToolTip": "controllers\\NotesControllers.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-09-13T00:46:23.147Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "NotesRoutes.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\NotesRoutes.js",
               "RelativeDocumentMoniker": "routes\\NotesRoutes.js",
               "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\NotesRoutes.js",
               "RelativeToolTip": "routes\\NotesRoutes.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-09-13T00:47:07.439Z",
               "EditorCaption": ""
