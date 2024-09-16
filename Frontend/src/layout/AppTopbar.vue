@@ -108,14 +108,6 @@ const isOutsideClicked = (event) => {
                         icon="pi pi-exclamation-triangle" />
                 </RouterLink>
             </div>
-            <div v-else>
-                <div>
-                    <label class="flex flex-column">
-                        <i class="pi pi-thumbs-up-fill" style="font-size: 2rem" />
-                        <span>Important note is not found</span>
-                    </label>
-                </div>
-            </div>
             <!-- <button @click=" onTopBarMenuButton()" class="p-link layout-topbar-button">
                     <i class="pi pi-calendar"></i>
                     <span>Calendar</span>
