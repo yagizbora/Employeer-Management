@@ -3,7 +3,7 @@ import InputSwitch from 'primevue/inputswitch';
 import { formatDateWithoutTime } from "@/utils/helper.js";
 
 const handleSwitchChange = (data) => {
-    console.log('Switch changed for:', data);
+    // console.log('Switch changed for:', data);
     // Veritabanında güncelleme yapmak için event'i tetikle
     emit('iscomplatedsetbyid', data);
 };
@@ -48,7 +48,7 @@ const props = defineProps({
         <Column field="is_complated" header="Is Complated?">
             <template #body="{ data }">
                 <!-- Doğru v-model kullanımı -->
-                <InputSwitch v-model="data.is_complated" @change="handleSwitchChange(data)" />
+                <InputSwitch v-model="data.is_complated" :disabled="data.is_complated" @change="handleSwitchChange(data)" />
             </template>
         </Column>
         <Column field="start_date" header="Start Date">

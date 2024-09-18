@@ -48,7 +48,7 @@ const onDepartmanChange = (event) => {
 
 const addorder = async () => {
     const response = await orderservice.createorder(FormData.value);
-    if (response.status == 200) {
+    if (response.status == 201) {
         Swal.fire({
             title: 'Başarılı',
             text: response.data.message,

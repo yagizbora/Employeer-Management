@@ -54,8 +54,7 @@
               "RelativeToolTip": "controllers\\employeerController.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAFkAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-14T17:30:22.194Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-14T17:30:22.194Z"
             },
             {
               "$type": "Document",
@@ -89,7 +88,7 @@
               "RelativeDocumentMoniker": "controllers\\NotesControllers.js",
               "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\NotesControllers.js",
               "RelativeToolTip": "controllers\\NotesControllers.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAowBgAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-09-13T00:46:23.147Z",
               "EditorCaption": ""
@@ -104,8 +103,7 @@
               "RelativeToolTip": "routes\\NotesRoutes.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-13T00:47:07.439Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-13T00:47:07.439Z"
             }
           ]
         }
