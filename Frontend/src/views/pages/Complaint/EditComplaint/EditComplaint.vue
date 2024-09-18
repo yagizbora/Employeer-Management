@@ -19,7 +19,7 @@ const complaintservice = new ComplaintService();
 const FetchDataEmployeer = async () => {
     try {
         const response = await employeerservice.getEmployeers();
-        employeer.value = response;
+        employeer.value = response.data.data;
     } catch (error) {
         console.error(error);
     }

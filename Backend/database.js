@@ -4,8 +4,8 @@ let poolPromise;
 let isFirstConnection = true;
 
 const config = {
-    user: 'admin',
-    password: 'B.bora1907',
+    user: 'node.js',
+    password: 'node.js',
     server: 'localhost',
     database: 'Employeer_List',
     options: {
