@@ -83,7 +83,18 @@ const model = ref([
                 to: '/notes/create-notes'
             }
         ]
-    }
+    },
+    {
+        label: 'Request Management',
+        icon: '',
+        items: [
+            {
+                label: 'Request List',
+                icon: 'pi pi-list',
+                to: '/need/need-management'
+            }
+        ]    
+    },
 ]);
 </script>
 

@@ -103,6 +103,22 @@ const router = createRouter({
             ]
         },
         {
+            path: '/need',
+            component: AppLayout,
+            children: [
+                {
+                    path: 'need-management',
+                    name: 'need-management',
+                    component: () => import('@/views/pages/Need/Need.vue')
+                },
+                {
+                    path: 'create-need',
+                    name: 'create-need',
+                    component: () => import('@/views/pages/Need/CreateNeed/CreateNeed.vue')
+                }
+            ]
+        },
+        {
             path: '/auth',
             children: [
                 {
