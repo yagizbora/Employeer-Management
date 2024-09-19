@@ -4,6 +4,7 @@ import DepartmantService from "@/service/DepartmantService.js";
 import OrderService from "@/service/Orderservice";
 import Swal from 'sweetalert2';
 import NeedService from "@/service/NeedService";
+import PriorityService from "@/service/PriorityService";
 
 
 const formData = ref({});
@@ -12,15 +13,24 @@ const formData = ref({});
 const needservice = new NeedService()
 const orderservice = new OrderService();
 const departmantservice = new DepartmantService(); 
+const priorityservice = new PriorityService(); 
+
 
 const departmans = ref([]);
 const employeer = ref([]);
+const priorities = ref([])
 
 // Departmanları al
 const fetchdepartmans = async () => {
     const response = await departmantservice.getdepartmant();
     departmans.value = response.data;
 };
+
+const fetchpriorities = async () => {
+    const response = await priorityservice.getpriorities();
+    priorities.value = response.data.data;
+    console.log(response.data.data)
+}
 
 const getemployeerwithdepartman = async (data) => {
     if (data) {
@@ -53,6 +63,7 @@ const createdata = async (data) => {
 
 onMounted(() => {
     fetchdepartmans();
+    fetchpriorities();
 });
 </script>
 
@@ -80,6 +91,11 @@ onMounted(() => {
                                     optionLabel="employeer_name" :disabled="!formData.departman_id"
                                     optionValue="employeer_id" />
                             </div>
+                            <div class="flex flex-column">
+                                <label for="priority">Request Priority:</label>
+                                <Dropdown :options="priorities" v-model="formData.priority_id" optionLabel="priority"
+                                    optionValue="id" />
+                            </div>
                         </div>
                         <div class="col-12 xl:col-6">
                             <div class="flex flex-column">
@@ -96,7 +112,8 @@ onMounted(() => {
                         <div class="col-12">
                             <div class="flex flex-column">
                                 <label> Request Description </label>
-                                <Textarea v-model="formData.need_description" :disabled="!formData.departman_id"></Textarea>
+                                <Textarea v-model="formData.need_description"
+                                    :disabled="!formData.departman_id"></Textarea>
                             </div>
                         </div>
                     </div>

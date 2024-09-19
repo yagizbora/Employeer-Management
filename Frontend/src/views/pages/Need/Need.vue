@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router';
 const needservice = new NeedService()
 const NeedTable = defineAsyncComponent(() => import('./NeedTable.vue'));
 
-const data = ref()
+const data = ref([])
 
 const FetchData = async () => {
     try {
