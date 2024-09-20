@@ -56,5 +56,25 @@ const createneed = async (req, res) => {
 }
 
 
+const getneedbyid = async (req, res) => {
+    const { id } = req.query;
 
-module.exports = { getneed, createneed, getPriority }
+    if (!id) {
+        res.status(400).json({ message: 'Id is required' })
+        return
+    }
+
+    const query = `SELECT n.*, e.Name,d.Departman AS Departmant,p.priority AS Priority FROM Need n JOIN Employeer_List e ON e.id = n.employeer_id JOIN Departmants d ON d.id = n.departman_id JOIN Priority p ON p.id = n.priority_id WHERE is_deleted = 0 AND n.id = @id`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query);
+        res.status(200).json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
+    }
+}
+
+
+module.exports = { getneed, createneed, getPriority, getneedbyid }

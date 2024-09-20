@@ -94,7 +94,7 @@ onMounted(() => {
                             <div class="flex flex-column">
                                 <label for="priority">Request Priority:</label>
                                 <Dropdown :options="priorities" v-model="formData.priority_id" optionLabel="priority"
-                                    optionValue="id" />
+                                   :disabled="!formData.departman_id" optionValue="id" />
                             </div>
                         </div>
                         <div class="col-12 xl:col-6">

@@ -16,6 +16,11 @@ const FetchData = async () => {
     }
 }
 
+const getdatabyid = async (data) => {
+    const response = await needservice.getNeedsbyid({...data});
+    console.log(response)
+}
+
 
 onMounted(() => {
     FetchData()
@@ -40,7 +45,7 @@ onMounted(() => {
                     </template>
                 </Toolbar>
                 <div class="card-body">
-                    <NeedTable :data="data" />
+                    <NeedTable :data="data" @editdata="getdatabyid" />
                 </div>
             </div>
         </div>

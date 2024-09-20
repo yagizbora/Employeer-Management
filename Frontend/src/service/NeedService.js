@@ -6,15 +6,18 @@ export default class NeedService {
         const response = await axiosApp.get('getneed');
         return response;
     }
-      async createNeed(data) {
-          const response = await axiosApp.post('createneed', data);
-          return response;
-      }
-
-    //  async getNeedsbyid(id) {
-    //      const response = await axiosApp.get('needsbyid', { params: { id } });
-    //      return response.data;
-    //  }
+    async createNeed(data) {
+        const response = await axiosApp.post('createneed', data);
+        return response;
+    }
+    async getNeedsbyid(data) {
+        const response = await axiosApp.get('getneedbyid', {
+            params: {
+                id: data.id
+            }
+        });
+        return response.data;
+    }
     //  async UpdateNeed(data) {
     //      const response = await axiosApp.put('UpdateNeed', data);
     //      return response;
