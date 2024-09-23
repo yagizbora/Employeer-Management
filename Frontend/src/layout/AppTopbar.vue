@@ -3,31 +3,63 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
 
-import NotesService from "@/service/NotesService"
-const noteservice = new NotesService()
+// import NotesService from "@/service/NotesService"
+// const noteservice = new NotesService()
 
-const importantnote = ref(false);
+// const importantnote = ref(false);
 
-const importantnotes = async () => {
-    try {
-        const response = await noteservice.notesimportant();
+// const importantnotes = async () => {
+//     try {
+//         const response = await noteservice.notesimportant();
 
-        if (response.data && response.data.important_notes === true) {
-            importantnote.value = true; // Burada .value ile reaktif değeri güncelliyoruz
-            console.log('Important Notes Found!');
-        } else if (response.data && response.data.important_notes === false) {
-            importantnote.value = false; // Burada da false olarak ayarlıyoruz
-            console.log('No Important Notes.');
-        }
+//         if (response.data && response.data.important_notes === true) {
+//             importantnote.value = true; // Burada .value ile reaktif değeri güncelliyoruz
+//             console.log('Important Notes Found!');
+//         } else if (response.data && response.data.important_notes === false) {
+//             importantnote.value = false; // Burada da false olarak ayarlıyoruz
+//             console.log('No Important Notes.');
+//         }
 
-    } catch (error) {
-        console.error('Error fetching important notes:', error);
+//     } catch (error) {
+//         console.error('Error fetching important notes:', error);
+//     }
+// };
+
+
+
+// onMounted(() => {
+//     importantnotes()
+// })
+
+
+// importantNotes reaktif bir değişken olarak tanımlandı
+const importantNotes = ref([]);
+
+// localStorage'dan önemli notları kontrol eden fonksiyon
+const checkImportantNotes = () => {
+    const notes = localStorage.getItem('important_notes');
+    if (notes) {
+        importantNotes.value = JSON.parse(notes); // JSON formatında notları parse et
+    } else {
+        importantNotes.value = [];
     }
 };
 
+let interval = null;
+
+// Bileşen mount edildiğinde önemli notları kontrol et ve her 5 saniyede bir güncelle
 onMounted(() => {
-    importantnotes()
-})
+    checkImportantNotes();
+
+    // 5 saniyede bir localStorage'ı kontrol et
+    interval = setInterval(checkImportantNotes, 5000);
+});
+
+// Bileşen yok edilmeden önce interval'i temizle
+onBeforeUnmount(() => {
+    clearInterval(interval);
+});
+
 
 const { layoutConfig, onMenuToggle } = useLayout();
 
@@ -102,7 +134,7 @@ const isOutsideClicked = (event) => {
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <div v-if="importantnote">
+            <div v-if="importantNotes">
                 <RouterLink to="/notes/notes">
                     <Button label="You have an important note!" class="p-button-warning"
                         icon="pi pi-exclamation-triangle" />

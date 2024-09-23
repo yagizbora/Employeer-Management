@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import NotesService from "@/service/NotesService"
+const noteservice = new NotesService()
 import AppLayout from '@/layout/AppLayout.vue';
+import { resolveComponent } from 'vue';
 
 const router = createRouter({
     history: createWebHistory(), // createWebHashHistory() yerine
@@ -130,5 +133,23 @@ const router = createRouter({
         }
     ]
 });
+
+router.beforeEach(async (to, from, next) => {
+    const checkImportantNotes = async () => {
+        const response = await noteservice.notesimportant();
+        if (response.status === 200) {
+            localStorage.setItem('important_notes', JSON.stringify(response.data.important_notes));
+        }
+    };
+
+    try {
+        await checkImportantNotes();
+    } catch (error) {
+        console.error("Error fetching important notes:", error);
+    }
+
+    next(); // İşlem tamamlandıktan sonra yönlendirme devam ediyor
+});
+
 
 export default router;
