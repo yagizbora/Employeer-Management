@@ -4,6 +4,8 @@ const sql = require('mssql');
 
 
 const getneed = async (req, res) => {
+
+
     const query = `SELECT n.*, e.Name,d.Departman AS Departmant,p.priority AS Priority FROM Need n JOIN Employeer_List e ON e.id = n.employeer_id JOIN Departmants d ON d.id = n.departman_id JOIN Priority p ON p.id = n.priority_id WHERE is_deleted = 0 ORDER BY n.priority_id ASC`
 
     try {
@@ -12,8 +14,8 @@ const getneed = async (req, res) => {
             .query(query);
         res.status(200).json({ data: result.recordset });
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 };
 
 
@@ -27,8 +29,8 @@ const getPriority = async (req, res) => {
             .query(query)
         res.status(200).json({ data: result.recordset })
     } catch (err) {
-        res.status(500).json({message: 'Veritabanı Hatası' + err.message})
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 }
 
 const createneed = async (req, res) => {
@@ -52,8 +54,8 @@ const createneed = async (req, res) => {
             .query(query)
         res.status(201).json({ message: 'Request created succesfully' });
     } catch (err) {
-        res.status(500).json({ message: 'Veritabanı Hatası ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 }
 
 
@@ -73,14 +75,21 @@ const getneedbyid = async (req, res) => {
             .query(query);
         res.status(200).json(result.recordset);
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 }
 
 const updateneedbyid = async (req, res) => {
     const { id, need_title, need_description, need_subject, employeer_id, departman_id, priority_id } = req.body 
 
-    const query = `UPDATE Need SET need_title = @need_title, need_subject = @need_subject, employeer_id = @employeer_id, departman_id = @departman_id, priority_id = @priority_id  WHERE id = @id`
+
+    if (Object.keys(req.body).length < 6) {
+        res.status(500).json({ message: 'All fields must be required' })
+        return
+    }
+
+    const query = `UPDATE Need SET need_title = @need_title, need_subject = @need_subject, employeer_id = @employeer_id,
+                   departman_id = @departman_id, priority_id = @priority_id  WHERE id = @id`
 
     try {
         const pool = await getPool();
@@ -96,7 +105,7 @@ const updateneedbyid = async (req, res) => {
         res.status(201).json({ message: 'Request is changed' });
 
     } catch (err) {
-        console.error('Database Error:', err); // Hata günlüğü için
+        console.error('Database Error:', err); 
         res.status(500).json({ message: 'Database Error' });
     }
 }

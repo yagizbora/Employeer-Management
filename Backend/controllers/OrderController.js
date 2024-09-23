@@ -35,8 +35,8 @@ const getOrders = async (req, res) => {
         const result = await pool.request().query(query);
         res.json({ data: result.recordset });
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 };
 
 const createorder = async (req, res) => {
@@ -60,8 +60,8 @@ const createorder = async (req, res) => {
 
         res.status(201).json({ message: 'Order ba�ar�yla olu�turuldu.' });
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 }
 
 
@@ -112,8 +112,8 @@ const iscomplatedsetbyid = async (req, res) => {
 
         res.status(200).json({ message: 'G�ncelleme ba�ar�l�' });
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 };
 
 
@@ -140,8 +140,8 @@ const deleteorders = async (req, res) => {
             res.status(404).json({ message: 'Employeer is not found' });
         }
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 }
 
 const updateorderbyid = async (req, res) => {
@@ -172,8 +172,8 @@ const updateorderbyid = async (req, res) => {
 
         res.status(201).json({ message: 'Order is changed' });
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 };
 
 const getordersbyid = async (req, res) => {
@@ -210,8 +210,8 @@ const getordersbyid = async (req, res) => {
 
         res.json(result.recordset);
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban� hatas�: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 };
 
 

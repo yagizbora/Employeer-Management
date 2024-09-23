@@ -12,8 +12,8 @@ const getnotes = async (req, res) => {
             .query(query);
         res.status(200).json({ data: result.recordset });
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 };
 
 const getnotesbyid = async (req, res) => {
@@ -32,8 +32,8 @@ const getnotesbyid = async (req, res) => {
             .query(query);
         res.status(200).json(result.recordset);
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 }
 
 const updatenotes = async (req, res) => {
@@ -54,7 +54,8 @@ const updatenotes = async (req, res) => {
             .query(query);
         res.status(200).json({message: 'Note is succesfully updated' , button_name: 'Okay good'});
     } catch (err) {
-        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });
     }
 }
 
@@ -71,8 +72,8 @@ const createnotes = async (req, res) => {
             .query(query);
         res.status(201).json({message: 'Note is created succesfully' , button_name: 'Okay Good'});
     } catch (err) {
-        res.status(500).json({ message: 'Veritabanı hatası: ' + err.message });
-    }
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });    }
 }
 
 const deletenotes = async (req, res) => {
@@ -98,7 +99,8 @@ const deletenotes = async (req, res) => {
             res.status(404).json({ message: 'Note is not found' });
         }
     } catch (err) {
-        res.status(500).json({ message: 'Veritabanı hatası: ' + err.message });
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });
     }
 };
 
@@ -115,7 +117,8 @@ const notesimportant = async (req, res) => {
             res.status(200).json({ important_notes: false });
         }
     } catch (err) {
-        res.status(500).json({ message: 'Veritabanı hatası: ' + err.message });
+        console.error('Database Error:', err);
+        res.status(500).json({ message: 'Database Error' });
     }
 };
 

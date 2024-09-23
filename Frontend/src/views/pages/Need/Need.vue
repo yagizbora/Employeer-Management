@@ -4,9 +4,13 @@ import NeedService from "@/service/NeedService";
 import OrderService from "@/service/Orderservice";
 import PriorityService from "@/service/PriorityService";
 import DepartmantService from "@/service/DepartmantService.js";
-
 import { RouterLink } from 'vue-router';
 import Swal from 'sweetalert2';
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+
+const confirm = useConfirm();
+const toast = useToast();
 const needservice = new NeedService()
 const orderservice = new OrderService();
 const departmantservice = new DepartmantService();
@@ -82,7 +86,7 @@ const getemployeerwithdepartman = async (data) => {
         employeer.value = [];
     }
 };
-const deletedata = async (data) => {
+const handledelete = async (data) => {
     const response = await needservice.deleteneedbyid(data)
     if (response.status == 200) {
         Swal.fire({
@@ -95,6 +99,20 @@ const deletedata = async (data) => {
     }
 }
 
+const deletedata = async (data) => {
+    confirm.require({
+        message: 'Do you want to delete this record?',
+        header: 'Danger Zone',
+        icon: 'pi pi-info-circle',
+        rejectLabel: 'Cancel',
+        acceptLabel: 'Delete',
+        rejectClass: 'p-button-secondary p-button-outlined',
+        acceptClass: 'p-button-danger',
+        accept: () => {
+            handledelete(data)
+        },
+    })
+}
 
 onMounted(() => {
     FetchData()
@@ -123,7 +141,7 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-        <Dialog modal v-model:visible="editdatadialog" :style="{ width: '45rem' }">
+        <Dialog modal v-model:visible="editdatadialog" header="Edit Request" :style="{ width: '45rem' }">
             <div class="xl:flex">
                 <div class="col-12 xl:col-6">
                     <div class="flex flex-column">
@@ -139,7 +157,7 @@ onMounted(() => {
                     <div class="flex flex-column">
                         <label> Request Priority:</label>
                         <Dropdown :options="priorities" v-model="editdata.priority_id" optionLabel="priority"
-                             optionValue="id" />
+                            optionValue="id" />
                     </div>
                 </div>
                 <div class="col-12 xl:col-6">
@@ -161,8 +179,9 @@ onMounted(() => {
             </div>
             <Button @click="updateneedbyid" label="Update Request"></Button>
         </Dialog>
+        <Toast />
+        <ConfirmDialog></ConfirmDialog>
     </div>
-
 </template>
 
 <style lang="scss"></style>
