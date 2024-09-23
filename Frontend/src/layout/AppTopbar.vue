@@ -52,7 +52,7 @@ onMounted(() => {
     checkImportantNotes();
 
     // 5 saniyede bir localStorage'ı kontrol et
-    interval = setInterval(checkImportantNotes, 5000);
+    interval = setInterval(checkImportantNotes, 1000);
 });
 
 // Bileşen yok edilmeden önce interval'i temizle
