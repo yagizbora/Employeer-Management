@@ -135,6 +135,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+    // Check if have a important notes (Api response: true or false )
     const checkImportantNotes = async () => {
         const response = await noteservice.notesimportant();
         if (response.status === 200) {
@@ -147,7 +148,6 @@ router.beforeEach(async (to, from, next) => {
     } catch (error) {
         console.error("Error fetching important notes:", error);
     }
-
     next(); // İşlem tamamlandıktan sonra yönlendirme devam ediyor
 });
 

@@ -48,7 +48,7 @@ let interval = null;
 onMounted(() => {
     checkImportantNotes();
 
-    interval = setInterval(checkImportantNotes, 1000);
+    interval = setInterval(checkImportantNotes, 1);
 });
 
 onBeforeUnmount(() => {
