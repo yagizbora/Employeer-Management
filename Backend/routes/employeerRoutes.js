@@ -3,7 +3,7 @@ const { getEmployeers, getEmployeerById, createEmployeer, deleteEmployeerById, u
 
 const router = express.Router();
 
-// Çalýþanlarý listele
+    
 router.get('/employeers', getEmployeers);
 
 // Belirli bir çalýþaný ID ile getir

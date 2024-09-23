@@ -16,16 +16,18 @@ export default class NeedService {
                 id: data.id
             }
         });
-        return response.data;
+        return response;
     }
-    //  async UpdateNeed(data) {
-    //      const response = await axiosApp.put('UpdateNeed', data);
-    //      return response;
-    //  }
-    //  async DeleteNeed(id) {
-    //      const response = await axiosApp.delete('DeleteNeed', { params: { id } });
-    //      return response;
-    //  }
+    async deleteneedbyid(data) {
+        const response = await axiosApp.post('deleteneedbyid', {
+            id: data.id
+        });
+        return response;
+    }
+    async updateneedbyid(data) {
+        const response = await axiosApp.post('updateneedbyid', data);
+        return response;
+    }
     //  async GetNeedByEmployerId(id) {
     //      const response = await axiosApp.get('GetNeedByEmployerId', { params: { id } });
     //      return response.data;
