@@ -32,14 +32,12 @@ import { useRouter } from 'vue-router';
 // })
 
 
-// importantNotes reaktif bir değişken olarak tanımlandı
 const importantNotes = ref([]);
 
-// localStorage'dan önemli notları kontrol eden fonksiyon
 const checkImportantNotes = () => {
     const notes = localStorage.getItem('important_notes');
     if (notes) {
-        importantNotes.value = JSON.parse(notes); // JSON formatında notları parse et
+        importantNotes.value = JSON.parse(notes); 
     } else {
         importantNotes.value = [];
     }
@@ -47,15 +45,12 @@ const checkImportantNotes = () => {
 
 let interval = null;
 
-// Bileşen mount edildiğinde önemli notları kontrol et ve her 5 saniyede bir güncelle
 onMounted(() => {
     checkImportantNotes();
 
-    // 5 saniyede bir localStorage'ı kontrol et
     interval = setInterval(checkImportantNotes, 1000);
 });
 
-// Bileşen yok edilmeden önce interval'i temizle
 onBeforeUnmount(() => {
     clearInterval(interval);
 });
