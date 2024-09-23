@@ -21,7 +21,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <DataTable :value="data" paginator :rows="5" :rowsPerPageOptions="[ 1,2,3 ,5, 10, 20, 50]">
+    <DataTable :value="data" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]">
         <Column field="need_title" header="Request Title"></Column>
         <Column field="need_description" header="Request Description"></Column>
         <Column field="need_subject" header="Request Subject"></Column>
