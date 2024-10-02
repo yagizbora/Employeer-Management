@@ -3,6 +3,34 @@
   "WorkspaceRootPath": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\routes\\customerroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:routes\\customerroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\routes\\employeerroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:routes\\employeerroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\controllers\\complaintcontroller.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:controllers\\complaintcontroller.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\routes\\reportroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:routes\\reportroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\controllers\\customercontroller.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:controllers\\customercontroller.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\database.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:database.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\controllers\\needcontroller.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:controllers\\needcontroller.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
@@ -19,10 +47,6 @@
       "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:routes\\needroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\controllers\\complaintcontroller.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:controllers\\complaintcontroller.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\routes\\complaintroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:routes\\complaintroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
@@ -31,24 +55,12 @@
       "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:controllers\\ordercontroller.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\controllers\\departmantcontroler.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:controllers\\departmantcontroler.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\routes\\notesroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:routes\\notesroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\routes\\employeerroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:routes\\employeerroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\database.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|solutionrelative:database.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7D91A509-13BE-49E2-81E5-27E01832E63A}|Employeer List BackEnd.esproj|c:\\users\\yaizb\\desktop\\employeer\\employeer-management\\backend\\routes\\departmantroutes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -62,7 +74,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -78,31 +90,59 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "database.js",
-              "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\database.js",
-              "RelativeDocumentMoniker": "database.js",
-              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\database.js",
-              "RelativeToolTip": "database.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAfAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "CustomerRoutes.js",
+              "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\CustomerRoutes.js",
+              "RelativeDocumentMoniker": "routes\\CustomerRoutes.js",
+              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\CustomerRoutes.js",
+              "RelativeToolTip": "routes\\CustomerRoutes.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-20T22:06:39.308Z"
+              "WhenOpened": "2024-10-02T14:21:16.18Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CustomerController.js",
+              "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\CustomerController.js",
+              "RelativeDocumentMoniker": "controllers\\CustomerController.js",
+              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\CustomerController.js",
+              "RelativeToolTip": "controllers\\CustomerController.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-10-02T14:19:47.626Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "ReportRoutes.js",
+              "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\ReportRoutes.js",
+              "RelativeDocumentMoniker": "routes\\ReportRoutes.js",
+              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\ReportRoutes.js",
+              "RelativeToolTip": "routes\\ReportRoutes.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-10-02T14:03:38.522Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "ComplaintController.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\ComplaintController.js",
               "RelativeDocumentMoniker": "controllers\\ComplaintController.js",
               "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\ComplaintController.js",
               "RelativeToolTip": "controllers\\ComplaintController.js",
-              "ViewState": "AgIAAEsAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-19T16:09:39.256Z"
+              "WhenOpened": "2024-09-19T16:09:39.256Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 2,
               "Title": "employeerRoutes.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\employeerRoutes.js",
               "RelativeDocumentMoniker": "routes\\employeerRoutes.js",
@@ -110,11 +150,12 @@
               "RelativeToolTip": "routes\\employeerRoutes.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-19T15:18:13.869Z"
+              "WhenOpened": "2024-09-19T15:18:13.869Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 10,
               "Title": "NeedRoutes.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\NeedRoutes.js",
               "RelativeDocumentMoniker": "routes\\NeedRoutes.js",
@@ -126,7 +167,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
               "Title": "NeedController.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\NeedController.js",
               "RelativeDocumentMoniker": "controllers\\NeedController.js",
@@ -134,12 +175,11 @@
               "RelativeToolTip": "controllers\\NeedController.js",
               "ViewState": "AgIAAFcAAAAAAAAAAAAAABEAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-19T15:17:40.717Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-19T15:17:40.717Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "OrderController.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\OrderController.js",
               "RelativeDocumentMoniker": "controllers\\OrderController.js",
@@ -152,6 +192,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "app.js",
+              "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\app.js",
+              "RelativeDocumentMoniker": "app.js",
+              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\app.js",
+              "RelativeToolTip": "app.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-09-19T13:50:31.028Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "database.js",
+              "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\database.js",
+              "RelativeDocumentMoniker": "database.js",
+              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\database.js",
+              "RelativeToolTip": "database.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-09-20T22:06:39.308Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "NotesControllers.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\NotesControllers.js",
               "RelativeDocumentMoniker": "controllers\\NotesControllers.js",
@@ -163,19 +229,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "app.js",
-              "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\app.js",
-              "RelativeDocumentMoniker": "app.js",
-              "ToolTip": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\app.js",
-              "RelativeToolTip": "app.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-09-19T13:50:31.028Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 11,
               "Title": "ComplaintRoutes.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\ComplaintRoutes.js",
               "RelativeDocumentMoniker": "routes\\ComplaintRoutes.js",
@@ -187,7 +241,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "employeerController.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\employeerController.js",
               "RelativeDocumentMoniker": "controllers\\employeerController.js",
@@ -199,7 +253,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 14,
               "Title": "NotesRoutes.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\NotesRoutes.js",
               "RelativeDocumentMoniker": "routes\\NotesRoutes.js",
@@ -211,7 +265,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 13,
               "Title": "DepartmantControler.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\controllers\\DepartmantControler.js",
               "RelativeDocumentMoniker": "controllers\\DepartmantControler.js",
@@ -223,7 +277,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 15,
               "Title": "DepartmantRoutes.js",
               "DocumentMoniker": "C:\\Users\\yaizb\\Desktop\\Employeer\\Employeer-Management\\Backend\\routes\\DepartmantRoutes.js",
               "RelativeDocumentMoniker": "routes\\DepartmantRoutes.js",

@@ -8,7 +8,8 @@ const ReportRoutes = require('./routes/ReportRoutes');
 const OrderRoutes = require('./routes/OrderRoutes');
 const ComplaintRoutes = require('./routes/ComplaintRoutes');
 const NotesRoutes = require('./routes/NotesRoutes');
-const NeedRoutes = require('./routes/NeedRoutes')
+const NeedRoutes = require('./routes/NeedRoutes');
+const CustomerRoutes = require('./routes/CustomerRoutes');
 const cors = require('cors');
 
 const app = express();
@@ -26,6 +27,7 @@ getPool()
         app.use('/api', ComplaintRoutes);
         app.use('/api', NotesRoutes);
         app.use('/api', NeedRoutes);
+        app.use('/api', CustomerRoutes)
 
         app.listen(PORT, () => {
             console.log(`Sunucu http://localhost:${PORT} adresinde çalýþýyor`);
