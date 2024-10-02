@@ -13,7 +13,8 @@ const validateEmail = () => {
 }
 
 const isFormValid = computed(() => {
-    return FormData.value.customer_email && FormData.value.customer_name && FormData.value.customer_company;
+    return FormData.value.customer_email && FormData.value.customer_name && FormData.value.customer_company && FormData.value.customer_phone &&
+    FormData.value.customer_address;
 });
 
 const CreateCustomer = async () => {
