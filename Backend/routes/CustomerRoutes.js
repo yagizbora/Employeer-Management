@@ -1,5 +1,5 @@
 const express = require('express');
-const { getcustomer, addcustomer, getcustomerbyid } = require('../controllers/CustomerController')
+const { getcustomer, addcustomer, getcustomerbyid, deletecustomerbyid, updatecustomerbyid } = require('../controllers/CustomerController')
 
 const router = express.Router();
 
@@ -7,6 +7,10 @@ const router = express.Router();
 router.get('/getcustomer', getcustomer)
 
 router.post('/addcustomer', addcustomer)
+
+router.post('/deletecustomerbyid', deletecustomerbyid)
+
+router.post('/updatecustomerbyid', updatecustomerbyid)
 
 router.get('/getcustomerbyid', getcustomerbyid)
 

@@ -24,7 +24,7 @@ const CreateCustomer = async () => {
         if (response.status == 201) {
             Swal.fire({
                 title: 'Operation is successfully',
-                message: response.data.message,
+                text: response.data.message,
                 icon: 'success',
                 confirmButtonText: 'Close',
             })

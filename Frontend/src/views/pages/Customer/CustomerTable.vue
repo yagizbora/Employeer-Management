@@ -2,6 +2,17 @@
 import { formatPhone, emailValid } from "@/utils/helper.js";
 
 
+const emit = defineEmits(["deletedata", "editdata"]);
+
+const deletedata = (data) => {
+    emit("deletedata", data);
+}
+
+const editdata = (data) => {
+    emit("editdata", data)
+}
+
+
 const props = defineProps({
     data: Array
 });
@@ -32,7 +43,14 @@ const props = defineProps({
                     {{(slotProps.data.customer_email) }}
                 </div>
             </template>
-
+        </Column>
+        <Column header="Operations">
+            <template #body=" { data } ">
+                <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancel"
+                    @click="deletedata(data)" />
+                <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit"
+                    @click="editdata(data)" />
+            </template>
         </Column>
     </DataTable>
 </template>

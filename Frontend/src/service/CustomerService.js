@@ -10,12 +10,22 @@ export default class CustomerService {
         const response = await axiosApp.post('addcustomer',data);
         return response;
     }
-    async getcustomersbyid() {
-        const response = await axiosApp.get('getcustomersbyid', {
+    async getcustomersbyid(data) {
+        const response = await axiosApp.get('getcustomerbyid', {
             params: {
                 id: data.id
             }
         });
+        return response;
+    }
+    async deletecustomerbyid(data) {
+        const response = await axiosApp.post('deletecustomerbyid', {
+            id: data.id
+        });
+        return response;
+    }
+    async updatecustomerbyid(data) {
+        const response = await axiosApp.post('updatecustomerbyid', data);
         return response;
     }
 }
