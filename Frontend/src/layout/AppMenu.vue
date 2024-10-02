@@ -20,6 +20,22 @@ const model = ref([
         ]
     },
     {
+        label: 'Customer',
+        icon: 'pi pi-user',
+        items: [
+            {
+                label: 'Customers',
+                icon: 'pi pi-users',
+                to: '/customer/customer'
+            },
+            {
+                label: 'Create Customer',
+                icon: 'pi pi-plus',
+                to: '/customer/create-customer'  
+            }
+        ]
+    },
+    {
         label: 'Departmant Management',
         icon: '',
         items: [

@@ -122,6 +122,22 @@ const router = createRouter({
             ]
         },
         {
+            path: '/customer',
+            component: AppLayout,
+            children: [
+                {
+                    path: 'customer',
+                    name: 'customer',
+                    component: () => import('@/views/pages/Customer/Customer.vue')
+                },
+                {
+                    path: 'create-customer',
+                    name: 'create-customer',
+                    component: () => import('@/views/pages/Customer/CreateCustomer/CreateCustomer.vue')
+                }
+            ]
+        },
+        {
             path: '/auth',
             children: [
                 {
