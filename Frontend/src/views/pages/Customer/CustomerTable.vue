@@ -21,7 +21,7 @@ const props = defineProps({
 
 
 <template>
-    <DataTable :value=data>
+    <DataTable :value=data paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]">
         <Column field="customer_name" header="Customer Name"></Column>
         <Column field="customer_address" header="Customer Address"></Column>
         <Column field="customer_phone" header="Customer Phone">
@@ -48,8 +48,7 @@ const props = defineProps({
             <template #body=" { data } ">
                 <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancel"
                     @click="deletedata(data)" />
-                <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit"
-                    @click="editdata(data)" />
+                <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit" @click="editdata(data)" />
             </template>
         </Column>
     </DataTable>
