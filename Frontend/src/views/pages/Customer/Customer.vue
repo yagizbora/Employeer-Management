@@ -62,6 +62,7 @@ const deletedata = async (data) => {
         .then((result) => {
             if (result.isConfirmed) {
             handledeletedata(data)
+            
         }
     } )
 }
