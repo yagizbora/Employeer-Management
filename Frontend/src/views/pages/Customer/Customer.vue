@@ -35,7 +35,7 @@ const editdata = async (data) => {
     console.log('Fetched customer:', response.data);
 }
 
-const UpdateCustomer = async(data) => {
+const UpdateCustomer = async() => {
     const response = await customerservice.updatecustomerbyid({ ...FormData.value })
     if (response.status == 200) { 
         Swal.fire({

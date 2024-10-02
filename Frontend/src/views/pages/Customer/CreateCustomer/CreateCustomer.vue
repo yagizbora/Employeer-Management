@@ -19,22 +19,28 @@ const isFormValid = computed(() => {
 
 const CreateCustomer = async () => {
     try {
-        const response = await customerservice.addcustomer({ ...FormData.value })
+        const response = await customerservice.addcustomer({ ...FormData.value });
         console.log(response);
         if (response.status == 201) {
             Swal.fire({
                 title: 'Operation is successfully',
-                text: response.data.message,
+                text: response.data.message + '. You will be redirected to Customer page',
                 icon: 'success',
                 confirmButtonText: 'Close',
-            })
-            FormData.value = {}
+            }).then(() => {
+                setTimeout(() => {
+                    window.location.href = '/customer/customer'; 
+                }, 1); 
+            });
+
+            // Formu temizleme
+            FormData.value = {};
         }
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err);
     }
 };
+
 
 
 </script>
