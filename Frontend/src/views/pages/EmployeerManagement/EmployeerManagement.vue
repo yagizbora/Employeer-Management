@@ -122,14 +122,14 @@ const editemployee = async () => {
     };
     try {
         const response = await employeerservice.update(payload);
-        if (response.data.status == 200) {
+        if (response.status == 200) {
             Swal.fire({
                 title: 'Success',
                 text: response.data.message,
                 icon:'success',
                 confirmButtonText: 'Ok'
             });
-            AddEmployeerDialog.value = false
+            EditEmployeerDialog.value = false
             editData.value = ({})
             FetchData()
         }

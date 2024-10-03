@@ -63,7 +63,6 @@ const deletedata = async (data) => {
         .then((result) => {
             if (result.isConfirmed) {
                 handledeletedata(data)
-
             }
         })
 }
@@ -150,7 +149,6 @@ onMounted(() => {
                         <label>Customer company</label>
                         <InputText v-model="FormData.customer_company" />
                     </div>
-
                 </div>
             </div>
             <div class="col">

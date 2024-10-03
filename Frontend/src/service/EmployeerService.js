@@ -25,7 +25,7 @@ export default class EmployeerService {
     async update(data) {
         try {
             const response = await axiosApp.post(`updateemployeer/${data.id}`, data);
-            return response.data.data;
+            return response;
         }
         catch (error) {
             console.log(error);
