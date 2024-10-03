@@ -16,6 +16,24 @@ FROM Project p JOIN Customer c ON c.id = p.customer_name_id WHERE p.is_deleted =
     }
 }
 
+const createprojects = async (req, res) => {
+    const { customer_id, project_name, project_web_url } = req.body;
+
+    const query = `INSERT INTO Project(customer_name_id,project_name,project_web_url,is_deleted) VALUES(@customer_id,@project_name,@project_web_url,0)`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('customer_id', sql.Int, customer_id)
+            .input('project_name', sql.VarChar, project_name)
+            .input('project_web_url', sql.VarChar, project_web_url)
+            .query(query);
+        res.status(201).json({message:'Project created successfully'});
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+    }
+
+}
+
 const getprojectsbyid = async (req, res) => {
     const { id } = req.query
 
@@ -56,5 +74,6 @@ module.exports =
 {
     getprojects,
     getprojectsbyid,
-    deleteprojectsbyid
+    deleteprojectsbyid,
+    createprojects
 };

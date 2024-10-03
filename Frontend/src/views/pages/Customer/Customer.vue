@@ -35,19 +35,10 @@ const editdata = async (data) => {
     FormData.value = response.data[0]
     console.log('Fetched customer:', response.data);
 }
-
-const UpdateCustomer = async () => {
-    const response = await customerservice.updatecustomerbyid({ ...FormData.value })
-    if (response.status == 200) {
-        Swal.fire({
-            title: 'Success',
-            text: response.data.message, // 'text' kullanarak mesajı gösteriyoruz
-            icon: 'success',
-            confirmButtonText: 'Ok'
-        });
-        fetchdata();
-        editdialog.value = false
-    }
+const editdataimportant = async (data) => {
+    const response = await customerservice.getcustomersbyid(data)
+    editdialogimportant.value = true
+    importantcustomer.value = response.data[0]
 }
 
 const deletedata = async (data) => {
@@ -117,42 +108,45 @@ onMounted(() => {
                             </RouterLink>
                         </template>
                     </Toolbar>
-                    <CustomerTable :data="data" @deletedata="deletedata" @editdata="editdata" />
+                    <CustomerTable :data="data" @deletedata="deletedata" @editdata="editdata"/>
                 </div>
             </div>
         </div>
+
         <Dialog v-model:visible="editdialog" modal header="Edit Customer" :style="{ width: '45rem' }"
             :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
             <div class="xl:flex">
                 <div class="col-12 xl:col-6">
                     <div class="flex flex-column">
                         <label>Customer Name</label>
-                        <InputText v-model="FormData.customer_name" />
+                        <InputText v-model="FormData.customer_name" :disabled="FormData.is_important_customer" />
                     </div>
                     <div class="flex flex-column">
                         <label>Customer Email</label>
                         <InputText type="email" placeholder="Customer Email" v-model="FormData.customer_email"
-                            @blur="validateEmail" />
+                            @blur="validateEmail" :disabled="FormData.is_important_customer" />
                         <small v-if="emailError" class="p-error">Please enter a valid email address</small>
                     </div>
                     <div class="flex flex-column">
                         <label>Phone Number</label>
-                        <InputMask mask="(999) 999-9999" placeholder="Phone Number" v-model="FormData.customer_phone" />
+                        <InputMask mask="(999) 999-9999" placeholder="Phone Number" v-model="FormData.customer_phone"
+                            :disabled="FormData.is_important_customer" />
                     </div>
                 </div>
                 <div class="col-12 xl:col-6">
                     <div class="flex flex-column">
                         <label>Address</label>
-                        <InputText v-model="FormData.customer_address" />
+                        <InputText v-model="FormData.customer_address" :disabled="FormData.is_important_customer" />
                     </div>
                     <div class="flex flex-column">
                         <label>Customer company</label>
-                        <InputText v-model="FormData.customer_company" />
+                        <InputText v-model="FormData.customer_company" :disabled="FormData.is_important_customer" />
                     </div>
                 </div>
             </div>
             <div class="col">
-                <Button @click="UpdateCustomer" icon="pi pi-plus" label="Create Customer" />
+                <Button v-if="!FormData.is_important_customer" @click="UpdateCustomer" :disabled="FormData.is_important_customer" icon="pi pi-plus"
+                    label="Edit Customer" />
             </div>
         </Dialog>
     </div>

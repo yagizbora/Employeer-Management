@@ -3,6 +3,21 @@ const { getPool } = require('../database');
 const sql = require('mssql');
 
 
+const getallcustomer = async (req, res) => {
+
+    const query = `SELECT * FROM Customer WHERE is_deleted = 0 ORDER BY id ASC`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .query(query);
+        res.status(200).json({ data: result.recordset });
+
+    }
+    catch (err) {
+        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+    }
+}
+
 
 const getcustomer = async (req, res) => {
     const { is_important_customer } = req.body
@@ -112,12 +127,18 @@ const getcustomerbyid = async (req, res) => {
 }
 
 const updatecustomerbyid = async (req, res) => {
-    const { id, customer_name, customer_address, customer_phone, customer_company, customer_email } = req.body
+    const { id, customer_name, customer_address, customer_phone, customer_company, customer_email, is_important_customer } = req.body
 
     if (Object.keys(req.body).length < 6) {
         res.status(500).json({ message: 'All fields must be required' })
         return
     }
+
+    if (is_important_customer == true) {
+        res.status(406).json({ message: 'Important customer cannot be edit' })
+        return
+    }
+
 
     const query = `UPDATE Customer SET customer_name = @customer_name, customer_address = @customer_address, customer_phone = @customer_phone, customer_company = @customer_company,
     customer_email = @customer_email WHERE id = @id`
@@ -146,5 +167,6 @@ module.exports =
     addcustomer,
     getcustomerbyid,
     deletecustomerbyid,
-    updatecustomerbyid
+    updatecustomerbyid,
+    getallcustomer
 }

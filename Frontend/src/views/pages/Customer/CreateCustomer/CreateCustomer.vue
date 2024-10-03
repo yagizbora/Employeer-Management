@@ -82,7 +82,7 @@ const CreateCustomer = async () => {
                             <label>Is important Customer?</label>
                             <InputSwitch v-model="FormData.is_important_customer" />
                             <label> 
-                                If you switch is true you cannot delete customer but if you want to delete you must contact IT departmant
+                                If you switch is true you cannot delete or edit customer but if you want to delete or edit you must contact IT departmant
                             </label>
                         </div>
                     </div>

@@ -6,6 +6,10 @@ export default class CustomerService {
         const response = await axiosApp.post('getcustomer', payload); 
         return response;
     }
+    async getallcustomer() {
+        const response = await axiosApp.get('getallcustomer');
+        return response;
+    }
     async addcustomer(data) {
         const response = await axiosApp.post('addcustomer',data);
         return response;
