@@ -27,7 +27,7 @@ const props = defineProps({
 
 <template>
     <div v-if="data.length == 0">
-        <Message severity="warn">No Complaint Found</Message>
+        <Message severity="info">No Complaint Found</Message>
     </div>
     <div v-else>
         <DataTable :value=data paginator :rows="5">

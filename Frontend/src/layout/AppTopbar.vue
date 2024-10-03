@@ -131,7 +131,7 @@ const isOutsideClicked = (event) => {
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
             <div v-if="importantNotes">
                 <RouterLink to="/notes/notes">
-                    <Button label="You have an important note!" class="p-button-warning"
+                    <Button label="You have an important note!" rounded class="p-button-warning"
                         icon="pi pi-exclamation-triangle" />
                 </RouterLink>
             </div>
