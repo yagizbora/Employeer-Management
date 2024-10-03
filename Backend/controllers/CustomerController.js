@@ -12,7 +12,7 @@ const getcustomer = async (req, res) => {
         return;
     }
 
-    let sql = ''; // sql deðiþkenini baþlangýçta tanýmla
+    let sql = ''; 
 
     if (is_important_customer == true) {
         sql += `   AND is_important_customer = 1  `

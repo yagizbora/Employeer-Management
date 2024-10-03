@@ -3,7 +3,7 @@ import { axiosApp } from "@/utils/axiosAPI";
 
 export default class CustomerService {
     async getcustomers(payload) {
-        const response = await axiosApp.post('getcustomer', payload); // Payload olarak gönder
+        const response = await axiosApp.post('getcustomer', payload); 
         return response;
     }
     async addcustomer(data) {

@@ -16,7 +16,7 @@ const customerservice = new CustomerService()
 
 const data = ref([])
 const FormData = ref([])
-const is_important_customer = ref(false)
+const is_important_customer = ref(true)
 const editdialog = ref(false)
 
 const fetchdata = async () => {
@@ -107,9 +107,9 @@ onMounted(() => {
                     <h5>Customers</h5>
                 </div>
                 <div class="card-body">
-                    <div class="flex flex-column">
-                        <label>Is important Customer?</label>
-                        <InputSwitch v-model="is_important_customer" @change="fetchdata"    />
+                    <div class="flex flex-column field">
+                        <label class="mb-2">Is important Customer?</label>
+                        <InputSwitch v-model="is_important_customer" @change="fetchdata"/>
                     </div>
                     <Toolbar>
                         <template #start>

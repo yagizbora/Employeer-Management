@@ -4,7 +4,9 @@ import { defineAsyncComponent, onMounted, ref, computed } from 'vue';
 import CustomerService from "@/service/customerService";
 const customerservice = new CustomerService();
 
-const FormData = ref({});
+const FormData = ref({
+    is_important_customer: false
+});
 const emailError = ref(false)
 
 const validateEmail = () => {
@@ -70,7 +72,7 @@ const CreateCustomer = async () => {
                             <label> Customer Company</label>
                             <InputText placeholder="Customer Company" v-model="FormData.customer_company" />
                         </div>
-                        <div class="col-12 xl:col-4 flex flex-column">
+                        <div class="col-12 xl:col-4 flex flex-column" @keyup.enter="validateEmail">
                             <label>Customer Email</label>
                             <InputText type="email" placeholder="Customer Email" v-model="FormData.customer_email"
                                 @blur="validateEmail" />
