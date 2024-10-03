@@ -9,6 +9,7 @@ const ComplaintRoutes = require('./routes/ComplaintRoutes');
 const NotesRoutes = require('./routes/NotesRoutes');
 const NeedRoutes = require('./routes/NeedRoutes');
 const CustomerRoutes = require('./routes/CustomerRoutes');
+const ProjectRoutes = require('./routes/ProjectRoutes');
 const cors = require('cors');
 
 const app = express();
@@ -27,11 +28,12 @@ getPool()
         app.use('/api', NotesRoutes);
         app.use('/api', NeedRoutes);
         app.use('/api', CustomerRoutes);
+        app.use('/api', ProjectRoutes)
         app.listen(PORT, () => {
             console.log(`Sunucu http://localhost:${PORT} adresinde çalýþýyor`);
         });
     })
     .catch(err => {
         console.error('Bir Hata oluþtu', err);
-        process.exit(1);
+/*        process.exit(1);*/
     });

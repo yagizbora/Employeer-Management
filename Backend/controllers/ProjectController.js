@@ -1,0 +1,60 @@
+const { query } = require('express');
+const { getPool } = require('../database');
+const sql = require('mssql');
+
+const getprojects = async (req, res) => {
+
+    const query = `SELECT p.* , c.customer_address,c.customer_company,c.customer_email,c.customer_name,c.customer_phone,c.is_important_customer
+FROM Project p JOIN Customer c ON c.id = p.customer_name_id WHERE p.is_deleted = 0 AND c.is_deleted = 0`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .query(query);
+        res.status(200).json({ data: result.recordset });
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+    }
+}
+
+const getprojectsbyid = async (req, res) => {
+    const { id } = req.query
+
+    const query = `
+    SELECT p.* , c.customer_name AS customer_name
+    FROM Project p JOIN Customer c ON c.id = p.customer_name_id WHERE p.is_deleted = 0 AND c.is_deleted = 0 AND p.id = @id`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int,id)
+            .query(query);
+        res.status(200).json(result.recordset);
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+    }
+}
+
+const deleteprojectsbyid = async (req, res) => {
+    const { id } = req.body
+
+    const query = `UPDATE Project SET is_deleted = 1 WHERE id = @id`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query);
+        if (result.rowsAffected[0] > 0) {
+            res.status(200).json({ message: 'Project is deleted' });
+        } else {
+            res.status(404).json({ message: 'Project is not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+    }
+}
+
+module.exports =
+{
+    getprojects,
+    getprojectsbyid,
+    deleteprojectsbyid
+};

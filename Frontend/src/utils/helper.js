@@ -5,6 +5,12 @@ import 'dayjs/locale/tr';
 dayjs.locale('tr');
 
 
+export function prepareUrl(url) {
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    return 'http://' + url;
+  } return url;
+}
+
 export function formatNumber(number, decimals = 2) {
 
   const fixedNumber = number.toFixed(decimals);

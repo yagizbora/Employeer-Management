@@ -134,6 +134,17 @@ const router = createRouter({
                     path: 'create-customer',
                     name: 'create-customer',
                     component: () => import('@/views/pages/Customer/CreateCustomer/CreateCustomer.vue')
+                },
+            ]
+        },
+        {
+            path: '/projects',
+            component: AppLayout,
+            children: [
+                {
+                    path: '',
+                    name: 'projects',
+                    component: () => import('@/views/pages/Projects/Projects.vue')
                 }
             ]
         },

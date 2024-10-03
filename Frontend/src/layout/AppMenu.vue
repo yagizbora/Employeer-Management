@@ -36,6 +36,17 @@ const model = ref([
         ]
     },
     {
+        label: 'Projects',
+        icon: 'pi pi-calendar',
+        items: [
+            {
+                label: 'Project List',
+                icon: 'pi pi-list',
+                to: '/projects'
+            }
+        ]
+    },
+    {
         label: 'Departmant Management',
         icon: '',
         items: [
