@@ -12,13 +12,13 @@ const getcustomer = async (req, res) => {
         return;
     }
 
-    let sql = ''; 
+    let sql = 'AND '; 
 
     if (is_important_customer == true) {
-        sql += `   AND is_important_customer = 1  `
+        sql += `is_important_customer = 1`
     }
     if (is_important_customer == false) {
-        sql += `    AND is_important_customer = 0   `
+        sql += `is_important_customer = 0`
     }
     
 

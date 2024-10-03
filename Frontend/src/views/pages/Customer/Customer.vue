@@ -109,7 +109,7 @@ onMounted(() => {
                 <div class="card-body">
                     <div class="flex flex-column field">
                         <label class="mb-2">Is important Customer?</label>
-                        <InputSwitch v-model="is_important_customer" @change="fetchdata"/>
+                        <InputSwitch v-model="is_important_customer" @change="fetchdata" />
                     </div>
                     <Toolbar>
                         <template #start>
@@ -122,23 +122,26 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-        <Dialog v-model:visible="editdialog" modal header="Edit Customer" :style="{ width: '45rem' }">
-            <div class="flex">
-                <div class="col-6">
+        <Dialog v-model:visible="editdialog" modal header="Edit Customer" :style="{ width: '45rem' }"
+            :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+            <div class="xl:flex">
+                <div class="col-12 xl:col-6">
                     <div class="flex flex-column">
                         <label>Customer Name</label>
                         <InputText v-model="FormData.customer_name" />
                     </div>
                     <div class="flex flex-column">
-                        <label>Email</label>
-                        <InputText v-model="FormData.customer_email" />
+                        <label>Customer Email</label>
+                        <InputText type="email" placeholder="Customer Email" v-model="FormData.customer_email"
+                            @blur="validateEmail" />
+                        <small v-if="emailError" class="p-error">Please enter a valid email address</small>
                     </div>
                     <div class="flex flex-column">
                         <label>Phone Number</label>
                         <InputMask mask="(999) 999-9999" placeholder="Phone Number" v-model="FormData.customer_phone" />
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 xl:col-6">
                     <div class="flex flex-column">
                         <label>Address</label>
                         <InputText v-model="FormData.customer_address" />
@@ -147,12 +150,7 @@ onMounted(() => {
                         <label>Customer company</label>
                         <InputText v-model="FormData.customer_company" />
                     </div>
-                    <div class="flex flex-column">
-                        <label>Customer Email</label>
-                        <InputText type="email" placeholder="Customer Email" v-model="FormData.customer_email"
-                            @blur="validateEmail" />
-                        <small v-if="emailError" class="p-error">Please enter a valid email address</small>
-                    </div>
+
                 </div>
             </div>
             <div class="col">
