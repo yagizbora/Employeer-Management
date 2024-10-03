@@ -5,7 +5,7 @@ const sql = require('mssql');
 
 
 const getcustomer = async (req, res) => {
-    const query = `SELECT * FROM Customer WHERE is_deleted = 0`
+    const query = `SELECT * FROM Customer WHERE is_deleted = 0 ORDER BY id ASC`
 
     try {
         const pool = await getPool();
@@ -20,14 +20,14 @@ const getcustomer = async (req, res) => {
 }
 
 const addcustomer = async (req, res) => {
-    const { customer_name, customer_address, customer_phone, customer_company, customer_email } = req.body
+    const { customer_name, customer_address, customer_phone, customer_company, customer_email, is_important_customer } = req.body
 
     if (Object.keys(req.body).length < 5) {
         res.status(500).json({ message: 'All fields must be required' })
         return
     }
 
-    const query = `INSERT INTO Customer(customer_name,customer_address,customer_phone,customer_company,customer_email,is_deleted) VALUES(@customer_name,@customer_address,@customer_phone,@customer_company,@customer_email,0)`
+    const query = `INSERT INTO Customer(customer_name,customer_address,customer_phone,customer_company,customer_email,is_important_customer,is_deleted) VALUES(@customer_name,@customer_address,@customer_phone,@customer_company,@customer_email,@is_important_customer,0)`
     try
     {
         const pool = await getPool();
@@ -36,7 +36,8 @@ const addcustomer = async (req, res) => {
             .input('customer_address', sql.VarChar, customer_address)
             .input('customer_company', sql.VarChar,customer_company)
             .input('customer_phone', sql.VarChar, customer_phone)
-            .input('customer_email',sql.VarChar, customer_email)
+            .input('customer_email', sql.VarChar, customer_email)
+            .input('is_important_customer', sql.Bit, is_important_customer)
             .query(query)
         res.status(201).json({ message: 'Customer created is succesfully' });
 
@@ -46,13 +47,19 @@ const addcustomer = async (req, res) => {
 }
 
 const deletecustomerbyid = async (req, res) => {
-    const { id } = req.body
+    const { id, is_important_customer } = req.body
 
-    if (!id) {
-        res.status(400).json({ message: 'Id is required' });
-        return
+    if (!id || is_important_customer === undefined || is_important_customer === null) {
+        res.status(400).json({ message: 'All fields are required' });
+        return;
     }
-    const query = `UPDATE Customer SET is_deleted = 1 WHERE id = @id`; 
+
+    if (is_important_customer == true) {
+        res.status(400).json({ message: 'You cannot delete this customer please contact IT departmant' })
+        return
+    } 
+
+    const query = `UPDATE Customer SET is_deleted = 1 WHERE id = @id AND is_important_customer = 0 `; 
     try {
         const pool = await getPool();
         const result = await pool.request()
@@ -88,7 +95,7 @@ const getcustomerbyid = async (req, res) => {
 }
 
 const updatecustomerbyid = async (req, res) => {
-    const { id ,customer_name, customer_address, customer_phone, customer_company, customer_email } = req.body
+    const { id, customer_name, customer_address, customer_phone, customer_company, customer_email } = req.body
 
     if (Object.keys(req.body).length < 6) {
         res.status(500).json({ message: 'All fields must be required' })
@@ -96,8 +103,7 @@ const updatecustomerbyid = async (req, res) => {
     }
 
     const query = `UPDATE Customer SET customer_name = @customer_name, customer_address = @customer_address, customer_phone = @customer_phone, customer_company = @customer_company,
-    customer_email = @customer_email WHERE id = @id
-    `
+    customer_email = @customer_email WHERE id = @id`
     try {
         const pool = await getPool();
         const result = await pool.request()

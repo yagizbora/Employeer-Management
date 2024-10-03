@@ -76,6 +76,13 @@ const CreateCustomer = async () => {
                                 @blur="validateEmail" />
                             <small v-if="emailError" class="p-error">Please enter a valid email address</small>
                         </div>
+                        <div class="col-12 xl:col-4 flex flex-column">
+                            <label>Is important Customer?</label>
+                            <InputSwitch v-model="FormData.is_important_customer" />
+                            <label> 
+                                If you switch is true you cannot delete and edit customer but if you want  to edit or delete you must contact IT departmant
+                            </label>
+                        </div>
                     </div>
                     <div class="col">
                         <Button @click="CreateCustomer" :disabled="emailError || !isFormValid" icon="pi pi-plus"

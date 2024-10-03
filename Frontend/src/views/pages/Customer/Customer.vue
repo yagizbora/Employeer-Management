@@ -1,5 +1,5 @@
 <script setup>
-import { defineAsyncComponent, onMounted,ref } from 'vue';
+import { defineAsyncComponent, onMounted, ref } from 'vue';
 import CustomerService from "@/service/customerService";
 import { RouterLink } from 'vue-router'
 import Swal from 'sweetalert2';
@@ -35,13 +35,13 @@ const editdata = async (data) => {
     console.log('Fetched customer:', response.data);
 }
 
-const UpdateCustomer = async() => {
+const UpdateCustomer = async () => {
     const response = await customerservice.updatecustomerbyid({ ...FormData.value })
-    if (response.status == 200) { 
+    if (response.status == 200) {
         Swal.fire({
             title: 'Success',
             text: response.data.message, // 'text' kullanarak mesajı gösteriyoruz
-            icon:'success',
+            icon: 'success',
             confirmButtonText: 'Ok'
         });
         fetchdata();
@@ -61,19 +61,20 @@ const deletedata = async (data) => {
     })
         .then((result) => {
             if (result.isConfirmed) {
-            handledeletedata(data)
-            
-        }
-    } )
+                handledeletedata(data)
+
+            }
+        })
 }
 
 const handledeletedata = async (data) => {
+    console.log(data)
     try {
         const response = await customerservice.deletecustomerbyid(data);
         if (response.status == 200) {
             Swal.fire({
                 title: 'Success',
-                text: response.data.message, // 'text' kullanarak mesajı gösteriyoruz
+                text: response.data.message, 
                 icon: 'success',
                 confirmButtonText: 'Ok'
             });
@@ -82,7 +83,7 @@ const handledeletedata = async (data) => {
     } catch (error) {
         Swal.fire({
             title: 'Error',
-            text: error.message || 'An error occurred while deleting the customer.',
+            text: response.data.message,
             icon: 'error',
             confirmButtonText: 'Ok'
         });
@@ -92,7 +93,7 @@ const handledeletedata = async (data) => {
 
 const CustomerTable = defineAsyncComponent(() => import('./CustomerTable.vue'));
 onMounted(() => {
-fetchdata()
+    fetchdata()
 });
 </script>
 
@@ -116,7 +117,7 @@ fetchdata()
                 </div>
             </div>
         </div>
-        <Dialog v-model:visible="editdialog" modal header="Edit Customer" :style=" {width: '45rem'}">
+        <Dialog v-model:visible="editdialog" modal header="Edit Customer" :style="{ width: '45rem' }">
             <div class="flex">
                 <div class="col-6">
                     <div class="flex flex-column">
@@ -149,7 +150,6 @@ fetchdata()
                     </div>
                 </div>
             </div>
-
             <div class="col">
                 <Button @click="UpdateCustomer" icon="pi pi-plus" label="Create Customer" />
             </div>
@@ -158,6 +158,4 @@ fetchdata()
 
 </template>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
