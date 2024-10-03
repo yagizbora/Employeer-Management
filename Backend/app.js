@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const { getPool } = require('./database');
@@ -27,8 +26,7 @@ getPool()
         app.use('/api', ComplaintRoutes);
         app.use('/api', NotesRoutes);
         app.use('/api', NeedRoutes);
-        app.use('/api', CustomerRoutes)
-
+        app.use('/api', CustomerRoutes);
         app.listen(PORT, () => {
             console.log(`Sunucu http://localhost:${PORT} adresinde çalýþýyor`);
         });

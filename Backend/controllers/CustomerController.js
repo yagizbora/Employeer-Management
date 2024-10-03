@@ -5,12 +5,29 @@ const sql = require('mssql');
 
 
 const getcustomer = async (req, res) => {
-    const query = `SELECT * FROM Customer WHERE is_deleted = 0 ORDER BY id ASC`
+    const { is_important_customer } = req.body
+
+    if (is_important_customer === undefined || is_important_customer === null) {
+        res.status(400).json({ message: 'All fields are required' });
+        return;
+    }
+
+    let sql = ''; // sql deðiþkenini baþlangýçta tanýmla
+
+    if (is_important_customer == true) {
+        sql += `   AND is_important_customer = 1  `
+    }
+    if (is_important_customer == false) {
+        sql += `    AND is_important_customer = 0   `
+    }
+    
+
+    const query = `SELECT * FROM Customer WHERE is_deleted = 0 ${sql} ORDER BY id ASC`
 
     try {
         const pool = await getPool();
         const result = await pool.request()
-            .query(query);
+        .query(query);
         res.status(200).json({ data: result.recordset });
 
     }

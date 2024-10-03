@@ -16,11 +16,12 @@ const customerservice = new CustomerService()
 
 const data = ref([])
 const FormData = ref([])
+const is_important_customer = ref(false)
 const editdialog = ref(false)
 
 const fetchdata = async () => {
     try {
-        const response = await customerservice.getcustomers()
+        const response = await customerservice.getcustomers({ is_important_customer: is_important_customer.value })
         console.log('Fetched customers:', response.data.data);
         data.value = response.data.data;
     } catch (err) {
@@ -106,6 +107,10 @@ onMounted(() => {
                     <h5>Customers</h5>
                 </div>
                 <div class="card-body">
+                    <div class="flex flex-column">
+                        <label>Is important Customer?</label>
+                        <InputSwitch v-model="is_important_customer" @change="fetchdata"    />
+                    </div>
                     <Toolbar>
                         <template #start>
                             <RouterLink to="/customer/create-customer">

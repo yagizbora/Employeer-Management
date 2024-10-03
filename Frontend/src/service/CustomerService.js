@@ -2,8 +2,8 @@ import { axiosApp } from "@/utils/axiosAPI";
 
 
 export default class CustomerService {
-    async getcustomers() {
-        const response = await axiosApp.get('getcustomer');
+    async getcustomers(payload) {
+        const response = await axiosApp.post('getcustomer', payload); // Payload olarak gönder
         return response;
     }
     async addcustomer(data) {

@@ -4,7 +4,7 @@ const { getcustomer, addcustomer, getcustomerbyid, deletecustomerbyid, updatecus
 const router = express.Router();
 
 
-router.get('/getcustomer', getcustomer)
+router.post('/getcustomer', getcustomer)
 
 router.post('/addcustomer', addcustomer)
 
