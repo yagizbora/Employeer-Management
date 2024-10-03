@@ -26,22 +26,26 @@ const props = defineProps({
 </script>
 
 <template>
-    <DataTable :value=data paginator :rows="5">
-        <Column field="Employeer_Name" header="Employeer Name"></Column>
-        <Column field="complaint_title" header="Complaint Title"></Column>
-        <Column field="complaint_description" header="Complaint Description"></Column>
-        <Column header="Operations">
-            <template #body="{ data }">
-                <div class="flex">
-                    <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancel"
-                        @click="deletecomplaint(data)" />
-                    <Button severity="info" icon="pi pi-pencil" text rounded aria-label="Edit"
-                        @click="editcomplaint(data)" />
-                </div>
-            </template>
-        </Column>
-    </DataTable>
-
+    <div v-if="data.length == 0">
+        <Message severity="warn">No Complaint Found</Message>
+    </div>
+    <div v-else>
+        <DataTable :value=data paginator :rows="5">
+            <Column field="Employeer_Name" header="Employeer Name"></Column>
+            <Column field="complaint_title" header="Complaint Title"></Column>
+            <Column field="complaint_description" header="Complaint Description"></Column>
+            <Column header="Operations">
+                <template #body="{ data }">
+                    <div class="flex">
+                        <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancel"
+                            @click="deletecomplaint(data)" />
+                        <Button severity="info" icon="pi pi-pencil" text rounded aria-label="Edit"
+                            @click="editcomplaint(data)" />
+                    </div>
+                </template>
+            </Column>
+        </DataTable>
+    </div>
 </template>
 
 <style scoped lang="scss"></style>
