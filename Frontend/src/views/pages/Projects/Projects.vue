@@ -106,7 +106,7 @@ onMounted(() => {
                     <h5>Projects</h5>
                 </div>
                 <div class="card-header">
-                    <Button @click="createdatadialogopen" label="Create Project"></button>
+                    <Button @click="createdatadialogopen" icon="pi pi-plus" label="Create Project"></button>
                 </div>
                 <div class="card-body">
                     <ProjectsTable :data="data" @editdata="editdata" />
