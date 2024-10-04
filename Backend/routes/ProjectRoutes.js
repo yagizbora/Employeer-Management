@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { getprojects, getprojectsbyid, deleteprojectsbyid, createprojects } = require('../controllers/ProjectController')
+const { getprojects, getprojectsbyid, deleteprojectsbyid, createprojects, updateprojects } = require('../controllers/ProjectController')
 
 
 const router = express.Router();
@@ -13,6 +13,8 @@ router.get('/getprojectsbyid', getprojectsbyid)
 router.post('/deleteprojectsbyid', deleteprojectsbyid)
 
 router.post('/createprojects', createprojects)
+
+router.post('/updateprojects', updateprojects)
 
 
 

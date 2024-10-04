@@ -9,4 +9,19 @@ export default class ProjectService {
         const response = await axiosApp.post('createprojects', data)
         return response
     }
+    async getProjectsbyid(data) {
+        const response = await axiosApp.get('getprojectsbyid',
+            {
+                params: {
+                    id: data.id
+                }
+            }
+        )
+        console.log(response)
+        return response;
+    }
+    async updateproject(data) {
+        const response = await axiosApp.post('updateprojects', data)
+        return response
+    }
 }

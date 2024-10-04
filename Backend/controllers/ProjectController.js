@@ -31,15 +31,36 @@ const createprojects = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
     }
-
 }
+
+    const updateprojects = async (req, res) => {
+        const { customer_name_id, project_name, project_web_url,id } = req.body;
+
+        console.log(customer_name_id)
+
+        const query = `UPDATE Project SET customer_name_id = @customer_name_id, project_name = @project_name,project_web_url = @project_web_url WHERE id = @id`
+        try {
+            const pool = await getPool();
+            const result = await pool.request()
+                .input('customer_name_id', sql.Int, customer_name_id)
+                .input('project_name', sql.VarChar, project_name)
+                .input('project_web_url', sql.VarChar, project_web_url)
+                .input('id', sql.Int, id)
+                .query(query);
+            res.status(200).json({ message: 'Project Updated' });
+ 
+        } catch (err) {
+            res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
+        }
+    }
 
 const getprojectsbyid = async (req, res) => {
     const { id } = req.query
 
-    const query = `
-    SELECT p.* , c.customer_name AS customer_name
-    FROM Project p JOIN Customer c ON c.id = p.customer_name_id WHERE p.is_deleted = 0 AND c.is_deleted = 0 AND p.id = @id`
+    //const query = `
+    //SELECT p.* , c.customer_name AS customer_name
+    //FROM Project p JOIN Customer c ON c.id = p.customer_name_id WHERE p.is_deleted = 0 AND c.is_deleted = 0 AND p.id = @id`
+    const query = `SELECT * FROM Project WHERE id = @id`
     try {
         const pool = await getPool();
         const result = await pool.request()
@@ -50,6 +71,8 @@ const getprojectsbyid = async (req, res) => {
         res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
     }
 }
+
+
 
 const deleteprojectsbyid = async (req, res) => {
     const { id } = req.body
@@ -75,5 +98,6 @@ module.exports =
     getprojects,
     getprojectsbyid,
     deleteprojectsbyid,
-    createprojects
+    createprojects,
+    updateprojects
 };
