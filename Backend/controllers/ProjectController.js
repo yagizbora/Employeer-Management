@@ -36,7 +36,7 @@ const createprojects = async (req, res) => {
     const updateprojects = async (req, res) => {
         const { customer_name_id, project_name, project_web_url,id } = req.body;
 
-        console.log(customer_name_id)
+        //console.log(customer_name_id)
 
         const query = `UPDATE Project SET customer_name_id = @customer_name_id, project_name = @project_name,project_web_url = @project_web_url WHERE id = @id`
         try {

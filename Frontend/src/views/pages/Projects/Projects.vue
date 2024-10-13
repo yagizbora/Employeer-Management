@@ -137,11 +137,11 @@ onMounted(() => {
         </div>
         <Dialog v-model:visible="editdatadialog" modal :style="{ width: '45rem' }" header="Edit Project">
             <div class="col-12">
-                <div>
+                <div @keyup.enter="handleeditdata">
                     <div class="flex flex-column">
                         <label>Customer Name</label>
-                        <Dropdown v-model="editData.customer_name_id" :options="editcustomers" optionLabel="customer_name"
-                            optionValue="id" />
+                        <Dropdown v-model="editData.customer_name_id" :options="editcustomers"
+                            optionLabel="customer_name" optionValue="id" />
                     </div>
                     <div class="flex flex-column">
                         <label>Project Name</label>
