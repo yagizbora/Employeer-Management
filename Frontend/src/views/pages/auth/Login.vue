@@ -19,6 +19,8 @@ const login = async () => {
     if (response.status == 200) {
         console.log(response)
         localStorage.setItem('token', response.data.token)
+        localStorage.setItem('user_id', response.data.user_id)
+        localStorage.setItem('username',response.data.username)
         router.push({name:'dashboard'})
     }
 }
