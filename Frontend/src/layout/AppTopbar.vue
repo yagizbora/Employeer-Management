@@ -1,9 +1,13 @@
 <script setup>
+import axios from 'axios';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
 import { useToast } from "primevue/usetoast";
+import NotesService from "@/service/NotesService"
+const noteservice = new NotesService()
 const toast = useToast();
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 // import NotesService from "@/service/NotesService"
@@ -35,29 +39,50 @@ const toast = useToast();
 // })
 
 
-const importantNotes = ref([]);
+const checkImportantNotes = async () => {
+    const token = localStorage.getItem('token');
 
-const checkImportantNotes = () => {
-    const notes = localStorage.getItem('important_notes');
-    if (notes) {
-        importantNotes.value = JSON.parse(notes); 
-        toast.add({ severity: 'secondary', summary: 'Warning!', detail: 'You have an important note!', life: 2000 });
-    } else {
-        importantNotes.value = [];
+    // Eğer token yoksa localStorage'ı temizle ve login'e yönlendir
+    if (!token) {
+        localStorage.clear();
+        window.location.href = '/auth/login';
+        return;
+    }
+
+    try {
+        const response = await axios.get(`${API_URL}notesimportant`, {
+            headers: {
+                "Content-type": "application/json;charset=UTF-8",
+                token: localStorage.getItem("token"),
+            }
+        });
+
+        if (response.status === 200) {
+            const importantNotes = response.data.important_notes;
+            localStorage.setItem('important_notes', JSON.stringify(importantNotes));
+
+            if (importantNotes) {
+                toast.add({
+                    severity: 'secondary',
+                    summary: 'Warning!',
+                    detail: 'You have an important note!',
+                    life: 2000
+                });
+            }
+        }
+    } catch (error) {
+        console.error(error)
     }
 };
 
-let interval = null;
-
+// Örneğin Topbar bileşeninde onMounted çağrılabilir
 onMounted(() => {
     checkImportantNotes();
 
-    interval = setInterval(checkImportantNotes, 10000);
+    // Örneğin 10 saniyede bir kontrol etmek için
+    setInterval(checkImportantNotes, 10000);
 });
 
-onBeforeUnmount(() => {
-    clearInterval(interval);
-});
 
 
 const { layoutConfig, onMenuToggle } = useLayout();

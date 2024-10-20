@@ -3,6 +3,8 @@ import UserService from '@/service/UsersService.js';
 import Swal from 'sweetalert2';
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 
+
+
 const data = ref([]);
 const createusers = ref(false)
 const usersservice = new UserService()
@@ -11,6 +13,8 @@ const formData = ref({
     password: '',
     is_admin: false
 })
+
+const visiblestatus = ref()
 
 const UsersTable = defineAsyncComponent(() => import('./UsersTable.vue'))
 
@@ -21,6 +25,17 @@ const getallusers = async () => {
         data.value = response.data.data
     }
 }
+
+const checkadmin = async () => {
+    const check = localStorage.getItem('is_admin')
+    if (check) {
+    visiblestatus.value = true
+    }
+    else if (!check) {
+        visiblestatus.value = false
+    }
+}
+
 
 const createuser = async () => {
     try {
@@ -42,7 +57,8 @@ const createuser = async () => {
 }
 
 onMounted(() => {
-    getallusers()
+    getallusers(),
+    checkadmin()
 });
 </script>
 
@@ -53,7 +69,7 @@ onMounted(() => {
                 <div class="card-header">
                     <h4>Users</h4>
                 </div>
-                <Toolbar>
+                <Toolbar v-if="visiblestatus == true">
                     <template #start>
                         <Button severity="info" @click="createusers = true" text rounded icon="pi pi-plus"></Button>
                     </template>

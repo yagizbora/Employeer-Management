@@ -174,21 +174,28 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    // Check if have a important notes (Api response: true or false )
-    const checkImportantNotes = async () => {
-        const response = await noteservice.notesimportant();
-        if (response.status === 200) {
-            localStorage.setItem('important_notes', JSON.stringify(response.data.important_notes));
-        }
-    };
+    // Kullanıcının login olup olmadığını kontrol etmek için token'a bakıyoruz
+    const token = localStorage.getItem('token');
 
-    try {
+    if (token) {
+        // Kullanıcı login ise önemli notları kontrol et
+        const checkImportantNotes = async () => {
+            try {
+                const response = await noteservice.notesimportant();
+                if (response.status === 200) {
+                    localStorage.setItem('important_notes', JSON.stringify(response.data.important_notes));
+                }
+            } catch (error) {
+                console.error("Error fetching important notes:", error);
+            }
+        };
+
         await checkImportantNotes();
-    } catch (error) {
-        console.error("Error fetching important notes:", error);
     }
+
     next(); // İşlem tamamlandıktan sonra yönlendirme devam ediyor
 });
+
 
 
 export default router;
