@@ -1,10 +1,14 @@
 const { query } = require('express');
 const { getPool } = require('../database');
 const sql = require('mssql');
+const verifyToken = require('../Middleware/verifyToken'); 
 
 
 const getallcustomer = async (req, res) => {
-
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const query = `SELECT * FROM Customer WHERE is_deleted = 0 ORDER BY id ASC`
     try {
         const pool = await getPool();
@@ -20,6 +24,10 @@ const getallcustomer = async (req, res) => {
 
 
 const getcustomer = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { is_important_customer } = req.body
 
     if (is_important_customer === undefined || is_important_customer === null) {
@@ -52,6 +60,10 @@ const getcustomer = async (req, res) => {
 }
 
 const addcustomer = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { customer_name, customer_address, customer_phone, customer_company, customer_email, is_important_customer } = req.body
 
     if (Object.keys(req.body).length < 5) {
@@ -79,6 +91,10 @@ const addcustomer = async (req, res) => {
 }
 
 const deletecustomerbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id, is_important_customer } = req.body
 
     if (!id || is_important_customer === undefined || is_important_customer === null) {
@@ -108,6 +124,10 @@ const deletecustomerbyid = async (req, res) => {
 }
 
 const getcustomerbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id } = req.query
 
     if (!id) {
@@ -127,6 +147,10 @@ const getcustomerbyid = async (req, res) => {
 }
 
 const updatecustomerbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id, customer_name, customer_address, customer_phone, customer_company, customer_email, is_important_customer } = req.body
 
     if (Object.keys(req.body).length < 6) {

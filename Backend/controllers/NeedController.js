@@ -1,11 +1,14 @@
 ﻿const { query } = require('express');
 const { getPool } = require('../database');
 const sql = require('mssql');
+const verifyToken = require('../Middleware/verifyToken'); 
 
 
 const getneed = async (req, res) => {
-
-
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const query = `SELECT n.*, e.Name,d.Departman AS Departmant,p.priority AS Priority FROM Need n JOIN Employeer_List e ON e.id = n.employeer_id JOIN Departmants d ON d.id = n.departman_id JOIN Priority p ON p.id = n.priority_id WHERE is_deleted = 0 ORDER BY n.priority_id ASC`
 
     try {
@@ -21,6 +24,10 @@ const getneed = async (req, res) => {
 
 
 const getPriority = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const query = `SELECT * FROM Priority`
 
     try {
@@ -34,6 +41,10 @@ const getPriority = async (req, res) => {
 }
 
 const createneed = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { need_title, need_description, need_subject, employeer_id, departman_id, priority_id } = req.body;
 
     if (Object.keys(req.body).length < 5 ) {
@@ -60,6 +71,10 @@ const createneed = async (req, res) => {
 
 
 const getneedbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id } = req.query;
 
     if (!id) {
@@ -80,6 +95,10 @@ const getneedbyid = async (req, res) => {
 }
 
 const updateneedbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id, need_title, need_description, need_subject, employeer_id, departman_id, priority_id } = req.body 
 
 
@@ -111,6 +130,10 @@ const updateneedbyid = async (req, res) => {
 }
 
 const deleteneedbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id } = req.body;
 
     if (!id) {

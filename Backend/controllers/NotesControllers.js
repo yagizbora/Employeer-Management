@@ -1,10 +1,15 @@
 const { query } = require('express');
 const { getPool } = require('../database');
 const sql = require('mssql');
+const verifyToken = require('../Middleware/verifyToken'); 
+
 
 
 const getnotes = async (req, res) => {
-
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const query = `SELECT * FROM Notes WHERE is_deleted = 0`
     try {
         const pool = await getPool();
@@ -17,6 +22,10 @@ const getnotes = async (req, res) => {
 };
 
 const getnotesbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id } = req.query
     
     if (!id) {
@@ -37,6 +46,10 @@ const getnotesbyid = async (req, res) => {
 }
 
 const updatenotes = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id, note_title, note_description, is_important } = req.body
 
     if (!id) {
@@ -60,6 +73,10 @@ const updatenotes = async (req, res) => {
 }
 
 const createnotes = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { note_title, note_description, is_important } = req.body;
 
     const query = `INSERT INTO Notes (note_title,note_description,is_important,is_deleted) VALUES(@note_title,@note_description,@is_important,0)`
@@ -77,6 +94,10 @@ const createnotes = async (req, res) => {
 }
 
 const deletenotes = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id } = req.body
     const query = `UPDATE Notes SET is_deleted = 1 WHERE id = @id`
 
@@ -105,6 +126,10 @@ const deletenotes = async (req, res) => {
 };
 
 const notesimportant = async (req, res) => {
+    //const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    //if (!tokenCheck.status) {
+    //    return res.status(401).json({ message: tokenCheck.message });
+    //}
     const query = `SELECT * FROM Notes WHERE is_deleted = 0 AND is_important = 1`;
     try {
         const pool = await getPool();

@@ -36,11 +36,11 @@ axiosApp?.interceptors?.response.use(
     JsLoadingOverlay.hide();
     if (error?.response?.data === "Token Hatalı") {
       localStorage.clear();
-      router.push("/auth/giris-yap");
+      router.push("/auth/login");
     }
 
-    if (error?.response?.data?.statusCode === 401) {
-      router.push("/auth/giris-yap");
+    if (error?.response.status === 401) {
+      router.push("/auth/login");
     } else {
       if (error?.response?.data?.message) {
         Swal.fire({
@@ -140,11 +140,11 @@ axiosFileApp.interceptors.response.use(
     console.log(error);
     if (error.response.data == "Token Hatalı") {
       localStorage.clear();
-      router.push("/auth/giris-yap");
+      router.push("/auth/login");
     }
-    console.log(error?.response?.data?.statusCode);
-    if (error?.response?.data?.statusCode == 401) {
-      router.push("/auth/giris-yap");
+    console.log(error?.response.status);
+    if (error?.response.status == 401) {
+      router.push("/auth/login");
     } else {
       if (error?.response?.data?.message) {
         Swal.fire({

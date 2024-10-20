@@ -1,9 +1,14 @@
 const { query } = require('express');
 const { getPool } = require('../database');
 const sql = require('mssql');
+const verifyToken = require('../Middleware/verifyToken'); 
 
 
 const SalaryAverageAndAllinDepartmans = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     try {
         const pool = await getPool();
 
@@ -72,6 +77,10 @@ const SalaryAverageAndAllinDepartmans = async (req, res) => {
 };
 
 const getSalaryStatistics = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     try {
         const pool = await getPool();
         const result = await pool.request().query(`

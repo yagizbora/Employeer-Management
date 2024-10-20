@@ -77,10 +77,9 @@ const logoUrl = computed(() => {
 const onTopBarMenuButton = () => {
     topbarMenuActive.value = !topbarMenuActive.value;
 };
-// const onSettingsClick = () => {
-//     topbarMenuActive.value = false;
-//     router.push('/documentation');
-// };
+ const onSettingsClick = () => {
+     topbarMenuActive.value = true;
+ };
 const topbarMenuClasses = computed(() => {
     return {
         'layout-topbar-menu-mobile-active': topbarMenuActive.value
@@ -147,10 +146,10 @@ const isOutsideClicked = (event) => {
                 <i class="pi pi-cog"></i>
                 <span>Settings</span>
             </button>             -->
-            <!-- <button @click="onSettingsClick()" class="p-link layout-topbar-button">
+            <Button @click="onSettingsClick()" class="p-link layout-topbar-button">
                 <i class="pi pi-cog"></i>
                 <span>Settings</span>
-            </button> -->
+            </Button>
         </div>
     </div>
 </template>

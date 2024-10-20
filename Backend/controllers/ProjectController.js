@@ -1,8 +1,13 @@
 const { query } = require('express');
 const { getPool } = require('../database');
 const sql = require('mssql');
+const verifyToken = require('../Middleware/verifyToken'); 
 
 const getprojects = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
 
     const query = `SELECT p.* , c.customer_address,c.customer_company,c.customer_email,c.customer_name,c.customer_phone,c.is_important_customer
 FROM Project p JOIN Customer c ON c.id = p.customer_name_id WHERE p.is_deleted = 0 AND c.is_deleted = 0`
@@ -17,6 +22,10 @@ FROM Project p JOIN Customer c ON c.id = p.customer_name_id WHERE p.is_deleted =
 }
 
 const createprojects = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { customer_id, project_name, project_web_url } = req.body;
 
     const query = `INSERT INTO Project(customer_name_id,project_name,project_web_url,is_deleted) VALUES(@customer_id,@project_name,@project_web_url,0)`
@@ -33,7 +42,11 @@ const createprojects = async (req, res) => {
     }
 }
 
-    const updateprojects = async (req, res) => {
+const updateprojects = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
         const { customer_name_id, project_name, project_web_url,id } = req.body;
 
         //console.log(customer_name_id)
@@ -55,6 +68,10 @@ const createprojects = async (req, res) => {
     }
 
 const getprojectsbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id } = req.query
 
     //const query = `
@@ -75,6 +92,10 @@ const getprojectsbyid = async (req, res) => {
 
 
 const deleteprojectsbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id } = req.body
 
     const query = `UPDATE Project SET is_deleted = 1 WHERE id = @id`

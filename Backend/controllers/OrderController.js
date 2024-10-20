@@ -1,9 +1,14 @@
 const { getPool } = require('../database');
 const sql = require('mssql');
+const verifyToken = require('../Middleware/verifyToken'); 
 
 
 
 const getOrders = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { is_complated } = req.body;
 
     //console.log('Received is_complated:', is_complated);
@@ -40,6 +45,10 @@ const getOrders = async (req, res) => {
 };
 
 const createorder = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { employeer_id, departman_id, order_name, order_description, is_complated, start_date, end_date } = req.body;
 
     // Sorgu tan�mlamas�
@@ -67,6 +76,10 @@ const createorder = async (req, res) => {
 
 
 const iscomplatedsetbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { is_complated, id } = req.body;
 
     //let isComplatedValue;
@@ -119,6 +132,10 @@ const iscomplatedsetbyid = async (req, res) => {
 
 
 const deleteorders = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id } = req.body
 
     if (!id) {
@@ -145,6 +162,10 @@ const deleteorders = async (req, res) => {
 }
 
 const updateorderbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id, employeer_id, departman_id, order_name, order_description, start_date, end_date } = req.body
 
     if (req.body.length == 0) {
@@ -177,6 +198,10 @@ const updateorderbyid = async (req, res) => {
 };
 
 const getordersbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     //const { id } = req.query;
     const id = req.query.id; 
 

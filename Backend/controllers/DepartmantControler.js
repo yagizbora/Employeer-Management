@@ -1,8 +1,14 @@
 const { query } = require('express');
 const { getPool } = require('../database');
 const sql = require('mssql');
+const verifyToken = require('../Middleware/verifyToken'); 
+
 
 const createDepartmant = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { departman } = req.body;
 
     if (!departman ) {
@@ -21,6 +27,10 @@ const createDepartmant = async (req, res) => {
 };
 
 const updatedepartmantbyId = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id, departman } = req.body;
 
     if (!id) {
@@ -45,7 +55,11 @@ const updatedepartmantbyId = async (req, res) => {
 }
 
 
-    const getdepartmants = async (req, res) => {
+const getdepartmants = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
         try {
             const pool = await getPool();
             const result = await pool.request()
@@ -56,7 +70,11 @@ const updatedepartmantbyId = async (req, res) => {
         }
     }
         
-    const getdepartmantById = async (req, res) => {
+const getdepartmantById = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
         const id = req.params.id;
 
         if (!id) {
@@ -75,6 +93,10 @@ const updatedepartmantbyId = async (req, res) => {
 
 
 const deleteDepartmantById = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const id = req.params.id;
     if (!id) {
         return res.status(400).json({ message: 'ID is required' });

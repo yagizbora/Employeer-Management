@@ -2,13 +2,26 @@
 import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const { layoutConfig } = useLayout();
 // const email = ref('');
 // const password = ref('');
-const checked = ref(false);
-const formData = ref('');
+// const checked = ref(false);
+const formData = ref({});
+
+const login = async () => {
+    const response = await axios.post(`${API_URL}login`, {...formData.value})
+    if (response.status == 200) {
+        console.log(response)
+        localStorage.setItem('token', response.data.token)
+        router.push({name:'dashboard'})
+    }
+}
 
 
 </script>
@@ -27,7 +40,7 @@ const formData = ref('');
                     <div>
                         <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
                         <InputText id="email1" type="text" placeholder="Email address" class="w-full md:w-30rem mb-5"
-                            style="padding: 1rem" v-model="formData.email" />
+                            style="padding: 1rem" v-model="formData.username" />
 
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
                         <InputText class="w-full mb-3" v-model="formData.password" :inputStyle="{ padding: '1rem' }" />
@@ -41,7 +54,7 @@ const formData = ref('');
                             <!-- <a class="font-medium no-underline ml-2 text-right cursor-pointer"
                                 style="color: var(--primary-color)">Forgot password?</a> -->
                         </div>
-                        <Button label="Sign In" class="w-full p-3 text-xl"></Button>
+                        <Button label="Sign In" class="w-full p-3 text-xl" @click="login"></Button>
                     </div>
                 </div>
             </div>

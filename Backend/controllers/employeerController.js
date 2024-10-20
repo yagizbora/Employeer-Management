@@ -1,8 +1,13 @@
 const { getPool } = require('../database');
 const sql = require('mssql');
+const verifyToken = require('../Middleware/verifyToken'); 
+
 
 const getEmployeers = async (req, res) => {
-
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     try {
         const pool = await getPool();
         const result = await pool.request().query(`
@@ -24,6 +29,10 @@ const getEmployeers = async (req, res) => {
 
 
 const getEmployeerById = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const id = req.params.id;
 
     if (!id) {
@@ -55,6 +64,10 @@ const getEmployeerById = async (req, res) => {
 
 
 const createEmployeer = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { name, position, salary, departmant_id } = req.body;
 
     try {
@@ -78,6 +91,10 @@ const createEmployeer = async (req, res) => {
 
 
 const updateemployeer = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id, name, position, salary, departmant_id } = req.body;
 
     if (!id || !name || !position || !salary || !departmant_id) {
@@ -115,6 +132,10 @@ const updateemployeer = async (req, res) => {
 
 
 const deleteEmployeerById = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const id = req.params.id;
     if (!id) {
         return res.status(400).json({message: 'ID is required'});
@@ -136,6 +157,10 @@ const deleteEmployeerById = async (req, res) => {
 };
 
 const getEmployeersByDepartmantId = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const departman_id = req.params.id;
 
     if (!departman_id) {

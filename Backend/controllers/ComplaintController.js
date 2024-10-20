@@ -1,10 +1,14 @@
 const { query } = require('express');
 const { getPool } = require('../database');
 const sql = require('mssql');
+const verifyToken = require('../Middleware/verifyToken'); 
 
 
 const getcomplaints = async (req, res) => {
-
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const query = `SELECT c.*,e.Name AS Employeer_Name FROM Complaint c JOIN Employeer_List e ON c.employeer_id = e.id WHERE c.is_deleted = 0`
     try {
         const pool = await getPool();
@@ -16,6 +20,10 @@ const getcomplaints = async (req, res) => {
     }
 }
 const createcomplaints = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { employeer_id, complaint_title, complaint_description } = req.body
 
     if (Object.keys(req.body).length < 3) {
@@ -39,6 +47,10 @@ const createcomplaints = async (req, res) => {
 };
 
 const deletecomplaintsbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id } = req.body
 
     if (!id) {
@@ -64,7 +76,10 @@ const deletecomplaintsbyid = async (req, res) => {
 }
 
 const getcomplaintsbyid = async (req, res) => {
-
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id } = req.query
 
 
@@ -93,6 +108,10 @@ const getcomplaintsbyid = async (req, res) => {
 }
 
 const updatecomplaintsbyid = async (req, res) => {
+    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
     const { id, employeer_id, complaint_title, complaint_description } = req.body
 
     if (Object.keys(req.body).length < 4) {
