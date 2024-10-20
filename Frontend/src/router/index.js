@@ -122,6 +122,18 @@ const router = createRouter({
             ]
         },
         {
+            path: '/users',
+            component: AppLayout,
+            children:
+            [
+                {
+                    path: 'users',
+                    name: 'Users',
+                   component: () => import('@/views/pages/Users/Users.vue')
+                }
+            ]
+        },
+        {
             path: '/customer',
             component: AppLayout,
             children: [

@@ -126,10 +126,10 @@ const deletenotes = async (req, res) => {
 };
 
 const notesimportant = async (req, res) => {
-    //const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
-    //if (!tokenCheck.status) {
-    //    return res.status(401).json({ message: tokenCheck.message });
-    //}
+        //const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+        //if (!tokenCheck.status) {
+        //    return res.status(401).json({ message: tokenCheck.message });
+        //}
     const query = `SELECT * FROM Notes WHERE is_deleted = 0 AND is_important = 1`;
     try {
         const pool = await getPool();

@@ -11,9 +11,9 @@ const register = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const { username, password } = req.body;
+    const { username, password,is_admin } = req.body;
 
-    if (!username || !password) {
+    if (!username || !password || is_admin) {
         return res.status(400).json({ message: 'Username and password are required' });
     }
 
@@ -22,10 +22,11 @@ const register = async (req, res) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const query = `INSERT INTO Users (username, password,is_aktif) VALUES (@username, @password,1)`;
+        const query = `INSERT INTO Users (username, password,is_aktif,is_admin) VALUES (@username, @password,1,@is_admin)`;
         const pool = await getPool();
         await pool.request()
             .input('username', sql.VarChar, username)
+            .input('is_admin', sql.Bit, is_admin)
             .input('password', sql.VarChar, hashedPassword)
             .query(query);
 
@@ -35,7 +36,37 @@ const register = async (req, res) => {
     }
 };
 
+const listusers = async (req, res) => {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+    const query = `SELECT username,is_admin FROM Users WHERE is_aktif = 1`
+    const pool = await getPool();
+    const result = await pool.request()
+        .query(query);
+    res.status(200).json({data: result.recordset});
+}
 
+
+const deactiveusers = async (req, res) => {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+    const { id } = req.body
+
+    const query = `UPDATE Users SET is_aktif = 0 WHERE id = @id`
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query)
+    } catch (error) {
+        res.status(500).json({ message: 'Database error: ' + error.message });
+    }
+}
 
 const login = async (req, res) => {
     const { username, password } = req.body;
@@ -69,7 +100,7 @@ const login = async (req, res) => {
             .query('UPDATE Users SET token = @token WHERE id = @id');
 
         // Token'ý kullanýcýya geri döndür.
-        res.status(200).json({ message: 'Login successful', token: token, user_id:user.id,username: user.username });
+        res.status(200).json({ message: 'Login successful', token: token, user_id: user.id, username: user.username, is_admin: user.is_admin });
     } catch (error) {
         res.status(500).json({ message: 'Database error: ' + error.message });
     }
@@ -83,5 +114,7 @@ const login = async (req, res) => {
 module.exports =
 {
     login,
-    register
+    register,
+    listusers,
+    deactiveusers
 }

@@ -2,6 +2,11 @@
 import { ref } from 'vue';
 import AppMenuItem from './AppMenuItem.vue';
 
+const checkadmin = () => {
+    let admin = localStorage.getItem(`is_admin`)
+    return JSON.parse(admin)
+}
+
 const model = ref([
     {
         label: 'Home',
@@ -16,6 +21,18 @@ const model = ref([
                 label: 'Employeer Management',  // İsim düzenlendi
                 icon: 'pi pi-users',
                 to: '/Employeer-Management'  // Güncellendi
+            }
+        ]
+    },
+    {
+        label: 'Users',
+        icon: '',
+        visible: checkadmin(),
+        items: [
+            {
+                label: 'Users',
+                icon: 'pi pi-users',
+                to: '/users/users'
             }
         ]
     },
@@ -123,6 +140,9 @@ const model = ref([
         ]    
     },
 ]);
+
+
+
 </script>
 
 
