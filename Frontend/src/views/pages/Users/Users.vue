@@ -6,7 +6,11 @@ import { defineAsyncComponent, onMounted, ref } from 'vue';
 const data = ref([]);
 const createusers = ref(false)
 const usersservice = new UserService()
-const formData = ref([])
+const formData = ref({
+    username: '',
+    password: '',
+    is_admin: false
+})
 
 const UsersTable = defineAsyncComponent(() => import('./UsersTable.vue'))
 
