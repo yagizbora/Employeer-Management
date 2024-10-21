@@ -1,6 +1,9 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { ref, computed, onMounted } from 'vue';
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
+import Swal from 'sweetalert2';
 import AppConfig from '@/layout/AppConfig.vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
@@ -26,14 +29,44 @@ onMounted(() => {
 })
 
 const login = async () => {
-    const response = await axios.post(`${API_URL}login`, { ...formData.value })
-    if (response.status == 200) {
-        console.log(response)
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('user_id', response.data.user_id)
-        localStorage.setItem('username', response.data.username)
-        localStorage.setItem('is_admin', response.data.is_admin)
-        router.push({ name: 'dashboard' })
+    try {
+        if (!formData.value.username || !formData.value.password) {
+            Swal.fire({
+                title: 'Hata!',
+                text: 'Lütfen tüm alanları doldurunuz',
+                icon: 'error',
+                confirmButtonText: 'Tamam'
+            });
+            return;
+        }
+        const response = await axios.post(`${API_URL}login`, { ...formData.value });
+        if (response.status === 200) {
+            console.log(response);
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user_id', response.data.user_id);
+            localStorage.setItem('username', response.data.username);
+            localStorage.setItem('is_admin', response.data.is_admin);
+            router.push({ name: 'dashboard' });
+            toast.add({ severity: 'success', summary: 'Başarılı', detail: 'Giriş yapıldı yönlendiriliyorsunuz' });
+        }
+
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            Swal.fire({
+                title: 'Hata!',
+                text: error?.response?.data?.message,
+                icon: 'error',
+                confirmButtonText: 'Tamam'
+            });
+        } else {
+            console.error(error);
+            Swal.fire({
+                title: 'Hata!',
+                text: error?.response?.data?.message,
+                icon: 'error',
+                confirmButtonText: 'Tamam'
+            });
+        }
     }
 };
 
@@ -54,14 +87,15 @@ const login = async () => {
                     <div>
                         <label for="username" class="block text-900 text-xl font-medium mb-2">Email</label>
                         <InputText id="username" type="text" placeholder="Username" class="w-full md:w-30rem mb-5"
-                            style="padding: 1rem" v-model="formData.username" />
+                            style="padding: 1rem" v-model="formData.username" @keyup.enter="login" />
 
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                        <InputText class="w-full mb-3" placeholder="Password" v-model="formData.password" :inputStyle="{ padding: '1rem' }" />
+                        <InputText id="password" class="w-full mb-3" placeholder="Password" v-model="formData.password"
+                            :inputStyle="{ padding: '1rem' }" @keyup.enter="login" />
                         <!-- <Password id="password1" v-model="formData.password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password> -->
 
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
-                                <!-- <div class="flex align-items-center">
+                            <!-- <div class="flex align-items-center">
                                     <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
                                     <label for="rememberme1">Remember me</label>
                                 </div> -->
@@ -73,11 +107,12 @@ const login = async () => {
                 </div>
             </div>
         </div>
+        <Toast />
     </div>
     <AppConfig simple />
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .pi-eye {
     transform: scale(1.6);
     margin-right: 1rem;
@@ -86,5 +121,10 @@ const login = async () => {
 .pi-eye-slash {
     transform: scale(1.6);
     margin-right: 1rem;
+}
+
+.body {
+    background-color: transparent;
+    transition: background-color 0.3s ease-in-out;
 }
 </style>

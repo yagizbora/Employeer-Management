@@ -70,7 +70,10 @@ const deactiveusers = async (req, res) => {
 
 const login = async (req, res) => {
     const { username, password } = req.body;
-
+    if (!username || !password) {
+        res.status(400).json({ message: 'All fields is required' })
+        return
+    }
     try {
         const pool = await getPool();
         const result = await pool.request()
