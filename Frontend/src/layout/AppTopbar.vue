@@ -123,9 +123,9 @@ const changepassword = async () => {
                 changepassworddialog.value = false;
                 toast.add({ severity: 'success', summary: 'Success!', detail: 'Password changed successfully, you will be redirected to the login page', life: 4000 })
                 setTimeout(() => {
-                    router.push('/auth/login');                    localStorage.clear();
+                    router.push('/auth/login'); localStorage.clear();
                 }, 3000);
-                password_.value = {}; 
+                password_.value = {};
             }
         }
     } catch (error) {
@@ -150,7 +150,7 @@ const changeusername = async () => {
         if (!username_.value.username || !username_.value.confirmusername) {
             toast.add({ severity: 'warn', summary: 'Warning!', detail: 'Please write usernames', life: 5000 });
         }
-        else if (username_.value.username!== username_.value.confirmusername) {
+        else if (username_.value.username !== username_.value.confirmusername) {
             toast.add({ severity: 'warn', summary: 'Warning!', detail: 'Usernames do not match', life: 5000 });
         }
         else if (username_.value.username.length < 2) {
@@ -200,9 +200,9 @@ const logoUrl = computed(() => {
 const onTopBarMenuButton = () => {
     topbarMenuActive.value = !topbarMenuActive.value;
 };
- const onSettingsClick = () => {
-     topbarMenuActive.value = true;
- };
+const onSettingsClick = () => {
+    topbarMenuActive.value = true;
+};
 const topbarMenuClasses = computed(() => {
     return {
         'layout-topbar-menu-mobile-active': topbarMenuActive.value
@@ -234,36 +234,61 @@ const isOutsideClicked = (event) => {
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 };
 
-const settings = [
+// const settings = [
+//     {
+//         label: '',
+//         icon: 'pi pi-cog',
+//         items: [
+//             {
+//                 label: 'Log out',
+//                 icon: 'pi pi-sign-out',
+//                 command: () => {
+//                     localStorage.clear()
+//                     router.push('/auth/login');
+//                 }
+//             },
+//             {
+//                 label: 'Change Password',
+//                 icon: 'pi pi-lock',
+//                 command: () => {
+//                     changepassworddialog.value = true;
+//                 }
+//             },
+//             {
+//                 label: 'Change Username',
+//                 icon: 'pi pi-user',
+//                 command: () => {
+//                     changeusernamedialog.value = true;
+//                 }
+//             }
+//         ]
+//     }
+// ];
+
+const settings = ref([
     {
-        label: '',
-        icon: 'pi pi-cog',
-        items: [
-            {
-                label: 'Log out',
-                icon: 'pi pi-sign-out',
-                command: () => {
-                    localStorage.clear()
-                    router.push('/auth/login');
-                }
-            },
-            {
-                label: 'Change Password',
-                icon: 'pi pi-lock',
-                command: () => {
-                    changepassworddialog.value = true;
-                }
-            },
-            {
-                label: 'Change Username',
-                icon: 'pi pi-user',
-                command: () => {
-                    changeusernamedialog.value = true;
-                }
-            }
-        ]
+        label: 'Change Password',
+        icon: 'pi pi-lock',
+        command: () => {
+            changepassworddialog.value = true;
+        }
+    },
+    {
+        label: 'Change Username',
+        icon: 'pi pi-user',
+        command: () => {
+            changeusernamedialog.value = true;
+        }
+    },
+    {
+        label: 'Log out',
+        icon: 'pi pi-sign-out',
+        command: () => {
+            localStorage.clear()
+            router.push('/auth/login');
+        }
     }
-];
+]);
 </script>
 
 <template>
@@ -306,7 +331,7 @@ const settings = [
             </Button>          
              -->
             <Toast />
-            <PanelMenu class="w-full" :model="settings" icon="pi pi-cog" raised text severity="info" />
+            <TabMenu class="w-full settings-menu" :model="settings" icon="pi pi-cog" raised text severity="info" />
         </div>
         <!-- CHANGE PASSWORD DIALOG START -->
         <Dialog modal v-model:visible="changepassworddialog" :header="'Change Password ' + username"
@@ -354,5 +379,7 @@ const settings = [
 </template>
 
 <style lang="scss" scoped>
-
+.settings-menu {
+    width: 100%;
+}
 </style>
