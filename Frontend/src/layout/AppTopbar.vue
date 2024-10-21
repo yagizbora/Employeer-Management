@@ -5,11 +5,13 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
 import { useToast } from "primevue/usetoast";
+import { useConfirm } from "primevue/useconfirm";
 import NotesService from "@/service/NotesService"
 const noteservice = new NotesService()
 import UserService from '@/service/UsersService.js';
 const usersservice = new UserService()
 const toast = useToast();
+const confirm = useConfirm();
 const API_URL = import.meta.env.VITE_API_URL;
 
 
@@ -200,9 +202,9 @@ const logoUrl = computed(() => {
 const onTopBarMenuButton = () => {
     topbarMenuActive.value = !topbarMenuActive.value;
 };
-const onSettingsClick = () => {
-    topbarMenuActive.value = true;
-};
+// const onSettingsClick = () => {
+//     topbarMenuActive.value = true;
+// };
 const topbarMenuClasses = computed(() => {
     return {
         'layout-topbar-menu-mobile-active': topbarMenuActive.value
@@ -265,6 +267,26 @@ const isOutsideClicked = (event) => {
 //     }
 // ];
 
+
+const confirmlogout = () => {
+    confirm.require({
+        message: 'Are you sure you want to log out',
+        header: 'Log out',
+        icon: 'pi pi-exclamation-triangle',
+        rejectClass: 'p-button-secondary p-button-outlined',
+        rejectLabel: 'Cancel',
+        acceptLabel: 'Log out',
+        accept: () => {
+            toast.add({ severity: 'info', summary: 'Warn!', detail: "You'll redirect to Login page", life: 5000 });
+            setTimeout(() => {
+                localStorage.clear()
+                router.push('/auth/login');
+            }, 5000)
+
+        }
+    });
+}
+
 const settings = ref([
     {
         label: 'Change Password',
@@ -284,8 +306,7 @@ const settings = ref([
         label: 'Log out',
         icon: 'pi pi-sign-out',
         command: () => {
-            localStorage.clear()
-            router.push('/auth/login');
+            confirmlogout()
         }
     }
 ]);
@@ -331,6 +352,7 @@ const settings = ref([
             </Button>          
              -->
             <Toast />
+            <ConfirmDialog></ConfirmDialog>
             <TabMenu class="w-full settings-menu" :model="settings" icon="pi pi-cog" raised text severity="info" />
         </div>
         <!-- CHANGE PASSWORD DIALOG START -->

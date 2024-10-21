@@ -125,8 +125,8 @@ const login = async () => {
     margin-right: 1rem;
 }
 
-.body {
-    background-color: transparent;
+.surface-ground {
+    background-color: transparent !important;
     transition: background-color 0.3s ease-in-out;
 }
 </style>

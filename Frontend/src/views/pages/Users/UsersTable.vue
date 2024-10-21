@@ -40,13 +40,14 @@ const checkadmin = () => {
         <Column field="username" header="Username"></Column>
         <Column field="is_admin" header="Admin Status">
             <template #body="{ data }">
-                <InputSwitch v-model="data.is_admin" :disabled="checkadmin == false" @change="changeadminstatusbyid(data)">
+                <InputSwitch v-model="data.is_admin" :disabled="checkadmin == false"
+                    @change="changeadminstatusbyid(data)">
                 </InputSwitch>
             </template>
         </Column>
         <Column header="Operations">
-            <template  #body="{ data }">
-                <Button @click="() => deactiveuser(data)">Delete</Button>
+            <template #body="{ data }">
+                <Button text rounded @click="() => deactiveuser(data)" icon="pi pi-trash" severity="danger"></Button>
             </template>
         </Column>
     </DataTable>
