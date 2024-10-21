@@ -41,7 +41,7 @@ const listusers = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const query = `SELECT username,is_admin FROM Users WHERE is_aktif = 1`
+    const query = `SELECT username,is_admin,id FROM Users WHERE is_aktif = 1`
     const pool = await getPool();
     const result = await pool.request()
         .query(query);
@@ -63,6 +63,14 @@ const deactiveusers = async (req, res) => {
         const result = await pool.request()
             .input('id', sql.Int, id)
             .query(query)
+
+        const response = result
+        if (response.rowsAffected[0] > 0) {
+            res.status(200).json({ message: 'Operation is succesfull ' })
+        }
+        else {
+            res.status(404).json({ message: 'User is not found' });
+        }
     } catch (error) {
         res.status(500).json({ message: 'Database error: ' + error.message });
     }
@@ -109,7 +117,34 @@ const login = async (req, res) => {
     }
 };
 
+const adminstatus = async (req, res) => {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+    const { id, is_admin } = req.body
+    const query = `UPDATE Users SET is_admin = @is_admin WHERE id = @id`
+    try {
 
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id',sql.Int, id)
+            .input('is_admin', sql.Bit, is_admin)
+            .query(query);
+
+        const response = result
+
+        if (response.rowsAffected[0] > 0) {
+            res.status(200).json({ message: 'Operation is succesfull ' })
+        }
+        else {
+            res.status(404).json({ message: 'User is not found' });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Database error: ' + error.message });
+    }
+}
 
 
 
@@ -119,5 +154,6 @@ module.exports =
     login,
     register,
     listusers,
-    deactiveusers
+    deactiveusers,
+    adminstatus
 }

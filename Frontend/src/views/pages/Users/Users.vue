@@ -55,6 +55,21 @@ const createuser = async () => {
         console.error('Error creating user:', error);
     }
 }
+const deactiveuser = async (data) => {
+    const response = await usersservice.deactiveusers({ id: data.id })
+    if (response.status === 200) {
+        Swal.fire({
+            title: 'User deactivated successfully!',
+            text: response.data.message,
+            icon:'success',
+            confirmButtonText: 'OK',
+        })
+        getallusers()
+    } else {
+        console.error('Failed to deactivate user.');
+    }
+}
+
 
 onMounted(() => {
     getallusers(),
@@ -75,7 +90,7 @@ onMounted(() => {
                     </template>
                 </Toolbar>
                 <div>
-                    <UsersTable :data="data" />
+                    <UsersTable :data="data" @deactiveuser="deactiveuser" />
                 </div>
             </div>
         </div>

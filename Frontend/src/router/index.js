@@ -173,28 +173,28 @@ const router = createRouter({
     ]
 });
 
-router.beforeEach(async (to, from, next) => {
-    // Kullanıcının login olup olmadığını kontrol etmek için token'a bakıyoruz
-    const token = localStorage.getItem('token');
+// router.beforeEach(async (to, from, next) => {
+//     // Kullanıcının login olup olmadığını kontrol etmek için token'a bakıyoruz
+//     const token = localStorage.getItem('token');
 
-    if (token) {
-        // Kullanıcı login ise önemli notları kontrol et
-        const checkImportantNotes = async () => {
-            try {
-                const response = await noteservice.notesimportant();
-                if (response.status === 200) {
-                    localStorage.setItem('important_notes', JSON.stringify(response.data.important_notes));
-                }
-            } catch (error) {
-                console.error("Error fetching important notes:", error);
-            }
-        };
+//     if (token) {
+//         // Kullanıcı login ise önemli notları kontrol et
+//         const checkImportantNotes = async () => {
+//             try {
+//                 const response = await noteservice.notesimportant();
+//                 if (response.status === 200) {
+//                     localStorage.setItem('important_notes', JSON.stringify(response.data.important_notes));
+//                 }
+//             } catch (error) {
+//                 console.error("Error fetching important notes:", error);
+//             }
+//         };
 
-        await checkImportantNotes();
-    }
+//         await checkImportantNotes();
+//     }
 
-    next(); // İşlem tamamlandıktan sonra yönlendirme devam ediyor
-});
+//     next(); // İşlem tamamlandıktan sonra yönlendirme devam ediyor
+// });
 
 
 
