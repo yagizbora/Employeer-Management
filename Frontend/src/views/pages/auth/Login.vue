@@ -46,8 +46,10 @@ const login = async () => {
             localStorage.setItem('user_id', response.data.user_id);
             localStorage.setItem('username', response.data.username);
             localStorage.setItem('is_admin', response.data.is_admin);
-            router.push({ name: 'dashboard' });
-            toast.add({ severity: 'success', summary: 'Başarılı', detail: 'Giriş yapıldı yönlendiriliyorsunuz' });
+            toast.add({ severity: 'success', summary: 'Başarılı', detail: 'Giriş yapıldı yönlendiriliyorsunuz', life: 3000 });
+            setTimeout(() => {
+                router.push({ name: 'dashboard' });
+            }, 3000);
         }
 
     } catch (error) {
