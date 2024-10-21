@@ -1,11 +1,14 @@
 <script setup>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
 import { useToast } from "primevue/usetoast";
 import NotesService from "@/service/NotesService"
 const noteservice = new NotesService()
+import UserService from '@/service/UsersService.js';
+const usersservice = new UserService()
 const toast = useToast();
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -66,7 +69,7 @@ const checkImportantNotes = async () => {
                     severity: 'secondary',
                     summary: 'Warning!',
                     detail: 'You have an important note!',
-                    life: 2000
+                    life: 1500
                 });
             }
         }
@@ -79,11 +82,102 @@ const checkImportantNotes = async () => {
 onMounted(() => {
     checkImportantNotes();
 
-    // Örneğin 10 saniyede bir kontrol etmek için
-    setInterval(checkImportantNotes, 10000);
+    // Örneğin 100 saniyede bir kontrol etmek için
+    setInterval(checkImportantNotes, 1000000);
 });
 
+// CHANGE PASSWORD AREA
 
+const username = ref({})
+
+const usernamecheck = () => {
+    const data = localStorage.getItem('username')
+    username.value = data
+}
+
+onMounted(() => {
+    usernamecheck();
+})
+
+const changepassworddialog = ref(false)
+const password_ = ref({})
+const changepassword = async () => {
+    let id;
+    const getuserid = localStorage.getItem('user_id');
+    id = getuserid;
+    try {
+        console.log("Password:", password_.value.Password);
+        console.log("Confirm Password:", password_.value.confirmPassword);
+
+        if (password_.value.Password !== password_.value.confirmPassword) {
+            toast.add({ severity: 'warn', summary: 'Warning!', detail: 'Passwords do not match', life: 5000 });
+        } else if (!password_.value.Password || !password_.value.confirmPassword) {
+            toast.add({ severity: 'warn', summary: 'Warning!', detail: 'Please write passwords', life: 5000 });
+        }
+        else if (password_.value.Password.length < 8) {
+            toast.add({ severity: 'warn', summary: 'Warning!', detail: 'Password must be at least 8 characters long', life: 5000 });
+        }
+        else {
+            const response = await usersservice.changepassword({ id: id, password: password_.value.Password });
+            if (response) {
+                changepassworddialog.value = false;
+                toast.add({ severity: 'success', summary: 'Success!', detail: 'Password changed successfully, you will be redirected to the login page', life: 4000 })
+                setTimeout(() => {
+                    router.push('/auth/login');                    localStorage.clear();
+                }, 3000);
+                password_.value = {}; 
+            }
+        }
+    } catch (error) {
+        console.error("Error changing password:", error);
+        toast.add({ severity: 'error', summary: 'Error!', detail: 'There was an error changing your password', life: 5000 });
+    }
+};
+//
+
+
+
+// CHANGE USERNAME AREA
+const username_ = ref({});
+
+const changeusernamedialog = ref(false)
+
+const changeusername = async () => {
+    let id;
+    const getuserid = localStorage.getItem('user_id');
+    id = getuserid;
+    try {
+        if (!username_.value.username || !username_.value.confirmusername) {
+            toast.add({ severity: 'warn', summary: 'Warning!', detail: 'Please write usernames', life: 5000 });
+        }
+        else if (username_.value.username!== username_.value.confirmusername) {
+            toast.add({ severity: 'warn', summary: 'Warning!', detail: 'Usernames do not match', life: 5000 });
+        }
+        else if (username_.value.username.length < 2) {
+            toast.add({ severity: 'warn', summary: 'Warning!', detail: 'Username must be at least 2 characters long', life: 5000 });
+        }
+        else {
+            const response = await usersservice.changeusername({ id: id, username: username_.value.username });
+            if (response) {
+                changeusernamedialog.value = false;
+                toast.add({
+                    severity: 'success',
+                    summary: 'Success!',
+                    detail: 'Username changed successfully you will redirect login page then you can login with new username',
+                    life: 4000
+                });
+                setTimeout(() => {
+                    router.push('/auth/login'); localStorage.clear();
+                }, 3000);
+                username_.value = {};
+                localStorage.clear()
+            }
+        }
+    } catch (error) {
+        toast.add({ severity: 'danger', summary: 'Error', detail: error?.response?.data?.message || "Something is broked", life: 5000 });
+    }
+}
+//
 
 const { layoutConfig, onMenuToggle } = useLayout();
 
@@ -152,6 +246,20 @@ const settings = [
                     localStorage.clear()
                     router.push('/auth/login');
                 }
+            },
+            {
+                label: 'Change Password',
+                icon: 'pi pi-lock',
+                command: () => {
+                    changepassworddialog.value = true;
+                }
+            },
+            {
+                label: 'Change Username',
+                icon: 'pi pi-user',
+                command: () => {
+                    changeusernamedialog.value = true;
+                }
             }
         ]
     }
@@ -200,6 +308,48 @@ const settings = [
             <Toast />
             <PanelMenu class="w-full" :model="settings" icon="pi pi-cog" raised text severity="info" />
         </div>
+        <!-- CHANGE PASSWORD DIALOG START -->
+        <Dialog modal v-model:visible="changepassworddialog" :header="'Change Password ' + username"
+            :style="{ width: '25rem' }">
+            <div>
+                <div class="">
+                    <div class="flex flex-column">
+                        <label for="oldPassword">Old Password:</label>
+                        <InputText v-model="password_.Password" type="password" id="oldPassword" />
+                    </div>
+                    <div class="flex flex-column">
+                        <label for="newPassword">New Password:</label>
+                        <InputText v-model="password_.confirmPassword" type="password" id="newPassword" />
+                    </div>
+                    <div class="mt-2">
+                        <Button @click="changepassword" icon="pi pi-pencil" severity="secondary"
+                            label="Change Password" />
+                    </div>
+                </div>
+            </div>
+        </Dialog>
+        <!-- CHANGE PASSWORD DIALOG END -->
+
+        <!--CHANGE USERNAME DIALOG START -->
+        <Dialog modal v-model:visible="changeusernamedialog" :header="'Change password ' + username">
+            <div>
+                <div class="">
+                    <div class="flex flex-column">
+                        <label for="oldPassword">Old username:</label>
+                        <InputText v-model.trim="username_.username" id="oldPassword" />
+                    </div>
+                    <div class="flex flex-column">
+                        <label for="newPassword">New username:</label>
+                        <InputText v-model.trim="username_.confirmusername" id="newPassword" />
+                    </div>
+                    <div class="mt-2">
+                        <Button @click="changeusername" icon="pi pi-pencil" severity="secondary"
+                            label="Change Username" />
+                    </div>
+                </div>
+            </div>
+        </Dialog>
+        <!--  -->
     </div>
 </template>
 

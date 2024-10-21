@@ -20,4 +20,12 @@ export default class UserService {
         const response = await axiosApp.post('deactiveusers', data);
         return response;
     }
+    async changepassword(data) {
+        const response = await axiosApp.post('changepassword', data);
+        return response;
+    }
+    async changeusername(data) {
+        const response = await axiosApp.post('changeusername', data);
+        return response;
+    }
 }

@@ -48,6 +48,63 @@ const listusers = async (req, res) => {
     res.status(200).json({data: result.recordset});
 }
 
+const changepassword = async (req, res) => {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+    const { id, password } = req.body
+
+    const query = `UPDATE Users SET password = @hashedpassword WHERE id = @id`
+    try {
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .input('hashedpassword', sql.VarChar, hashedPassword)
+            .query(query);
+
+        const response = result
+        if (response.rowsAffected[0] > 0) {
+            return res.status(200).json({ message: 'Password changed successfully' })
+        }
+        else {
+            res.status(404).json({ message: 'Something is wrong' });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Database error: ' + error.message });
+    }
+}
+
+const changeusername = async (req, res) => {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+    const { id, username } = req.body;
+    const query = `UPDATE Users SET username = @username WHERE id = @id`
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .input('username', sql.VarChar, username)
+            .query(query);
+
+        const response = result
+        if (response.rowsAffected[0] > 0) {
+            return res.status(200).json({ message: 'Password changed successfully' })
+        }
+        else {
+            res.status(404).json({ message: 'Something is wrong' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Database error: ' + error.message });
+    }
+};
 
 const deactiveusers = async (req, res) => {
     const tokenCheck = await verifyToken(req);
@@ -155,5 +212,7 @@ module.exports =
     register,
     listusers,
     deactiveusers,
-    adminstatus
+    adminstatus,
+    changepassword,
+    changeusername
 }
