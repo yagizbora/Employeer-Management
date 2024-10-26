@@ -135,7 +135,7 @@ const deletecustomerbyid = async (req, res) => {
 }
 
 const getcustomerbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req);
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -162,22 +162,33 @@ const updatecustomerbyid = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const { id, customer_name, customer_address, customer_phone, customer_company, customer_email, is_important_customer } = req.body
+    const { id, customer_name, customer_address, customer_phone, customer_company, customer_email} = req.body
 
     if (Object.keys(req.body).length < 6) {
         res.status(500).json({ message: 'All fields must be required' })
         return
     }
 
-    if (is_important_customer == true) {
-        res.status(406).json({ message: 'Important customer cannot be edit' })
-        return
-    }
+    let check_customer;
+    const check_important = async () => {
+        const query = `SELECT is_important_customer FROM Customer WHERE id = @id`;
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query);
 
+        return result.recordset.length > 0 ? result.recordset[0].is_important_customer : null;
+    };
 
     const query = `UPDATE Customer SET customer_name = @customer_name, customer_address = @customer_address, customer_phone = @customer_phone, customer_company = @customer_company,
     customer_email = @customer_email WHERE id = @id`
     try {
+        check_customer = await check_important();
+        if (check_customer) {
+            res.status(400).json({ message: 'You cannot edit this customer, please contact IT department' });
+            return;
+        }
+
         const pool = await getPool();
         const result = await pool.request()
             .input('id', sql.Int, id)
