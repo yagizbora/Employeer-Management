@@ -53,7 +53,7 @@ const props = defineProps({
             <template #body=" { data } ">
                 <div>
                     <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancel"
-                        @click="deletedata(data)" v-if="!data.is_important_customer" />
+                        @click="deletedata(data)"  />
                     <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit"
                         @click="editdata(data)" />
                 </div>

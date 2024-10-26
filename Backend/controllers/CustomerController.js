@@ -91,24 +91,35 @@ const addcustomer = async (req, res) => {
 }
 
 const deletecustomerbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); 
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
     const { id, is_important_customer } = req.body
 
-    if (!id || is_important_customer === undefined || is_important_customer === null) {
+    if (!id) {
         res.status(400).json({ message: 'All fields are required' });
         return;
     }
 
-    if (is_important_customer == true) {
-        res.status(400).json({ message: 'You cannot delete this customer please contact IT departmant' })
-        return
-    } 
+    let check_customer;
+    const check_important = async () => {
+        const query = `SELECT is_important_customer FROM Customer WHERE id = @id`;
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query);
 
-    const query = `UPDATE Customer SET is_deleted = 1 WHERE id = @id AND is_important_customer = 0 `; 
+        return result.recordset.length > 0 ? result.recordset[0].is_important_customer : null;
+    };
     try {
+        check_customer = await check_important();
+
+        if (check_customer) {
+            res.status(400).json({ message: 'You cannot delete this customer, please contact IT department' });
+            return;
+        }
+    const query = `UPDATE Customer SET is_deleted = 1 WHERE id = @id AND is_important_customer = 0 `; 
         const pool = await getPool();
         const result = await pool.request()
             .input('id', sql.Int, id)
