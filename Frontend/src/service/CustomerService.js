@@ -25,7 +25,7 @@ export default class CustomerService {
     async deletecustomerbyid(data) {
         const response = await axiosApp.post('deletecustomerbyid', {
             id: data.id,
-            is_important_customer: data.is_important_customer
+            // is_important_customer: data.is_important_customer
         });
         return response;
     }
