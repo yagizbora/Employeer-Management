@@ -162,7 +162,7 @@ const updatecustomerbyid = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const { id, customer_name, customer_address, customer_phone, customer_company, customer_email} = req.body
+    const { id, customer_name, customer_address, customer_phone, customer_company, customer_email, is_important_customer } = req.body
 
     if (Object.keys(req.body).length < 6) {
         res.status(500).json({ message: 'All fields must be required' })
@@ -181,7 +181,7 @@ const updatecustomerbyid = async (req, res) => {
     };
 
     const query = `UPDATE Customer SET customer_name = @customer_name, customer_address = @customer_address, customer_phone = @customer_phone, customer_company = @customer_company,
-    customer_email = @customer_email WHERE id = @id`
+    customer_email = @customer_email, is_important_customer = @is_important_customer WHERE id = @id`
     try {
         check_customer = await check_important();
         if (check_customer) {
@@ -197,6 +197,7 @@ const updatecustomerbyid = async (req, res) => {
             .input('customer_company', sql.VarChar, customer_company)
             .input('customer_phone', sql.VarChar, customer_phone)
             .input('customer_email', sql.VarChar, customer_email)
+            .input('is_important_customer', sql.Bit, is_important_customer)
             .query(query)
         res.status(200).json({ message: 'Complaint Updated' });
 

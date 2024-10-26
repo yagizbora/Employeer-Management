@@ -1,8 +1,13 @@
 <script setup>
+import Swal from 'sweetalert2';
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 import CustomerService from "@/service/customerService";
 import { RouterLink } from 'vue-router'
-import Swal from 'sweetalert2';
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+const confirm = useConfirm();
+const toast = useToast();
+
 
 const emailError = ref(false)
 
@@ -18,7 +23,7 @@ const data = ref([])
 const FormData = ref([])
 const is_important_customer = ref(true)
 const editdialog = ref(false)
-
+const checkdisabledinputs = ref('')
 const fetchdata = async () => {
     try {
         const response = await customerservice.getcustomers({ is_important_customer: is_important_customer.value })
@@ -30,16 +35,61 @@ const fetchdata = async () => {
 }
 
 const editdata = async (data) => {
-    const response = await customerservice.getcustomersbyid(data)
-    editdialog.value = true
-    FormData.value = response.data[0]
+    const response = await customerservice.getcustomersbyid(data);
+    checkdisabledinputs.value = response.data[0].is_important_customer ? true : false; 
+    editdialog.value = true;
+    FormData.value = response.data[0];
     console.log('Fetched customer:', response.data);
-}
+};
 const editdataimportant = async (data) => {
     const response = await customerservice.getcustomersbyid(data)
     editdialogimportant.value = true
     importantcustomer.value = response.data[0]
 }
+
+const sendeditdata = async () => {
+    console.log('is_important_customer:', FormData.value.is_important_customer);
+
+    if (FormData.value.is_important_customer) {
+        confirm.require({
+            header: 'Important Customer!',
+            message: 'Are you sure?',
+            icon: 'pi pi-exclamation-triangle',
+            accept: async () => {
+                console.log('User accepted the confirmation');
+                await updateCustomer();
+            },
+            reject: () => {
+                console.log('User rejected the confirmation');
+            }
+        });
+    } else {
+        await updateCustomer();
+    }
+};
+
+const updateCustomer = async () => {
+    try {
+        const response = await customerservice.updatecustomerbyid({ ...FormData.value });
+        if (response) {
+            Swal.fire({
+                title: 'Success',
+                text: response.data.message,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
+            fetchdata();
+            editdialog.value = false;
+        }
+    } catch (error) {
+        Swal.fire({
+            title: 'Error',
+            text: 'An error occurred while updating the customer.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+    }
+};
 
 const deletedata = async (data) => {
     Swal.fire({
@@ -108,47 +158,62 @@ onMounted(() => {
                             </RouterLink>
                         </template>
                     </Toolbar>
-                    <CustomerTable :data="data" @deletedata="deletedata" @editdata="editdata"/>
+                    <CustomerTable :data="data" @deletedata="deletedata" @editdata="editdata" />
                 </div>
             </div>
         </div>
 
         <Dialog v-model:visible="editdialog" modal header="Edit Customer" :style="{ width: '45rem' }"
             :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+
+
             <div class="xl:flex">
                 <div class="col-12 xl:col-6">
                     <div class="flex flex-column">
                         <label>Customer Name</label>
-                        <InputText v-model="FormData.customer_name" :disabled="FormData.is_important_customer" />
+                        <InputText v-model="FormData.customer_name" :disabled="checkdisabledinputs" />
                     </div>
                     <div class="flex flex-column">
                         <label>Customer Email</label>
                         <InputText type="email" placeholder="Customer Email" v-model="FormData.customer_email"
-                            @blur="validateEmail" :disabled="FormData.is_important_customer" />
+                            @blur="validateEmail" :disabled="checkdisabledinputs" />
                         <small v-if="emailError" class="p-error">Please enter a valid email address</small>
-                    </div>
-                    <div class="flex flex-column">
-                        <label>Phone Number</label>
-                        <InputMask mask="(999) 999-9999" placeholder="Phone Number" v-model="FormData.customer_phone"
-                            :disabled="FormData.is_important_customer" />
                     </div>
                 </div>
                 <div class="col-12 xl:col-6">
                     <div class="flex flex-column">
-                        <label>Address</label>
-                        <InputText v-model="FormData.customer_address" :disabled="FormData.is_important_customer" />
+                        <label>Phone Number</label>
+                        <InputMask mask="(999) 999-9999" placeholder="Phone Number" v-model="FormData.customer_phone"
+                            :disabled="checkdisabledinputs" />
                     </div>
                     <div class="flex flex-column">
                         <label>Customer company</label>
-                        <InputText v-model="FormData.customer_company" :disabled="FormData.is_important_customer" />
+                        <InputText v-model="FormData.customer_company" :disabled="checkdisabledinputs" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 xl:col-12">
+                    <div class="flex flex-column">
+                        <label>Is important customer?</label>
+                        <Checkbox v-model="FormData.is_important_customer" :disabled="checkdisabledinputs"
+                            :binary="true" />
+                    </div>
+                </div>
+                <div class="col-12 xl:col-12">
+                    <div class="flex flex-column">
+                        <label>Address</label>
+                        <Textarea v-model="FormData.customer_address" :disabled="checkdisabledinputs" rows="5" />
                     </div>
                 </div>
             </div>
             <div class="col">
-                <Button v-if="!FormData.is_important_customer" @click="UpdateCustomer" :disabled="FormData.is_important_customer" icon="pi pi-plus"
-                    label="Edit Customer" />
+                <Button v-if="!checkdisabledinputs" @click="sendeditdata" :disabled="checkdisabledinputs"
+                    icon="pi pi-plus" label="Edit Customer" />
             </div>
         </Dialog>
+        <Toast />
+        <ConfirmDialog></ConfirmDialog>
     </div>
 
 </template>
