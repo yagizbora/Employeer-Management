@@ -129,7 +129,10 @@ const router = createRouter({
                 {
                     path: 'users',
                     name: 'Users',
-                   component: () => import('@/views/pages/Users/Users.vue')
+                    component: () => import('@/views/pages/Users/Users.vue'),
+                       meta: {
+                        requiresAdmin: true
+                    }
                 }
             ]
         },
@@ -167,35 +170,26 @@ const router = createRouter({
                     path: 'login',
                     name: 'auth-login',
                     component: () => import('@/views/pages/Auth/Login.vue')
+                },
+                {
+                    path: 'error',
+                    name: 'acces-denied',
+                    component: () => import('@/views/pages/Auth/Access.vue')
                 }
             ]
         }
     ]
 });
 
-// router.beforeEach(async (to, from, next) => {
-//     // Kullanıcının login olup olmadığını kontrol etmek için token'a bakıyoruz
-//     const token = localStorage.getItem('token');
+router.beforeEach((to, from, next) => {
+    const userRole = localStorage.getItem('is_admin');
 
-//     if (token) {
-//         // Kullanıcı login ise önemli notları kontrol et
-//         const checkImportantNotes = async () => {
-//             try {
-//                 const response = await noteservice.notesimportant();
-//                 if (response.status === 200) {
-//                     localStorage.setItem('important_notes', JSON.stringify(response.data.important_notes));
-//                 }
-//             } catch (error) {
-//                 console.error("Error fetching important notes:", error);
-//             }
-//         };
-
-//         await checkImportantNotes();
-//     }
-
-//     next(); // İşlem tamamlandıktan sonra yönlendirme devam ediyor
-// });
-
+    if (to.meta.requiresAdmin && userRole !== 'true') {
+        next({ name: 'acces-denied' });
+    } else {
+        next();
+    }
+});
 
 
 export default router;

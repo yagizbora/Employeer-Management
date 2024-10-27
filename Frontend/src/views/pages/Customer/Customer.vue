@@ -47,24 +47,25 @@ const editdataimportant = async (data) => {
     importantcustomer.value = response.data[0]
 }
 
-const sendeditdata = async () => {
-    console.log('is_important_customer:', FormData.value.is_important_customer);
-
+const sendeditdata = () => {
+    
+    // console.log('is_important_customer:', FormData.value.is_important_customer);
     if (FormData.value.is_important_customer) {
+        // editdialog.value = false;
         confirm.require({
             header: 'Important Customer!',
             message: 'Are you sure?',
             icon: 'pi pi-exclamation-triangle',
             accept: async () => {
-                console.log('User accepted the confirmation');
-                await updateCustomer();
+                // console.log('User accepted the confirmation');
+                 updateCustomer();
             },
             reject: () => {
-                console.log('User rejected the confirmation');
+                // console.log('User rejected the confirmation');
             }
         });
     } else {
-        await updateCustomer();
+         updateCustomer();
     }
 };
 
@@ -88,6 +89,7 @@ const updateCustomer = async () => {
             icon: 'error',
             confirmButtonText: 'Ok'
         });
+        editdialog.value = false;
     }
 };
 
