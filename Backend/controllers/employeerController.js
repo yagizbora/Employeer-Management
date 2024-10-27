@@ -91,7 +91,7 @@ const createEmployeer = async (req, res) => {
 
 
 const updateemployeer = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); 
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -104,7 +104,7 @@ const updateemployeer = async (req, res) => {
     try {
         const pool = await getPool();
         const result = await pool.request()
-            .input('id', sql.Bit, id)
+            .input('id', sql.Int, id)
             .input('name', sql.NVarChar, name)
             .input('position', sql.NVarChar, position)
             .input('salary', sql.Int, salary)

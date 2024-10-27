@@ -2,7 +2,7 @@
     "name": "sakai-vue",
     "version": "3.9.0",
     "scripts": {
-        "dev": "vite --port 3000",
+        "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
@@ -21,6 +21,7 @@
         "primeicons": "^6.0.1",
         "primevue": "3.39.0",
         "sweetalert2": "^11.12.4",
+        "vite-plugin-pwa": "^0.20.5",
         "vue": "^3.2.41",
         "vue-router": "^4.4.3",
         "vuex": "^4.1.0",

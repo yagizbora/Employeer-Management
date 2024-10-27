@@ -95,7 +95,7 @@ const deletecustomerbyid = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const { id, is_important_customer } = req.body
+    const { id } = req.body
 
     if (!id) {
         res.status(400).json({ message: 'All fields are required' });

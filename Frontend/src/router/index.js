@@ -5,7 +5,7 @@ import AppLayout from '@/layout/AppLayout.vue';
 import { resolveComponent } from 'vue';
 
 const router = createRouter({
-    history: createWebHistory(), // createWebHashHistory() yerine
+    history: createWebHistory(),
     routes: [
         {
             path: '/',
@@ -190,6 +190,7 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
+
 
 
 export default router;
