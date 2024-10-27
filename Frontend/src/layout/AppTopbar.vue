@@ -361,11 +361,11 @@ const settings = ref([
             <div>
                 <div class="">
                     <div class="flex flex-column">
-                        <label for="oldPassword">Old Password:</label>
+                        <label for="oldPassword">New Password:</label>
                         <InputText v-model="password_.Password" type="password" id="oldPassword" />
                     </div>
                     <div class="flex flex-column">
-                        <label for="newPassword">New Password:</label>
+                        <label for="newPassword">Confirm New Password:</label>
                         <InputText v-model="password_.confirmPassword" type="password" id="newPassword" />
                     </div>
                     <div class="mt-2">
