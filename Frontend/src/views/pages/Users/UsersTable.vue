@@ -9,7 +9,7 @@ const props = defineProps({
 });
 
 
-const emit = defineEmits(['deactiveuser,getallusers'])
+const emit = defineEmits(['deactiveuser, getallusers'])
 
 const deactiveuser = (data) => {
     emit('deactiveuser', data)
@@ -31,7 +31,6 @@ const changeadminstatusbyid = async (user) => {
             emit('getallusers');
         }
     } catch (error) {
-        // console.error('Request failed:', error);
         emit('getallusers');
     }
 };
@@ -52,9 +51,8 @@ const checkadmin = () => {
         <Column field="username" header="Username"></Column>
         <Column field="is_admin" header="Admin Status">
             <template #body="{ data }">
-                <InputSwitch v-model="data.is_admin" :disabled="checkadmin == false"
-                    @change="changeadminstatusbyid(data)">
-                </InputSwitch>
+                <InputSwitch :binary="true" v-model="data.is_admin" :disabled="checkadmin == false"
+                    @change="changeadminstatusbyid(data)" />
             </template>
         </Column>
         <Column header="Operations">
