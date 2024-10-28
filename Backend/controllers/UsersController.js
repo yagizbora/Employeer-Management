@@ -124,7 +124,6 @@ const deactiveusers = async (req, res) => {
         const result = await pool.request()
             .input('user_id', sql.Int, user_id)
             .query(query)
-            console.log(result.recordset)
         return result.recordset.length > 0 ? result.recordset[0].is_admin : null;
     }
 
