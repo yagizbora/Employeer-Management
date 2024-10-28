@@ -130,9 +130,9 @@ const router = createRouter({
                     path: 'users',
                     name: 'Users',
                     component: () => import('@/views/pages/Users/Users.vue'),
-                       meta: {
-                        requiresAdmin: true
-                    }
+                    //    meta: {
+                    //     requiresAdmin: true
+                    // }
                 }
             ]
         },
@@ -183,7 +183,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const userRole = localStorage.getItem('is_admin');
-
     if (to.meta.requiresAdmin && userRole !== 'true') {
         next({ name: 'acces-denied' });
     } else {

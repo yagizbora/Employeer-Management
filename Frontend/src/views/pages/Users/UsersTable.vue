@@ -1,4 +1,5 @@
 <script setup lang="js">
+import Swal from 'sweetalert2';
 import { ref } from 'vue';
 import UserService from '@/service/UsersService.js';
 const usersservice = new UserService()
@@ -8,21 +9,32 @@ const props = defineProps({
 });
 
 
-const emit = defineEmits(['deactiveuser'])
+const emit = defineEmits(['deactiveuser,getallusers'])
 
 const deactiveuser = (data) => {
     emit('deactiveuser', data)
 }
-
 const changeadminstatusbyid = async (user) => {
-    const response = await usersservice.adminstatus({ id: user.id, is_admin: user.is_admin })
-    if (response.status === 200) {
-        console.log('Admin status updated successfully.');
-    } else {
-        console.error('Failed to update admin status.');
+    try {
+        const user_id = localStorage.getItem('user_id');
+        const response = await usersservice.adminstatus({
+            id: user.id,
+            is_admin: user.is_admin,
+            user_id: user_id
+        });
+        if (response.status == 200) {
+            Swal.fire({
+                title: 'Admin Status Changed!',
+                text: response.data.message || 'Status changed successfully',
+                icon:'success',
+            })
+            emit('getallusers');
+        }
+    } catch (error) {
+        // console.error('Request failed:', error);
+        emit('getallusers');
     }
-}
-
+};
 const checkadmin = () => {
     const getadminstatus = localStorage.getItem('is_admin')
     if (getadminstatus) {
@@ -30,7 +42,7 @@ const checkadmin = () => {
         return admin.value
     }
     else {
-        
+
     }
 };
 </script>

@@ -22,7 +22,8 @@ const UsersTable = defineAsyncComponent(() => import('./UsersTable.vue'))
 const getallusers = async () => {
     const response = await usersservice.Userlist()
     if (response) {
-        data.value = response.data.data
+        data.value = []; // İlk olarak boş hale getiriyoruz.
+        data.value = response.data.data; // Ardından güncel veriyi atıyoruz.
     }
 }
 
@@ -92,7 +93,7 @@ onMounted(() => {
                     </template>
                 </Toolbar>
                 <div>
-                    <UsersTable :data="data" @deactiveuser="deactiveuser" />
+                    <UsersTable :data="data" @deactiveuser="deactiveuser" @getallusers="getallusers" />
                 </div>
             </div>
         </div>
