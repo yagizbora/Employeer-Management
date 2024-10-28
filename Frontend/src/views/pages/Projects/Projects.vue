@@ -33,6 +33,35 @@ const createdatadialogopen = async () => {
     }
 }
 
+const deletedataconfirm = async (data) => {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deletedata(data);
+        }
+    });
+}
+
+const deletedata = async (data) => {
+    const response = await projectservice.deleteproject(data)
+    if (response.status === 200) { 
+        Swal.fire({
+            title: 'Project Deleted Successfully',
+            text: response.data.message || "Operation succcessfully",
+            icon:'success',
+            confirmButtonText: 'Okay'
+        });
+        FetchData();
+    }
+}
+
 
 const editdata = async (data) => {
     try {
@@ -109,7 +138,7 @@ onMounted(() => {
                     <Button @click="createdatadialogopen" icon="pi pi-plus" label="Create Project"></button>
                 </div>
                 <div class="card-body">
-                    <ProjectsTable :data="data" @editdata="editdata" />
+                    <ProjectsTable :data="data" @editdata="editdata" @deletedata="deletedataconfirm"/>
                 </div>
                 <Dialog v-model:visible="createproject" modal :style="{ width: '45rem' }">
                     <div class="col-12">

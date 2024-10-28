@@ -2,12 +2,15 @@
 import { formatPhone, prepareUrl } from "@/utils/helper.js";
 
 
-const emit = defineEmits(["editdata"]);
+const emit = defineEmits(["editdata, deletedata"]);
 
 const editdata = (data) => {
     emit("editdata", data)
 }
 
+const deletedata = (data) => { 
+    emit("deletedata", data)
+}
 
 const props = defineProps({
     data: Array
@@ -56,6 +59,7 @@ const props = defineProps({
             <template #body="{ data }">
                 <div>
                     <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit" @click="editdata(data)" />
+                    <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Delete" @click="deletedata(data)" /> 
                 </div>
             </template>
         </Column>

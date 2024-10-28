@@ -92,7 +92,7 @@ const getprojectsbyid = async (req, res) => {
 
 
 const deleteprojectsbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); 
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }

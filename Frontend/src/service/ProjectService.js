@@ -24,4 +24,10 @@ export default class ProjectService {
         const response = await axiosApp.post('updateprojects', data)
         return response
     }
+    async deleteproject(data) {
+        const response = await axiosApp.post('deleteprojectsbyid', {
+            id: data.id
+        })
+        return response;
+    }
 }
