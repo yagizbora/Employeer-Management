@@ -130,9 +130,9 @@ const router = createRouter({
                     path: 'users',
                     name: 'Users',
                     component: () => import('@/views/pages/Users/Users.vue'),
-                    //    meta: {
-                    //     requiresAdmin: true
-                    // }
+                       meta: {
+                        requiresAdmin: true
+                    }
                 }
             ]
         },
