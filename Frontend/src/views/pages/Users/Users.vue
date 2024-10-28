@@ -56,7 +56,9 @@ const createuser = async () => {
     }
 }
 const deactiveuser = async (data) => {
-    const response = await usersservice.deactiveusers({ id: data.id })
+    const user_id = localStorage.getItem('user_id');
+
+    const response = await usersservice.deactiveusers({ id: data.id, user_id: user_id })
     if (response.status === 200) {
         Swal.fire({
             title: 'User deactivated successfully!',

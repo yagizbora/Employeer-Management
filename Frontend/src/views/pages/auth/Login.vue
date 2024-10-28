@@ -16,7 +16,7 @@ const { layoutConfig } = useLayout();
 // const password = ref('');
 // const checked = ref(false);
 const formData = ref({});
-
+const seepassword = ref(false);
 const clearlocalstorage = async () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user_id');
@@ -73,6 +73,7 @@ const login = async () => {
 };
 
 
+
 </script>
 
 <template>
@@ -92,17 +93,18 @@ const login = async () => {
                             style="padding: 1rem" v-model="formData.username" @keyup.enter="login" />
 
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                        <InputText id="password" class="w-full mb-3" placeholder="Password" v-model="formData.password"
-                            :inputStyle="{ padding: '1rem' }" @keyup.enter="login" />
+                        <InputText id="password" class="w-full mb-3" 
+                        placeholder="Password" 
+                        :type="seepassword ? 'text' : 'password'" 
+                        v-model="formData.password"
+                        :inputStyle="{ padding: '1rem' }" @keyup.enter="login" />
+                        
                         <!-- <Password id="password1" v-model="formData.password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password> -->
-
+                        <div class="flex flex-column">
+                            <label>Show password</label>
+                            <Checkbox v-model="seepassword" :binary=true id="seepassword" />
+                        </div>
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
-                            <!-- <div class="flex align-items-center">
-                                    <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
-                                    <label for="rememberme1">Remember me</label>
-                                </div> -->
-                            <!-- <a class="font-medium no-underline ml-2 text-right cursor-pointer"
-                                style="color: var(--primary-color)">Forgot password?</a> -->
                         </div>
                         <Button label="Sign In" class="w-full p-3 text-xl" @click="login"></Button>
                     </div>

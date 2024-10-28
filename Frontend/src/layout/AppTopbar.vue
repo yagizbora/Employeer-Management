@@ -1,13 +1,12 @@
 <script setup>
 import axios from 'axios';
-import Swal from 'sweetalert2';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
-import NotesService from "@/service/NotesService"
-const noteservice = new NotesService()
+// import NotesService from "@/service/NotesService"
+// const noteservice = new NotesService()
 import UserService from '@/service/UsersService.js';
 const usersservice = new UserService()
 const toast = useToast();
@@ -103,6 +102,7 @@ onMounted(() => {
 
 const changepassworddialog = ref(false)
 const password_ = ref({})
+const seepassword =ref(false)
 const changepassword = async () => {
     let id;
     const getuserid = localStorage.getItem('user_id');
@@ -361,12 +361,19 @@ const settings = ref([
             <div>
                 <div class="">
                     <div class="flex flex-column">
-                        <label for="oldPassword">New Password:</label>
-                        <InputText v-model="password_.Password" type="password" id="oldPassword" />
+                        <label for="newPassword">New Password:</label>
+                        <InputText v-model="password_.Password" 
+                        :type="seepassword ? 'text' : 'password'"
+                        id="newPassword" />
                     </div>
                     <div class="flex flex-column">
-                        <label for="newPassword">Confirm New Password:</label>
-                        <InputText v-model="password_.confirmPassword" type="password" id="newPassword" />
+                        <label for="confirmnewPassword">Confirm New Password:</label>
+                        <InputText v-model="password_.confirmPassword" :type="seepassword ? 'text' : 'password'"
+                            id="confirmnewPassword" />
+                    </div>
+                    <div class="flex flex-column">
+                        <label>Show password</label>
+                        <Checkbox v-model="seepassword" :binary=true id="seepassword" />
                     </div>
                     <div class="mt-2">
                         <Button @click="changepassword" icon="pi pi-pencil" severity="secondary"

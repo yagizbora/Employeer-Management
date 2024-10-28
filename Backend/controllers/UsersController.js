@@ -111,11 +111,29 @@ const deactiveusers = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const { id } = req.body
+    const { id, user_id } = req.body
 
     const query = `UPDATE Users SET is_aktif = 0 WHERE id = @id`
 
+
+    let checkadminstatus
+
+    const checkuseradmin = async () => {
+        const query = `SELECT is_admin FROM Users WHERE id = @user_id AND is_aktif = 1`
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('user_id', sql.Int, user_id)
+            .query(query)
+            console.log(result.recordset)
+        return result.recordset.length > 0 ? result.recordset[0].is_admin : null;
+    }
+
     try {
+        checkadminstatus = await checkuseradmin();
+        if (!checkadminstatus) {
+            res.status(400).json({ message: "You're not admin you cannot delete this user!!" });
+            return;
+        }
         const pool = await getPool();
         const result = await pool.request()
             .input('id', sql.Int, id)
