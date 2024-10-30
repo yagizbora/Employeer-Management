@@ -32,10 +32,10 @@ getPool()
         app.use('/api', ProjectRoutes);
         app.use('/api', UsersRoutes);
         app.listen(PORT, () => {
-            console.log(`Sunucu http://localhost:${PORT} adresinde çalýþýyor`);
+            console.log(`Sunucu http://localhost:${PORT} adresinde ï¿½alï¿½ï¿½ï¿½yor`);
         });
     })
     .catch(err => {
-        console.error('Bir Hata oluþtu', err);
+        console.error('Bir Hata oluï¿½tu', err);
 /*        process.exit(1);*/
     });

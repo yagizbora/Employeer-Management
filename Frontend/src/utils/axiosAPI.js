@@ -12,7 +12,7 @@ export const axiosApp = axios.create({
   },
 });
 
-axiosApp?.interceptors?.request.use(
+axiosApp.interceptors.request.use(
   function (config) {
     config.headers.token = localStorage.getItem("token");
     JsLoadingOverlay.show({
@@ -27,7 +27,8 @@ axiosApp?.interceptors?.request.use(
     return Promise.reject(error);
   }
 );
-axiosApp?.interceptors?.response.use(
+
+axiosApp.interceptors.response.use(
   (response) => {
     JsLoadingOverlay.hide();
     return response;
@@ -40,6 +41,13 @@ axiosApp?.interceptors?.response.use(
     }
 
     if (error?.response.status === 401) {
+      // 401 hatası geldiğinde toast aç
+      Swal.fire({
+        title: "Hata!",
+        text: `${error?.response?.data?.message || "Yetkisiz erişim!"}.`,
+        icon: "error",
+        confirmButtonText: "Tamam",
+      });
       router.push("/auth/login");
     } else {
       if (error?.response?.data?.message) {
@@ -83,22 +91,17 @@ axiosPublicApp.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 axiosPublicApp.interceptors.response.use(
   (response) => {
     JsLoadingOverlay.hide();
-    if (!response.data.status) {
-      // if (response.data.message.indexOf("token bilgisi geçersiz") >= 0) {
-      //       localStorage.clear();
-      //       router.push("/login");
-      // }
-    }
     return response;
   },
   (error) => {
-    console.log(error);
+    JsLoadingOverlay.hide();
     Swal.fire({
       title: `Hata!`,
-      text: `${error?.response?.data}.(${error?.message})`,
+      text: `${error?.response?.data || error?.message}.`,
       icon: "error",
       confirmButtonText: "Tamam",
     });
@@ -129,21 +132,25 @@ axiosFileApp.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 axiosFileApp.interceptors.response.use(
   (response) => {
     JsLoadingOverlay.hide();
-
     return response;
   },
   (error) => {
     JsLoadingOverlay.hide();
-    console.log(error);
     if (error.response.data == "Token Hatalı") {
       localStorage.clear();
       router.push("/auth/login");
     }
-    console.log(error?.response.status);
     if (error?.response.status == 401) {
+      Swal.fire({
+        title: "Hata!",
+        text: `${error?.response?.data?.message || "Yetkisiz erişim!"}.`,
+        icon: "error",
+        confirmButtonText: "Tamam",
+      });
       router.push("/auth/login");
     } else {
       if (error?.response?.data?.message) {
