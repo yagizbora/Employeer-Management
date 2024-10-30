@@ -19,7 +19,7 @@ const register = async (req, res) => {
 
     try {
         // ?ifreyi hashle
-        const saltRounds = 10;
+        const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const query = `INSERT INTO Users (username, password,is_aktif,is_admin) VALUES (@username, @password,1,@is_admin)`;
@@ -57,7 +57,7 @@ const changepassword = async (req, res) => {
 
     const query = `UPDATE Users SET password = @hashedpassword WHERE id = @id`
     try {
-        const saltRounds = 10;
+        const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const pool = await getPool();
@@ -164,27 +164,22 @@ const login = async (req, res) => {
 
         const user = result.recordset[0];
 
-        // Kullan?c? mevcut de?ilse hata ver.
         if (!user) {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
 
-        // ?ifreyi do?rula.
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
 
-        // Kullan?c? do?ruland?ktan sonra token olu?tur.
         const token = jwt.sign({ id: user.id, username: user.username }, 'YOUR_SECRET_KEY', { expiresIn: '90m' });
 
-        // Mevcut kullan?c? i?in token'? g?ncelle.
         await pool.request()
             .input('token', sql.VarChar, token)
             .input('id', sql.Int, user.id)
             .query('UPDATE Users SET token = @token WHERE id = @id');
 
-        // Token'? kullan?c?ya geri d?nd?r.
         res.status(200).json({ message: 'Login successful', token: token, user_id: user.id, username: user.username, is_admin: user.is_admin });
     } catch (error) {
         res.status(500).json({ message: 'Database error: ' + error.message });

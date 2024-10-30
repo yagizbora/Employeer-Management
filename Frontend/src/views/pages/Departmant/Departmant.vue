@@ -52,18 +52,18 @@ const handledepartmantdelete = async (data) => {
 }
 
 const deletedepartmant = async (data) => {
-    confirm.require({
-        message: 'Are you sure you want to delete this Departmant?',
-        header: 'Delete Departmant',
-        icon: 'pi pi-exclamation-triangle',
-        acceptLabel: 'Delete',
-        acceptClass: 'p-button-danger',
-        rejectLabel: 'Cancel',
-        rejectClass: 'p-button-secondary p-button-outlined',
-        accept: () => {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
             handledepartmantdelete(data)
-        },
-        reject: () => { }
+        }
     })
 }
 
@@ -144,8 +144,6 @@ onMounted(fetchdata);
 
 <template>
     <div class="grid">
-        <Toast />
-        <ConfirmDialog></ConfirmDialog>
         <div class="col-12">
             <div class="card">
                 <h5>Departmant</h5>
@@ -171,19 +169,21 @@ onMounted(fetchdata);
                 </div>
             </div>
         </div>
-        <Dialog v-model:visible="EditDepartmantDialog" modal header="Edit Departmant" style="width: 25rem;">
-            <div class="flex">
-                <div>
-                    <div class="flex flex-column">
-                        <label>Deparmant</label>
-                        <InputText placeholder="Deparmant" v-model="editData.departman" />
+        <Teleport to="body">
+            <Dialog v-model:visible="EditDepartmantDialog" modal header="Edit Departmant" style="width: 25rem;">
+                <div class="flex">
+                    <div>
+                        <div class="flex flex-column">
+                            <label>Deparmant</label>
+                            <InputText placeholder="Deparmant" v-model="editData.departman" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12">
-                <Button class="pi pi-plus" label="Edit Departmant" @click="editdepartmanthandle"></Button>
-            </div>
-        </Dialog>
+                <div class="col-12">
+                    <Button class="pi pi-plus" label="Edit Departmant" @click="editdepartmanthandle"></Button>
+                </div>
+            </Dialog>
+        </Teleport>
     </div>
 </template>
 

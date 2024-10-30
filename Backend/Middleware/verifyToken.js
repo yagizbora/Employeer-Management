@@ -10,6 +10,7 @@ const verifyToken = async (req) => {
     }
 
     try {
+
         const decoded = jwt.verify(token, 'YOUR_SECRET_KEY'); 
 
         const pool = await getPool();
@@ -30,10 +31,8 @@ const verifyToken = async (req) => {
             await pool.request()
                 .input('token', sql.VarChar, token)
                 .query('UPDATE Users SET token = NULL WHERE token = @token');
-
             return { status: false, message: 'Session expired, please log in again.' };
         } else {
-            console.error('Token verification error:', error);
             return { status: false, message: 'Failed to authenticate token.' };
         }
     }
