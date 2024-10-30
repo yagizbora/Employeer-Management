@@ -123,7 +123,8 @@ const changepassword = async () => {
             const response = await usersservice.changepassword({ id: id, password: password_.value.Password });
             if (response) {
                 changepassworddialog.value = false;
-                toast.add({ severity: 'success', summary: 'Success!', detail: 'Password changed successfully, you will be redirected to the login page', life: 4000 })
+                // toast.add({ severity: 'success', summary: 'Success!', detail: 'Password changed successfully, you will be redirected to the login page', life: 4000 })
+                toast.add({ severity: 'success', summary: 'Success!', detail: response.data.message +  '. You will be redirected to the login page', life: 4000 })
                 setTimeout(() => {
                     router.push('/auth/login'); localStorage.clear();
                 }, 3000);
@@ -165,7 +166,7 @@ const changeusername = async () => {
                 toast.add({
                     severity: 'success',
                     summary: 'Success!',
-                    detail: 'Username changed successfully you will redirect login page then you can login with new username',
+                    detail: response.data.message + '. You will be redirected to the login page',
                     life: 4000
                 });
                 setTimeout(() => {
@@ -389,11 +390,11 @@ const settings = ref([
             <div>
                 <div class="">
                     <div class="flex flex-column">
-                        <label for="oldPassword">Old username:</label>
+                        <label for="oldPassword">New username:</label>
                         <InputText v-model.trim="username_.username" id="oldPassword" />
                     </div>
                     <div class="flex flex-column">
-                        <label for="newPassword">New username:</label>
+                        <label for="newPassword">Confirm username:</label>
                         <InputText v-model.trim="username_.confirmusername" id="newPassword" />
                     </div>
                     <div class="mt-2">

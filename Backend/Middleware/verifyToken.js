@@ -27,11 +27,13 @@ const verifyToken = async (req) => {
         }
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
+            const query = `UPDATE Users SET token = '' WHERE token = @token`
             const pool = await getPool();
             await pool.request()
                 .input('token', sql.VarChar, token)
-                .query('UPDATE Users SET token = NULL WHERE token = @token');
+                .query(query);
             return { status: false, message: 'Session expired, please log in again.' };
+
         } else {
             return { status: false, message: 'Failed to authenticate token.' };
         }

@@ -49,13 +49,15 @@ const listusers = async (req, res) => {
 }
 
 const changepassword = async (req, res) => {
+    // Token kontrolü
     const tokenCheck = await verifyToken(req);
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const { id, password } = req.body
 
-    const query = `UPDATE Users SET password = @hashedpassword WHERE id = @id`
+    const { id, password } = req.body;
+    const query = `UPDATE Users SET password = @hashedpassword WHERE id = @id`;
+
     try {
         const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -66,26 +68,34 @@ const changepassword = async (req, res) => {
             .input('hashedpassword', sql.VarChar, hashedPassword)
             .query(query);
 
-        const response = result
-        if (response.rowsAffected[0] > 0) {
-            return res.status(200).json({ message: 'Password changed successfully' })
+        if (result.rowsAffected[0] > 0) {
+            const resetTokenQuery = `UPDATE Users SET token = '' WHERE id = @id`;
+            const tokenResult = await pool.request()
+                .input('id', sql.Int, id)
+                .query(resetTokenQuery);
+
+            if (tokenResult.rowsAffected[0] > 0) {
+                return res.status(200).json({ message: 'Password changed and token reset successfully.' });
+            } else {
+                return res.status(200).json({ message: 'Password changed, but failed to reset token.' });
+            }
+        } else {
+            return res.status(404).json({ message: 'User ID not found or password not changed.' });
         }
-        else {
-            res.status(404).json({ message: 'Something is wrong' });
-        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Database error: ' + error.message });
     }
-    catch (error) {
-        res.status(500).json({ message: 'Database error: ' + error.message });
-    }
-}
+};
+
 
 const changeusername = async (req, res) => {
     const tokenCheck = await verifyToken(req);
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
+
     const { id, username } = req.body;
-    const query = `UPDATE Users SET username = @username WHERE id = @id`
+    const query = `UPDATE Users SET username = @username WHERE id = @id`;
 
     try {
         const pool = await getPool();
@@ -94,17 +104,25 @@ const changeusername = async (req, res) => {
             .input('username', sql.VarChar, username)
             .query(query);
 
-        const response = result
-        if (response.rowsAffected[0] > 0) {
-            return res.status(200).json({ message: 'Password changed successfully' })
-        }
-        else {
-            res.status(404).json({ message: 'Something is wrong' });
+        if (result.rowsAffected[0] > 0) {
+            const resettokenQuery = `UPDATE Users SET token = '' WHERE id = @id`;
+            const tokenResult = await pool.request()
+                .input('id', sql.Int, id)
+                .query(resettokenQuery);
+
+            if (tokenResult.rowsAffected[0] > 0) {
+                return res.status(200).json({ message: 'Username changed and token reset successfully.' });
+            } else {
+                return res.status(200).json({ message: 'Username changed, but failed to reset token.' });
+            }
+        } else {
+            return res.status(404).json({ message: 'Username not changed. User ID may not exist.' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Database error: ' + error.message });
+        return res.status(500).json({ message: 'Database error: ' + error.message });
     }
 };
+
 
 const deactiveusers = async (req, res) => {
     const tokenCheck = await verifyToken(req);
@@ -179,7 +197,6 @@ const login = async (req, res) => {
             .input('token', sql.VarChar, token)
             .input('id', sql.Int, user.id)
             .query('UPDATE Users SET token = @token WHERE id = @id');
-
         res.status(200).json({ message: 'Login successful', token: token, user_id: user.id, username: user.username, is_admin: user.is_admin });
     } catch (error) {
         res.status(500).json({ message: 'Database error: ' + error.message });
