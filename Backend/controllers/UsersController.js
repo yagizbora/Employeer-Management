@@ -1,4 +1,3 @@
-const { query } = require('express');
 const { getPool } = require('../database');
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
@@ -18,7 +17,6 @@ const register = async (req, res) => {
     }
 
     try {
-        // ?ifreyi hashle
         const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -49,7 +47,6 @@ const listusers = async (req, res) => {
 }
 
 const changepassword = async (req, res) => {
-    // Token kontrolü
     const tokenCheck = await verifyToken(req);
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
@@ -86,7 +83,6 @@ const changepassword = async (req, res) => {
         return res.status(500).json({ message: 'Database error: ' + error.message });
     }
 };
-
 
 const changeusername = async (req, res) => {
     const tokenCheck = await verifyToken(req);
