@@ -278,14 +278,33 @@ const confirmlogout = () => {
         rejectLabel: 'Cancel',
         acceptLabel: 'Log out',
         accept: () => {
-            toast.add({ severity: 'info', summary: 'Warn!', detail: "You'll redirect to Login page", life: 5000 });
+            logoutcontrol()
+        }
+    });
+}
+
+
+const logoutcontrol = async (data) => {
+    try {
+        const user_id = localStorage.getItem('user_id');
+        const response = await usersservice.logout({ user_id: user_id });
+        if (response.status = 200)
+        {
+            toast.add({ severity: 'info', summary: 'Warn!', detail: response.data.message + '. ' +  "You'll redirect to Login page", life: 5000 });
             setTimeout(() => {
                 localStorage.clear()
                 router.push('/auth/login');
             }, 5000)
 
         }
-    });
+    } 
+    catch (e)
+    {
+        console.error('Error logging out:', e);
+        toast.add({ severity: 'error', summary: 'Error!', detail: 'Failed to log out' + response.data.message , life: 5000 });
+    }
+    
+
 }
 
 const settings = ref([
