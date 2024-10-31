@@ -1,5 +1,6 @@
 <script setup>
 import Swal from 'sweetalert2';
+const CustomerTable = defineAsyncComponent(() => import('./CustomerTable.vue'));
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 import CustomerService from "@/service/customerService";
 import { RouterLink } from 'vue-router'
@@ -65,9 +66,10 @@ const sendeditdata = () => {
         // });
         Swal.fire({  
             title: 'Important Customer!!',
-            icon: 'error',
+            icon: 'warning',
             confirmButtonText: 'Ok',
-            showCancelButton:'true',
+            showCancelButton: 'true',
+            target:'body',
             text: 'Are you sure you want to continue? This will not cannot be undone'  
         }).then((result) => {
             if (result.isConfirmed) {
@@ -144,7 +146,6 @@ const handledeletedata = async (data) => {
 };
 
 
-const CustomerTable = defineAsyncComponent(() => import('./CustomerTable.vue'));
 onMounted(() => {
     fetchdata()
 });
