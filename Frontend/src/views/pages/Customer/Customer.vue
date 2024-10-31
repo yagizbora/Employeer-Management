@@ -49,21 +49,31 @@ const editdataimportant = async (data) => {
 
 const sendeditdata = () => {
     
-    // console.log('is_important_customer:', FormData.value.is_important_customer);
     if (FormData.value.is_important_customer) {
-        // editdialog.value = false;
-        confirm.require({
-            header: 'Important Customer!',
-            message: 'Are you sure?',
-            icon: 'pi pi-exclamation-triangle',
-            accept: async () => {
-                // console.log('User accepted the confirmation');
-                 updateCustomer();
-            },
-            reject: () => {
-                // console.log('User rejected the confirmation');
+        editdialog.value = false;
+        // confirm.require({
+        //     header: 'Important Customer!',
+        //     message: 'Are you sure?',
+        //     icon: 'pi pi-exclamation-triangle',
+        //     accept: async () => {
+        //         // console.log('User accepted the confirmation');
+        //          updateCustomer();
+        //     },
+        //     reject: () => {
+        //         // console.log('User rejected the confirmation');
+        //     }
+        // });
+        Swal.fire({  
+            title: 'Important Customer!!',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            showCancelButton:'true',
+            text: 'Are you sure you want to continue? This will not cannot be undone'  
+        }).then((result) => {
+            if (result.isConfirmed) {
+                updateCustomer();
             }
-        });
+        })
     } else {
          updateCustomer();
     }

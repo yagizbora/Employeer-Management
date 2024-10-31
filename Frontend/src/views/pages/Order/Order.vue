@@ -55,10 +55,10 @@ import OrderPassive from './OrderPassive.vue';
                         </template>
                     </Toolbar>
                     <TabView>
-                        <TabPanel header="Passive Orders">
+                        <TabPanel header="Not Complated Orders">
                             <OrderPassive />
                         </TabPanel>
-                        <TabPanel header="Active Orders">
+                        <TabPanel header="Complated Orders">
                             <OrderActive />
                         </TabPanel>
                     </TabView>
