@@ -14,7 +14,6 @@ const verifyToken = async (req) => {
 
         const pool = await getPool();
         const query = `SELECT * FROM Users WHERE token = @token AND is_aktif = 1 AND is_logged = 1`;
-
         const result = await pool.request()
             .input('token', sql.VarChar, token)
             .query(query);
@@ -26,7 +25,7 @@ const verifyToken = async (req) => {
         }
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
-            const query = `UPDATE Users SET token = '' WHERE token = @token`
+            const query = `UPDATE Users SET token = '' , is_logged = 0 WHERE token = @token`
             const pool = await getPool();
             await pool.request()
                 .input('token', sql.VarChar, token)
