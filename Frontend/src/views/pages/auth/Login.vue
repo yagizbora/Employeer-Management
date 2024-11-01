@@ -113,7 +113,6 @@ const login = async () => {
         </div>
         <Toast />
     </div>
-    <AppConfig simple />
 </template>
 
 <style scoped lang="scss">

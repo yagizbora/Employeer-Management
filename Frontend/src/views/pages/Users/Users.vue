@@ -32,14 +32,14 @@ const getallusers = async () => {
     })
     if (response) {
         data.value = [];
-        data.value = response.data.data; 
+        data.value = response.data.data;
     }
 }
 
 const checkadmin = async () => {
     const check = localStorage.getItem('is_admin')
     if (check) {
-    visiblestatus.value = true
+        visiblestatus.value = true
     }
     else if (!check) {
         visiblestatus.value = false
@@ -49,19 +49,24 @@ const checkadmin = async () => {
 
 const createuser = async () => {
     try {
-        const response = await usersservice.createusers ({ ...formData.value })
+        const response = await usersservice.createusers({ ...formData.value })
         if (response) {
             Swal.fire({
                 title: 'User created successfully!',
                 text: response.data.message,
-                icon:'success',
+                icon: 'success',
                 confirmButtonText: 'OK',
             })
             createusers.value = false
             formData.value = ({})
             getallusers()
         }
+        if (response.status == 500) {
+            createusers.value = false
+            toast.add({ severity: 'error', summary: 'Error', detail: response.data.message, life: 3000 });
+        }
     } catch (error) {
+        createusers.value = false
         console.error('Error creating user:', error);
     }
 }
@@ -73,7 +78,7 @@ const deactiveuser = async (data) => {
         Swal.fire({
             title: 'User deactivated successfully!',
             text: response.data.message,
-            icon:'success',
+            icon: 'success',
             confirmButtonText: 'OK',
         })
         getallusers()
@@ -85,7 +90,7 @@ const deactiveuser = async (data) => {
 
 onMounted(() => {
     getallusers(),
-    checkadmin()
+        checkadmin()
 });
 </script>
 
@@ -113,7 +118,7 @@ onMounted(() => {
                     <UsersTable :data="data" @deactiveuser="deactiveuser" @getallusers="getallusers" />
                 </div>
             </div>
-        </div>  
+        </div>
         <Dialog v-model:visible="createusers" modal header="Create Users" :style="{ width: '35rem' }">
             <div>
                 <div class="flex flex-column">
@@ -133,6 +138,7 @@ onMounted(() => {
                 </div>
             </div>
         </Dialog>
+        <Toast />
     </div>
 </template>
 

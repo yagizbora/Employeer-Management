@@ -11,23 +11,40 @@ const register = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const { username, password,is_admin } = req.body;
 
-    if (!username || !password || !is_admin == null) {
-        return res.status(400).json({ message: 'Username and password are required' });
+    const { username, password, is_admin } = req.body;
+
+    
+    if (!username || !password || is_admin == null) {
+        return res.status(400).json({ message: 'Username, password, and is_admin are required'});
     }
 
+
+    const checkUsernameQuery = async () => {
+        const query = `SELECT COUNT(*) AS count FROM Users WHERE username = @username`;
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('username', sql.VarChar, username)
+            .query(query);
+        return result.recordset[0].count; 
+    };
+
     try {
+        const usernameCount = await checkUsernameQuery(); 
+        if (usernameCount > 0) {
+            return res.status(500).json({ message: 'Username already exists, please use a different username' });
+        }
+
         const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const query = `INSERT INTO Users (username, password,is_aktif,is_admin) VALUES (@username, @password,1,@is_admin)`;
+        const insertQuery = `INSERT INTO Users (username, password, is_aktif, is_admin) VALUES (@username, @password, 1, @is_admin)`;
         const pool = await getPool();
         await pool.request()
             .input('username', sql.VarChar, username)
             .input('is_admin', sql.Bit, is_admin)
             .input('password', sql.VarChar, hashedPassword)
-            .query(query);
+            .query(insertQuery);
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
