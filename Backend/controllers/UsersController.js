@@ -13,7 +13,7 @@ const register = async (req, res) => {
     }
     const { username, password,is_admin } = req.body;
 
-    if (!username || !password || !is_admin == null) {
+    if (!username || !password) {
         return res.status(400).json({ message: 'Username and password are required' });
     }
 
