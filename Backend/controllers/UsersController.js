@@ -40,12 +40,30 @@ const listusers = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const query = `SELECT username,is_admin,id FROM Users WHERE is_aktif = 1`
-    const pool = await getPool();
-    const result = await pool.request()
-        .query(query);
-    res.status(200).json({data: result.recordset});
-}
+
+    const { is_logged } = req.body;
+
+    if (is_logged === null || is_logged === undefined) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    let sqllogged = ""; // Change const to let
+    if (is_logged !== null && is_logged !== undefined) {
+        sqllogged += ` AND is_logged = @is_logged`;
+    }
+
+    const query = `SELECT username, is_admin, id, is_logged FROM Users WHERE is_aktif = 1${sqllogged}`;
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('is_logged', sql.Bit, is_logged)
+            .query(query);
+        res.status(200).json({ data: result.recordset });
+    } catch (error) {
+        res.status(500).json({ message: 'Database error', error: error.message });
+    }
+};
 
 const changepassword = async (req, res) => {
     const tokenCheck = await verifyToken(req);
@@ -193,7 +211,7 @@ const login = async (req, res) => {
         await pool.request()
             .input('token', sql.VarChar, token)
             .input('id', sql.Int, user.id)
-            .query('UPDATE Users SET token = @token WHERE id = @id');
+            .query('UPDATE Users SET token = @token, is_logged = 1 WHERE id = @id');
         res.status(200).json({ message: 'Login successful', token: token, user_id: user.id, username: user.username, is_admin: user.is_admin });
     } catch (error) {
         res.status(500).json({ message: 'Database error: ' + error.message });
@@ -209,14 +227,14 @@ const logout = async (req, res) => {
     if (!user_id) {
         res.status(400).json({ message: 'User ID is required' });
     }
-    const query = `Update Users SET token = '' WHERE id = @user_id AND is_aktif  = 1`
+    const query = `Update Users SET token = '' , is_logged = 0 WHERE id = @user_id AND is_aktif  = 1`
     try {
         const pool = await getPool();
         const result = await pool.request()
            .input('user_id', sql.Int, user_id)
             .query(query)
         if (result.rowsAffected[0] > 0) {
-            const usercheckquery = `Select username from Users where id = @user_id  AND is_aktif = 1`
+            const usercheckquery = `Select username from Users where id = @user_id AND is_aktif = 1`
             const userresult = await pool.request()
                 .input('user_id', sql.Int, user_id)
                 .query(usercheckquery)

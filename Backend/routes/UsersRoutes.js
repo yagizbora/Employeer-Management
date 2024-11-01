@@ -8,7 +8,7 @@ router.post('/register', register)
 
 router.post('/deactiveusers', deactiveusers)
 
-router.get('/listusers', listusers)
+router.post('/listusers', listusers)
 
 router.post('/adminstatus', adminstatus)
 

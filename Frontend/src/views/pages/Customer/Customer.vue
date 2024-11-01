@@ -69,7 +69,7 @@ const sendeditdata = () => {
             icon: 'warning',
             confirmButtonText: 'Ok',
             showCancelButton: 'true',
-            target:'body',
+            target:"body",
             text: 'Are you sure you want to continue? This will not cannot be undone'  
         }).then((result) => {
             if (result.isConfirmed) {

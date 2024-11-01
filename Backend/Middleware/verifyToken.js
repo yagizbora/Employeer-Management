@@ -10,11 +10,10 @@ const verifyToken = async (req) => {
     }
 
     try {
-
         const decoded = jwt.verify(token, 'YOUR_SECRET_KEY'); 
 
         const pool = await getPool();
-        const query = `SELECT * FROM Users WHERE token = @token AND is_aktif = 1`;
+        const query = `SELECT * FROM Users WHERE token = @token AND is_aktif = 1 AND is_logged = 1`;
 
         const result = await pool.request()
             .input('token', sql.VarChar, token)

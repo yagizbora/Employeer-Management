@@ -14,16 +14,25 @@ const formData = ref({
     is_admin: false
 })
 
+const is_logged = ref(true)
+
+
 const visiblestatus = ref()
 
 const UsersTable = defineAsyncComponent(() => import('./UsersTable.vue'))
 
 
+const switchbuttonlistener = async (event) => {
+    getallusers()
+}
+
 const getallusers = async () => {
-    const response = await usersservice.Userlist()
+    const response = await usersservice.Userlist({
+        is_logged: is_logged.value
+    })
     if (response) {
-        data.value = []; // İlk olarak boş hale getiriyoruz.
-        data.value = response.data.data; // Ardından güncel veriyi atıyoruz.
+        data.value = [];
+        data.value = response.data.data; 
     }
 }
 
@@ -92,11 +101,19 @@ onMounted(() => {
                         <Button severity="info" @click="createusers = true" text rounded icon="pi pi-plus"></Button>
                     </template>
                 </Toolbar>
+                <div class="flex flex-column">
+                    <div>
+                        <label> Active/Disable</label>
+                    </div>
+                    <div>
+                        <InputSwitch v-model="is_logged" @change="switchbuttonlistener" />
+                    </div>
+                </div>
                 <div>
                     <UsersTable :data="data" @deactiveuser="deactiveuser" @getallusers="getallusers" />
                 </div>
             </div>
-        </div>
+        </div>  
         <Dialog v-model:visible="createusers" modal header="Create Users" :style="{ width: '35rem' }">
             <div>
                 <div class="flex flex-column">

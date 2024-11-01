@@ -51,13 +51,20 @@ const checkadmin = () => {
         <Column field="username" header="Username"></Column>
         <Column field="is_admin" header="Admin Status">
             <template #body="{ data }">
-                <InputSwitch :binary="true" v-model="data.is_admin" :disabled="checkadmin == false"
+                <InputSwitch :binary="true" v-model="data.is_admin" :disabled="checkadmin == false || data.is_logged"
                     @change="changeadminstatusbyid(data)" />
+            </template>
+        </Column>
+        <Column field="is_logged" header="Log status">
+            <template #body="{ data }">
+                <span :class="data.is_logged? 'text-success' : 'text-danger'">
+                    <Checkbox v-model="data.is_logged" binary disabled />
+                </span>
             </template>
         </Column>
         <Column header="Operations">
             <template #body="{ data }">
-                <Button text rounded @click="() => deactiveuser(data)" icon="pi pi-trash" severity="danger"></Button>
+                <Button text rounded @click="() => deactiveuser(data)" icon="pi pi-trash" severity="danger" :disabled="data.is_logged"></Button>
             </template>
         </Column>
     </DataTable>

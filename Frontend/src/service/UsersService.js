@@ -3,8 +3,8 @@ import { axiosApp } from "@/utils/axiosAPI";
 
 export default class UserService {
 
-    async Userlist() {
-        const response = await axiosApp.get('listusers');
+    async Userlist(data) {
+        const response = await axiosApp.post('listusers',data);
         return response;
     }
     async createusers(data) {
