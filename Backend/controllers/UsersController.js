@@ -14,11 +14,27 @@ const register = async (req, res) => {
 
     const { username, password, is_admin } = req.body;
 
-    if (!username || !password || !is_admin == null) {
-        return res.status(400).json({ message: 'Username and password are required' });
+    
+    if (!username || !password || is_admin == null) {
+        return res.status(400).json({ message: 'Username, password, and is_admin are required'});
     }
 
+
+    const checkUsernameQuery = async () => {
+        const query = `SELECT COUNT(*) AS count FROM Users WHERE username = @username`;
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('username', sql.VarChar, username)
+            .query(query);
+        return result.recordset[0].count; 
+    };
+
     try {
+        const usernameCount = await checkUsernameQuery(); 
+        if (usernameCount > 0) {
+            return res.status(500).json({ message: 'Username already exists, please use a different username' });
+        }
+
         const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
