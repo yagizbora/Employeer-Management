@@ -1,8 +1,22 @@
 ﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.89-alpha">
   <PropertyGroup>
     <!--Command to run on project build-->
-    <BuildCommand> </BuildCommand>
+    <BuildCommand>
+    </BuildCommand>
     <!--Command to run on project clean-->
-    <CleanCommand> </CleanCommand>
+    <CleanCommand>
+    </CleanCommand>
   </PropertyGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="NewFolder1\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="NewFolder1\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="controllers\NewFolder\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="controllers\NewFolder\**" />
+  </ItemGroup>
 </Project>

@@ -38,7 +38,7 @@ const register = async (req, res) => {
         const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const insertQuery = `INSERT INTO Users (username, password, is_aktif, is_admin) VALUES (@username, @password, 1, @is_admin)`;
+        const insertQuery = `INSERT INTO Users (username, password, is_aktif, is_admin,is_logged) VALUES (@username, @password, 1, @is_admin,0)`;
         const pool = await getPool();
         await pool.request()
             .input('username', sql.VarChar, username)
@@ -81,6 +81,7 @@ const listusers = async (req, res) => {
         res.status(500).json({ message: 'Database error', error: error.message });
     }
 };
+
 
 const changepassword = async (req, res) => {
     const tokenCheck = await verifyToken(req);
@@ -272,45 +273,62 @@ const adminstatus = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const { id, is_admin, user_id } = req.body
-    const query = `UPDATE Users SET is_admin = @is_admin WHERE id = @id`
 
+    const { id, is_admin, user_id } = req.body;
+    const updateQuery = `UPDATE Users SET is_admin = @is_admin, token = '' WHERE id = @id`;
 
-    let checkadminstatus
+    let checkUserActive;
+    let checkAdminStatus;
 
-    const checkuseradmin = async () => {
-        const query = `SELECT is_admin FROM Users WHERE id = @user_id AND is_aktif = 1`
+    const checkUserActiveController = async () => {
+        const query = `SELECT is_logged, username FROM Users WHERE id = @id AND is_aktif = 1`;
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query);
+
+        return result.recordset.length > 0 ? result.recordset[0] : null;
+    };
+
+    const checkUserAdmin = async () => {
+        const query = `SELECT is_admin FROM Users WHERE id = @user_id AND is_aktif = 1`;
         const pool = await getPool();
         const result = await pool.request()
             .input('user_id', sql.Int, user_id)
-            .query(query)
-        return result.recordset.length > 0 ? result.recordset[0].is_admin : null;
-    }
-    try {
-        checkadminstatus = await checkuseradmin();
-        if (!checkadminstatus) {
-            res.status(400).json({message: "You're not admin you cannot delete this user!!" });
-            return;
-        }
-        const pool = await getPool();
-        const result = await pool.request()
-            .input('id',sql.Int, id)
-            .input('is_admin', sql.Bit, is_admin)
             .query(query);
 
-        const response = result
+        return result.recordset.length > 0 ? result.recordset[0].is_admin : null;
+    };
 
-        if (response.rowsAffected[0] > 0) {
-            res.status(200).json({ message: 'Operation is succesfull ' })
+    try {
+        checkAdminStatus = await checkUserAdmin();
+        if (!checkAdminStatus) {
+            return res.status(400).json({ message: "You're not an admin; you cannot update this user's admin status." });
         }
-        else {
-            res.status(404).json({ message: 'User is not found' });
+
+        checkUserActive = await checkUserActiveController();
+        if (checkUserActive && checkUserActive.is_logged) {
+            return res.status(400).json({
+                message: `${checkUserActive.username} is currently logged in and cannot be edited. Please contact IT if changes are urgent.`
+            });
         }
+
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .input('is_admin', sql.Bit, is_admin)
+            .query(updateQuery);
+
+        if (result.rowsAffected[0] > 0) {
+            return res.status(200).json({ message: `${checkUserActive.username} admin status changed` });
+        } else {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Database error: ' + error.message });
     }
-    catch (error) {
-        res.status(500).json({ message: 'Database error: ' + error.message });
-    }
-}
+};
+
 
 
 
