@@ -1,29 +1,3 @@
-This template should help get you started developing with Vue 3 in Vite.
+This project has been developed entirely for the purpose of learning Node.js and enhancing my programming skills. It serves as a practical application to deepen my understanding of server-side development. Additionally, this project has been created to help me retain the Front-end knowledge I have acquired, ensuring that I do not forget the essential concepts and techniques that I have learned in that area.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+By working on this project, I aim to integrate my Front-end expertise with new back-end skills, allowing for a more comprehensive grasp of full-stack development. This journey not only strengthens my technical abilities but also boosts my confidence in building more complex applications in the future.
