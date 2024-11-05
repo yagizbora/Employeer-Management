@@ -66,11 +66,11 @@ const createorder = async (req, res) => {
             .input('start_date', sql.Date, start_date)
             .input('end_date', sql.Date, end_date)
             .query(query);
-
-        res.status(201).json({ message: 'Order ba�ar�yla olu�turuldu.' });
+       res.status(201).json({ message: 'Order ba�ar�yla olu�turuldu.' });
     } catch (err) {
         console.error('Database Error:', err);
-        res.status(500).json({ message: 'Database Error' });    }
+        res.status(500).json({ message: 'Database Error' });   
+    }
 }
 
 
@@ -94,7 +94,7 @@ const iscomplatedsetbyid = async (req, res) => {
         })
     }
 
-    console.log(req.body);
+    //console.log(req.body);
 
     //if (is_complated === true) {
     //    isComplatedValue = 1; // true i�in 1
@@ -109,7 +109,7 @@ const iscomplatedsetbyid = async (req, res) => {
     try {
         const pool = await getPool();
 
-        console.log('Executing query:', query);
+        //console.log('Executing query:', query);
 
         await pool.request()
             .input('id', sql.Int, id)
@@ -121,7 +121,7 @@ const iscomplatedsetbyid = async (req, res) => {
             .input('id', sql.Int, id)
             .query('SELECT * FROM [Order] WHERE id = @id');
 
-        console.log('Updated order:', updatedOrder.recordset);
+        //console.log('Updated order:', updatedOrder.recordset);
 
         res.status(200).json({ message: 'G�ncelleme ba�ar�l�' });
     } catch (err) {
@@ -146,7 +146,7 @@ const deleteorders = async (req, res) => {
     try {
         const pool = await getPool();
 
-        console.log('Executing query:', query);
+        //console.log('Executing query:', query);
 
         const result = await pool.request()
             .input('id', sql.Int, id)
@@ -193,7 +193,7 @@ const updateorderbyid = async (req, res) => {
 
         res.status(201).json({ message: 'Order is changed' });
     } catch (err) {
-        console.error('Database Error:', err);
+        //console.error('Database Error:', err);
         res.status(500).json({ message: 'Database Error' });    }
 };
 

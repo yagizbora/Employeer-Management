@@ -36,6 +36,6 @@ getPool()
         });
     })
     .catch(err => {
-        console.error('Bir Hata olu�tu', err);
-/*        process.exit(1);*/
+    console.error('Bir Hata olu�tu', err);
+    process.exit(1);
     });

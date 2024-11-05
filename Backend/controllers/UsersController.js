@@ -200,7 +200,6 @@ const deactiveusers = async (req, res) => {
         res.status(500).json({ message: 'Database error: ' + error.message });
     }
 }
-
 const login = async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {

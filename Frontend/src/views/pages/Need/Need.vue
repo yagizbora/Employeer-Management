@@ -37,11 +37,11 @@ const FetchData = async () => {
 
 const updateneedbyid = async () => {
     const response = await needservice.updateneedbyid({ ...editdata.value })
-    if (response.status === 201) { 
+    if (response.status === 201) {
         Swal.fire({
             title: 'Request updated!',
             text: response.data.message,
-            icon:'success',
+            icon: 'success',
             confirmButtonText: 'Okay'
         })
         FetchData();
@@ -100,18 +100,19 @@ const handledelete = async (data) => {
 }
 
 const deletedata = async (data) => {
-    confirm.require({
-        message: 'Do you want to delete this record?',
-        header: 'Danger Zone',
-        icon: 'pi pi-info-circle',
-        rejectLabel: 'Cancel',
-        acceptLabel: 'Delete',
-        rejectClass: 'p-button-secondary p-button-outlined',
-        acceptClass: 'p-button-danger',
-        accept: () => {
-            handledelete(data)
-        },
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
     })
+        .then((result) => {
+            if (result.value) { }
+            handledelete(data)
+        })
 }
 
 onMounted(() => {
