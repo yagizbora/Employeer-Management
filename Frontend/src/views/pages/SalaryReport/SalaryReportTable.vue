@@ -4,7 +4,7 @@ import { formatCurrency } from "@/utils/helper"
 
 
 const props = defineProps({
-    data:Array
+    data: Array
 })
 const expandedRows = ref([]);
 const expandedRowsActivities = ref([]);
@@ -24,22 +24,36 @@ const onRowCollapse = (event) => {
         <Column expander style="width: 5rem" />
         <Column field="Departman" header="Departman"></Column>
         <Column field="AverageSalary" header="Average Salary">
-        <template #body=" { data } ">
-            <div>{{ formatCurrency(data.AverageSalary) }}</div>
-        </template>
+            <template #body="{ data }">
+                <div style="    background: #efefff;
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 400;">{{ formatCurrency(data.AverageSalary) }}</div>
+            </template>
         </Column>
         <Column field="TotalSalary" header="Total Salary">
-        <template #body=" { data } ">
-            <div>{{ formatCurrency(data.TotalSalary) }}</div>
-        </template>
+            <template #body="{ data }">
+                <div style="    background: rgb(255 239 241);
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 400;
+    text-align: center;">{{ formatCurrency(data.TotalSalary) }}</div>
+            </template>
         </Column>
         <template #expansion="slotProps">
             <DataTable :value="slotProps.data.Employeers" showGridlines>
                 <Column field="Name" header="Name Surname"></Column>
                 <Column field="Salary" header="Salary">
-                <template #body = "{ data }">
-                    <div>{{ formatCurrency(data.Salary) }}</div>
-                </template>
+                    <template #body="{ data }">
+                        <div style="    background: #efefff;
+    width: 50%;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 400;">{{ formatCurrency(data.Salary) }}</div>
+                    </template>
                 </Column>
                 <Column field="Position" header="Position"></Column>
             </DataTable>
