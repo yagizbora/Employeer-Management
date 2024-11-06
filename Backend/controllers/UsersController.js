@@ -6,6 +6,74 @@ const verifyToken = require('../Middleware/verifyToken');
 const { response } = require('express');
 
 
+const firstregistercontroller = async (req, res) => {
+    const query = `SELECT COUNT(*) as count FROM Users WHERE is_aktif = 1`
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .query(query)
+        if (result.recordset[0].count > 0) {
+            res.status(200).json({ status: 'false'})
+        }
+        else {
+            res.status(200).json({status:'true'})
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Database error: ' + error.message });
+    }
+}
+
+const firstregister = async (req, res) => {
+    const { username, password} = req.body
+
+    const checkuser = async () => {
+        const query = `SELECT COUNT(*) as count FROM Users WHERE is_aktif = 1`
+        const pool = await getPool();
+        const result = await pool.request()
+            .query(query)
+        return result.recordset[0].count
+    }
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Username and password are required' });
+    }
+
+
+    const checkUsernameQuery = async () => {
+        const query = `SELECT COUNT(*) AS count FROM Users WHERE username = @username`;
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('username', sql.VarChar, username)
+            .query(query);
+        return result.recordset[0].count;
+    };
+    try {
+        const usernameCount = await checkUsernameQuery();
+        if (usernameCount > 0) {
+            return res.status(500).json({ message: 'Username already exists, please use a different username' });
+        }
+
+
+        const isregisteredfirstuser = await checkuser()
+        console.log(isregisteredfirstuser)
+        if (isregisteredfirstuser > 0) {
+            return res.status(404).json({message: 'Sorry this api or url ONLY for first registration'})
+        }
+        const saltRounds = 12;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const insertQuery = `INSERT INTO Users (username, password, is_aktif, is_admin,is_logged) VALUES (@username, @password,1,1,0)`;
+        const pool = await getPool();
+        await pool.request()
+            .input('username', sql.VarChar, username)
+            .input('password', sql.VarChar, hashedPassword)
+            .query(insertQuery);
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Database error: ' + error.message });
+    }
+}
+
+
 const register = async (req, res) => {
     const tokenCheck = await verifyToken(req);
     if (!tokenCheck.status) {
@@ -341,5 +409,7 @@ module.exports =
     deactiveusers,
     adminstatus,
     changepassword,
-    changeusername
+    firstregister,
+    changeusername,
+    firstregistercontroller
 }

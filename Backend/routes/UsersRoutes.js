@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { login, register, listusers, deactiveusers, adminstatus, changepassword, changeusername, logout } = require('../controllers/UsersController')
+const { login, register, listusers, deactiveusers, adminstatus, changepassword, changeusername, logout, firstregister, firstregistercontroller } = require('../controllers/UsersController')
 
 router.post('/login',login)
 
@@ -17,5 +17,10 @@ router.post('/logout', logout)
 router.post('/changepassword', changepassword)
 
 router.post('/changeusername', changeusername)
+
+router.post('/firstregister', firstregister)
+
+router.get('/firstregistercontroller', firstregistercontroller)
+
 
 module.exports = router;

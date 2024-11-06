@@ -15,7 +15,10 @@ const { layoutConfig } = useLayout();
 // const email = ref('');
 // const password = ref('');
 // const checked = ref(false);
+const status = ref(false)
 const formData = ref({});
+const register = ref({});
+const registerforfirst = ref(false)
 const seepassword = ref(false);
 const clearlocalstorage = async () => {
     localStorage.removeItem('token');
@@ -25,8 +28,67 @@ const clearlocalstorage = async () => {
 }
 
 onMounted(() => {
-    clearlocalstorage()
+    clearlocalstorage(),
+        checkfirstlogin()
 })
+
+const checkfirstlogin = async () => {
+    const response = await axios.get(`${API_URL}firstregistercontroller`);
+    status.value = response.data.status === "true";
+
+    if (status.value) {
+        Swal.fire({
+            title: 'Bilgilendirme',
+            text: 'Bu uygulama ilk kez çalıştığınız için lütfen hesabınızı oluşturunuz. Şifrenizi unuttuysanız sizi hemen yeniden isteyebilirsiniz.',
+            icon: 'info',
+            confirmButtonText: 'Tamam'
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    registerforfirst.value = true;
+                }
+            });
+    } else {
+        return;
+    }
+};
+
+
+const firstregister = async () => {
+    try {
+        if (!register.value.username || !register.value.password) {
+            Swal.fire({
+                title: 'Hata!',
+                text: 'Lütfen tüm alanları doldurunuz',
+                icon: 'error',
+                confirmButtonText: 'Tamam'
+            });
+            registerforfirst.value = false
+
+        }
+        else
+        {
+            const response = await axios.post(`${API_URL}firstregister`, { ...register.value })
+            if (response) {
+                registerforfirst.value = false
+                Swal.fire({
+                    title: 'Başarılı!',
+                    text: response.data.message + `. Please click Ok button page will be reload`,
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload()
+                    }
+                })
+
+            }
+        }
+    } catch (e) {
+        console.error(e);
+        return;
+    }
+}
 
 const login = async () => {
     try {
@@ -90,28 +152,49 @@ const login = async () => {
                     <div>
                         <label for="username" class="block text-900 text-xl font-medium mb-2">Email</label>
                         <InputText id="username" type="text" placeholder="Username" class="w-full md:w-30rem mb-5"
-                            style="padding: 1rem" v-model="formData.username" @keyup.enter="login" />
+                            style="padding: 1rem" v-model="formData.username" @keyup.enter="login" :disabled="status" />
 
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                        <InputText id="password" class="w-full mb-3" 
-                        placeholder="Password" 
-                        :type="seepassword ? 'text' : 'password'" 
-                        v-model="formData.password"
-                        :inputStyle="{ padding: '1rem' }" @keyup.enter="login" />
-                        
+                        <InputText id="password" class="w-full mb-3" placeholder="Password"
+                            :type="seepassword ? 'text' : 'password'" v-model="formData.password"
+                            :inputStyle="{ padding: '1rem' }" @keyup.enter="login" :disabled="status" />
+
                         <!-- <Password id="password1" v-model="formData.password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password> -->
                         <div class="flex flex-column">
                             <label>Show password</label>
-                            <Checkbox v-model="seepassword" :binary=true id="seepassword" />
+                            <Checkbox v-model="seepassword" :binary=true id="seepassword" :disabled="status" />
                         </div>
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                         </div>
-                        <Button label="Sign In" class="w-full p-3 text-xl" @click="login"></Button>
+                        <div v-if="!status">
+                            <Button label="Sign In" class="w-full p-3 text-xl" @click="login"></Button>
+                        </div>
+                        <div v-else-if="status">
+                            <div>
+                                <label style="color: #5034bb;">Sistemde kayıtlı kullanıcı yok.<br>
+                                    Lütfen alttakibutona tıklayarak hesap oluşturma panelini açın</label>
+                            </div>
+                            <Button label="Register" class="w-full p-3 text-xl"
+                                @click="registerforfirst = true"></Button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <Toast />
+        <Dialog v-model:visible="registerforfirst" modal header="Register for first user(DONT CLOSE)">
+            <div class="flex flex-column">
+                <label> Username</label>
+                <InputText v-model="register.username" />
+            </div>
+            <div class="flex flex-column">
+                <label>Password</label>
+                <InputText v-model="register.password" />
+            </div>
+            <div class="mt-2">
+                <Button label="Register" @click="firstregister" icon="pi pi-plus"></Button>
+            </div>
+        </Dialog>
     </div>
 </template>
 

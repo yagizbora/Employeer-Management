@@ -51,11 +51,17 @@ onMounted(() => {
                 <h4>Dashboard</h4>
                 <Toolbar>
                     <template v-slot:start>
+                        <RouterLink to="Employeer-Management">
+                            <Button style="margin-right: 5px;" label="Employeer Management"></Button>
+                        </RouterLink>
+                        <RouterLink to="report/average-and-salary-report">
+                            <Button style="margin-right: 5px;" label="Manage Salary"></Button>
+                        </RouterLink>
+                        <RouterLink to="users/users">
+                            <Button style="margin-right: 5px;" label="Manage users"></Button>
+                        </RouterLink>
                     </template>
                     <template v-slot:end>
-                        <RouterLink to="Employeer-Management">
-                            <Button label="Employeer Management"></Button>
-                        </RouterLink>
                     </template>
                 </Toolbar>
                 <div class="chart">
