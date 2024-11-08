@@ -11,7 +11,8 @@ const
     changeusername,
     logout,
     firstregister,
-    firstregistercontroller
+    firstregistercontroller,
+    changeemail
 }
     = require('../controllers/UsersController')
 
@@ -34,6 +35,8 @@ router.post('/changeusername', changeusername)
 router.post('/firstregister', firstregister)
 
 router.get('/firstregistercontroller', firstregistercontroller)
+
+router.post('/changeemail', changeemail)
 
 
 module.exports = router;
