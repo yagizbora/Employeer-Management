@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 const bodyParser = require('body-parser');
 const { getPool } = require('./database');
 const employeerRoutes = require('./routes/employeerRoutes');
@@ -19,7 +20,6 @@ const PORT = 44392;
 app.use(cors());
 getPool()
     .then(() => {
-
         app.use(bodyParser.json());
         app.use('/api', OrderRoutes);
         app.use('/api', employeerRoutes);
@@ -32,7 +32,7 @@ getPool()
         app.use('/api', ProjectRoutes);
         app.use('/api', UsersRoutes);
         app.listen(PORT, () => {
-            console.log(`Sunucu http://localhost:${PORT} adresinde �al���yor`);
+            console.log(`Sunucu http://localhost: ${PORT} adresinde �al���yor`);
         });
     })
     .catch(err => {

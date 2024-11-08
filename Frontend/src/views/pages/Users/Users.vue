@@ -88,6 +88,7 @@ const deactiveuser = async (data) => {
 }
 
 
+
 onMounted(() => {
     getallusers(),
         checkadmin()
@@ -128,6 +129,10 @@ onMounted(() => {
                 <div class="flex flex-column">
                     <label for="password">Password</label>
                     <InputText v-model.trim="formData.password" />
+                </div>
+                <div class="flex flex-column">
+                    <label>Email</label>
+                    <InputText v-model.trim="formData.email" />
                 </div>
                 <div class="flex flex-column">
                     <label>Admin?</label>

@@ -54,9 +54,9 @@ onMounted(() => {
                         <RouterLink to="Employeer-Management">
                             <Button style="margin-right: 5px;" label="Employeer Management"></Button>
                         </RouterLink>
-                        <RouterLink to="report/average-and-salary-report">
+                        <!-- <RouterLink to="report/average-and-salary-report">
                             <Button style="margin-right: 5px;" label="Manage Salary"></Button>
-                        </RouterLink>
+                        </RouterLink> -->
                         <RouterLink to="users/users">
                             <Button style="margin-right: 5px;" label="Manage users"></Button>
                         </RouterLink>

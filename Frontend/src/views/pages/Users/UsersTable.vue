@@ -62,6 +62,13 @@ const checkadmin = () => {
                 </span>
             </template>
         </Column>
+        <Column field="email" header="E-mail">
+        <template #body=" { data } ">
+            <div>
+                {{ data.email || "No Email" }}
+            </div>
+        </template>
+        </Column>
         <Column header="Operations">
             <template #body="{ data }">
                 <Button text rounded @click="() => deactiveuser(data)" icon="pi pi-trash" severity="danger" :disabled="data.is_logged"></Button>

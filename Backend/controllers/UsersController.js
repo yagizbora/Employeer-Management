@@ -3,7 +3,6 @@ const sql = require('mssql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../Middleware/verifyToken'); 
-const { response } = require('express');
 
 
 const firstregistercontroller = async (req, res) => {
@@ -80,7 +79,7 @@ const register = async (req, res) => {
         return res.status(401).json({ message: tokenCheck.message });
     }
 
-    const { username, password, is_admin } = req.body;
+    const { username, password, is_admin, email } = req.body;
 
     
     if (!username || !password || is_admin == null) {
@@ -106,12 +105,13 @@ const register = async (req, res) => {
         const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const insertQuery = `INSERT INTO Users (username, password, is_aktif, is_admin,is_logged) VALUES (@username, @password, 1, @is_admin,0)`;
+        const insertQuery = `INSERT INTO Users (username, password,email,is_aktif, is_admin,is_logged) VALUES (@username, @password,@email, 1, @is_admin,0)`;
         const pool = await getPool();
         await pool.request()
             .input('username', sql.VarChar, username)
             .input('is_admin', sql.Bit, is_admin)
             .input('password', sql.VarChar, hashedPassword)
+            .input('email', sql.VarChar, email)
             .query(insertQuery);
 
         res.status(201).json({ message: 'User registered successfully' });
@@ -137,7 +137,7 @@ const listusers = async (req, res) => {
         sqllogged += ` AND is_logged = @is_logged`;
     }
 
-    const query = `SELECT username, is_admin, id, is_logged FROM Users WHERE is_aktif = 1${sqllogged}`;
+    const query = `SELECT username, is_admin, id, is_logged,email FROM Users WHERE is_aktif = 1${sqllogged}`;
 
     try {
         const pool = await getPool();
@@ -225,6 +225,8 @@ const changeusername = async (req, res) => {
 };
 
 
+
+
 const deactiveusers = async (req, res) => {
     const tokenCheck = await verifyToken(req);
     if (!tokenCheck.status) {
@@ -234,6 +236,19 @@ const deactiveusers = async (req, res) => {
 
     const query = `UPDATE Users SET is_aktif = 0 WHERE id = @id`
 
+    const usernamequery = `SELECT username FROM Users WHERE id = @id`
+
+    const username = async () =>
+    {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(usernamequery)
+        const response = result.recordset[0]
+        return response
+    }
+
+    let deletedusername
 
     let checkadminstatus
 
@@ -248,18 +263,19 @@ const deactiveusers = async (req, res) => {
 
     try {
         checkadminstatus = await checkuseradmin();
-        if (!checkadminstatus) {
+        if (!checkadminstatus)
+        {
             res.status(400).json({ message: "You're not admin you cannot delete this user!!" });
             return;
         }
+        deletedusername = await username();
         const pool = await getPool();
         const result = await pool.request()
             .input('id', sql.Int, id)
             .query(query)
-
         const response = result
         if (response.rowsAffected[0] > 0) {
-            res.status(200).json({ message: 'Operation is succesfull ' })
+            res.status(200).json({ message: `Operation is succesfull. ${deletedusername.username} is deleted` })
         }
         else {
             res.status(404).json({ message: 'User is not found' });
@@ -337,7 +353,8 @@ const logout = async (req, res) => {
 
 const adminstatus = async (req, res) => {
     const tokenCheck = await verifyToken(req);
-    if (!tokenCheck.status) {
+    if (!tokenCheck.status)
+    {
         return res.status(401).json({ message: tokenCheck.message });
     }
 
