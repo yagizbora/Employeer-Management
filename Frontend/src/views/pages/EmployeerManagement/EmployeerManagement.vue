@@ -148,7 +148,7 @@ onMounted(() => {
 <template>
     <div class="grid">
         <Toast />
-        <ConfirmDialog></ConfirmDialog>
+        <ConfirmDialog />
         <div class="col-12">
             <div class="card">
                 <h4>Employeer Management</h4>
@@ -222,7 +222,6 @@ onMounted(() => {
                 <Button class="pi pi-plus" label="Edit Employeer" @click="editemployee"></Button>
             </div>
         </Dialog>
-
     </div>
 </template>
 
