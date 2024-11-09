@@ -9,12 +9,15 @@ export const axiosApp = axios.create({
   headers: {
     "Content-type": "application/json;charset=UTF-8",
     token: localStorage.getItem("token"),
+    user_id: localStorage.getItem("user_id")
   },
 });
 
 axiosApp.interceptors.request.use(
   function (config) {
     config.headers.token = localStorage.getItem("token");
+    config.headers.user_id = localStorage.getItem("user_id");
+
     JsLoadingOverlay.show({
       spinnerIcon: "ball-atom",
       spinnerColor: "#007bff",
@@ -23,7 +26,7 @@ axiosApp.interceptors.request.use(
     return config;
   },
   function (error) {
-    console.log("ERROR := ", error);
+    console.error("Request error:", error);
     return Promise.reject(error);
   }
 );
@@ -114,13 +117,14 @@ export const axiosFileApp = axios.create({
   headers: {
     "Content-Type": "multipart/form-data",
     token: localStorage.getItem("token"),
+    user_id: localStorage.getItem("user_id")
   },
 });
 
 axiosFileApp.interceptors.request.use(
   function (config) {
     config.headers.token = localStorage.getItem("token");
-    config.headers.site = localStorage.getItem("site");
+    config.headers.user_id = localStorage.getItem("user_id");
     JsLoadingOverlay.show({
       spinnerIcon: "ball-atom",
       spinnerColor: "#007bff",
