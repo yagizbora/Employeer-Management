@@ -148,11 +148,12 @@ const updateemail = async () => {
                         })
                     getallusers(),
                         editemaildialog.value = false;
-                }
+            }
         }
 
     } catch (e) {
         console.error('Error updating email:', e);
+        editemaildialog.value = false;
     }
 }
 

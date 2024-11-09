@@ -79,7 +79,7 @@ const checkadmin = () => {
             <template #body="{ data }">
                 <Button text rounded @click="() => deactiveuser(data)" icon="pi pi-trash" severity="danger"
                     :disabled="data.is_logged"></Button>
-                <Button text rounded icon="pi pi-envelope" severity="help" @click="() => editemail(data)"></Button>
+                <Button text rounded icon="pi pi-envelope" severity="help" @click="() => editemail(data)" :disabled="checkadmin == false"></Button>
             </template>
         </Column>
     </DataTable>
@@ -87,4 +87,4 @@ const checkadmin = () => {
 
 
 
-<style lang="scss" scoped></style>
+<style lang=" scss" scoped></style>

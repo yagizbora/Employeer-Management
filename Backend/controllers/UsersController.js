@@ -394,16 +394,15 @@ const changeemail = async (req, res) => {
     const updateEmailQuery = `UPDATE Users SET email = @email WHERE is_aktif = 1 AND id = @id`;
 
     try {
-        const isAdmin = await checkUserAdmin();
-        if (!isAdmin) {
-            return res.status(400).json({ message: "You're not an admin; you cannot update this user's email." });
-        }
-
         const username = await getUsername();
         if (!username) {
             return res.status(404).json({ message: 'User not found.' });
         }
 
+        const isAdmin = await checkUserAdmin();
+        if (!isAdmin) {
+            return res.status(500).json({ status: '500', message: `You're not an admin; you cannot update ${username} email data.`  });
+        }
         const pool = await getPool();
         const result = await pool.request()
             .input('email', sql.VarChar, email)
