@@ -9,11 +9,17 @@ const props = defineProps({
 });
 
 
-const emit = defineEmits(['deactiveuser, getallusers'])
+const emit = defineEmits(['deactiveuser, editemail'])
 
 const deactiveuser = (data) => {
     emit('deactiveuser', data)
 }
+
+const editemail = (data) => { 
+    console.log('Selected user:', data); 
+    emit('editemail', data)
+}
+
 const changeadminstatusbyid = async (user) => {
     try {
         const user_id = localStorage.getItem('user_id');
@@ -63,15 +69,17 @@ const checkadmin = () => {
             </template>
         </Column>
         <Column field="email" header="E-mail">
-        <template #body=" { data } ">
-            <div>
-                {{ data.email || "No Email" }}
-            </div>
-        </template>
+            <template #body=" { data } ">
+                <div>
+                    {{ data.email || "No Email" }}
+                </div>
+            </template>
         </Column>
         <Column header="Operations">
             <template #body="{ data }">
-                <Button text rounded @click="() => deactiveuser(data)" icon="pi pi-trash" severity="danger" :disabled="data.is_logged"></Button>
+                <Button text rounded @click="() => deactiveuser(data)" icon="pi pi-trash" severity="danger"
+                    :disabled="data.is_logged"></Button>
+                <Button text rounded icon="pi pi-envelope" severity="help" @click="() => editemail(data)"></Button>
             </template>
         </Column>
     </DataTable>

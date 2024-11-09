@@ -1,11 +1,13 @@
 <script setup lang="js">
 import UserService from '@/service/UsersService.js';
+import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
 import Swal from 'sweetalert2';
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 
 
 
 const data = ref([]);
+const editemaildialog = ref(false)
 const createusers = ref(false)
 const usersservice = new UserService()
 const formData = ref({
@@ -87,6 +89,72 @@ const deactiveuser = async (data) => {
     }
 }
 
+const editemaildata = ref({
+
+    id: "",
+    oldemail: "",
+    email: ""
+})
+
+
+const editemail = async () => {
+    console.log('User ID:', data.value[0].id);
+    console.log('User Email:', data.value[0].email);
+    editemaildata.value.id = data.value[0].id;
+    editemaildata.value.oldemail = data.value[0].email || '';
+    console.log('Edit email data:', editemaildata.value);
+    editemaildialog.value = true;
+};
+
+const updateemail = async () => {
+    try {
+        if (editemaildata.value.oldemail == editemaildata.value.confirmemail) {
+            editemaildialog.value = false;
+            Swal.fire
+                ({
+                    title: 'You cannnot edit because old and new email are same.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+
+                })
+            return;
+        }
+        if (!editemaildata.value.confirmemail) {
+            editemaildialog.value = false;
+            Swal.fire
+                ({
+                    title: 'Email is required.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                })
+            return;
+        }
+        else {
+            const response = await usersservice.changeemail
+                (
+                    {
+                        "id": editemaildata.value.id,
+                        "email": editemaildata.value.confirmemail,
+                        "user_id": localStorage.getItem('user_id')
+                    }
+            )
+            if (response) {
+                    Swal.fire
+                        ({
+                            title: 'User email updated successfully!',
+                            text: response.data.message,
+                            icon:'success',
+                            confirmButtonText: 'OK',
+                        })
+                    getallusers(),
+                        editemaildialog.value = false;
+                }
+        }
+
+    } catch (e) {
+        console.error('Error updating email:', e);
+    }
+}
 
 
 onMounted(() => {
@@ -116,10 +184,24 @@ onMounted(() => {
                     </div>
                 </div>
                 <div>
-                    <UsersTable :data="data" @deactiveuser="deactiveuser" @getallusers="getallusers" />
+                    <UsersTable :data="data" @deactiveuser="deactiveuser" @editemail="editemail" />
                 </div>
             </div>
         </div>
+
+        <Dialog v-model:visible="editemaildialog" modal header="Edit Email" :style="{ width: '35rem' }">
+            <div class="flex flex-column">
+                <label>Email</label>
+                <InputText v-model.trim="editemaildata.oldemail" disabled />
+            </div>
+            <div class="flex flex-column">
+                <label>Confirm new Email</label>
+                <InputText v-model.trim="editemaildata.confirmemail" />
+            </div>
+            <div class="mt-2">
+                <Button @click="updateemail" label="Change Email" icon="pi pi-pencil" />
+            </div>
+        </Dialog>
         <Dialog v-model:visible="createusers" modal header="Create Users" :style="{ width: '35rem' }">
             <div>
                 <div class="flex flex-column">
