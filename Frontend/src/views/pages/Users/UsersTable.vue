@@ -75,11 +75,14 @@ const checkadmin = () => {
                 </div>
             </template>
         </Column>
+        <Column field="Name-Surname" header="Name and surname">
+        </Column>
         <Column header="Operations">
             <template #body="{ data }">
                 <Button text rounded @click="() => deactiveuser(data)" icon="pi pi-trash" severity="danger"
                     :disabled="data.is_logged"></Button>
-                <Button text rounded icon="pi pi-envelope" severity="help" @click="() => editemail(data)" :disabled="checkadmin == false"></Button>
+                <Button text rounded icon="pi pi-envelope" severity="help" @click="() => editemail(data)"
+                    :disabled="checkadmin == false"></Button>
             </template>
         </Column>
     </DataTable>

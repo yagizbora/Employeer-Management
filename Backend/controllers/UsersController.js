@@ -3,6 +3,7 @@ const sql = require('mssql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../Middleware/verifyToken'); 
+const { response } = require('express');
 
 
 const firstregistercontroller = async (req, res) => {
@@ -134,12 +135,18 @@ const listusers = async (req, res) => {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
-    let sqllogged = ""; // Change const to let
+    let sqllogged = ""; 
     if (is_logged !== null && is_logged !== undefined) {
         sqllogged += ` AND is_logged = @is_logged`;
     }
 
-    const query = `SELECT username, is_admin, id, is_logged,email FROM Users WHERE is_aktif = 1${sqllogged}`;
+    const query = `SELECT 
+    ISNULL(name, '') + ' ' + ISNULL(surname, '') AS [Name-Surname],
+    username, 
+    is_admin, 
+    id, 
+    is_logged,
+    email FROM Users WHERE is_aktif = 1${sqllogged}`;
 
     try {
         const pool = await getPool();
@@ -190,6 +197,39 @@ const changepassword = async (req, res) => {
         return res.status(500).json({ message: 'Database error: ' + error.message });
     }
 };
+
+
+const changenameusernameyourself = async (req, res) => {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+    const { name, surname, id } = req.body;
+
+    const query = `UPDATE Users SET name = @name, surname = @surname WHERE is_aktif = 1 AND id = @id`;
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .input('name', sql.VarChar, name)
+            .input('surname', sql.VarChar, surname)
+            .query(query);
+
+        const response = result.rowsAffected[0];
+        console.log('Result:', JSON.stringify(result));
+        console.log('Rows affected:', response);
+
+        if (response > 0) {
+            return res.status(200).json({ message: 'Okay, Name and Surname is changed' });
+        } else {
+            return res.status(400).json({ message: 'No rows were updated' });
+        }
+    } catch (e) {
+        return res.status(500).json({ message: 'Database error: ' + e.message });
+    }
+};
+
 
 const changeusername = async (req, res) => {
     const tokenCheck = await verifyToken(req);
@@ -498,5 +538,6 @@ module.exports =
     firstregister,
     changeusername,
     firstregistercontroller,
-    changeemail
+    changeemail,
+    changenameusernameyourself
 }

@@ -35,4 +35,9 @@ export default class UserService {
         const response = await axiosApp.post('changeemail', data);
         return response;
     }
+    async changeusernamebyself(data)
+    {
+        const response = await axiosApp.post('usersurnamechange', data);
+    return response;
+    } 
 }

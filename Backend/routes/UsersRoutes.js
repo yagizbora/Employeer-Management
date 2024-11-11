@@ -12,11 +12,13 @@ const
     logout,
     firstregister,
     firstregistercontroller,
-    changeemail
-}
-    = require('../controllers/UsersController')
+    changeemail,
+    changenameusernameyourself
+} = require('../controllers/UsersController')
 
-router.post('/login',login)
+router.post('/login', login)
+
+router.post('/usersurnamechange', changenameusernameyourself)
 
 router.post('/register', register)
 

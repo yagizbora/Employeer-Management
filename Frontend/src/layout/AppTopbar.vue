@@ -58,6 +58,7 @@ const checkImportantNotes = async () => {
             headers: {
                 "Content-type": "application/json;charset=UTF-8",
                 token: localStorage.getItem("token"),
+                user_id: localStorage.getItem("user_id")
             }
         });
 
@@ -177,6 +178,45 @@ const changeusername = async () => {
             }
         }
     } catch (error) {
+        toast.add({ severity: 'danger', summary: 'Error', detail: error?.response?.data?.message || "Something is broked", life: 5000 });
+    }
+}
+//
+
+// CHANGE NAME SURNAME AREA
+const changeNameSurnameDialog = ref(false)
+const nameSurname_ = ref({})
+
+
+const changeNameSurname = async () =>
+{ 
+    try {
+        if (!nameSurname_.value.name || !nameSurname_.value.surname) {
+            toast.add({ severity: 'warn', summary: 'Warning!', detail: 'Please write name and surname', life: 5000 });
+        }
+        else if (nameSurname_.value.name.length < 2) {
+        }
+        else if (nameSurname_.value.surname.length < 2) {
+        }
+        else {
+            const response = await usersservice.changeusernamebyself({
+                ...nameSurname_.value,
+                id: localStorage.getItem('user_id')
+            })
+            if (response) {
+                changeNameSurnameDialog.value = false;
+                toast.add
+                    ({
+                        severity: 'success',
+                        summary: 'Success!',
+                        detail: response.data.message,
+                        life: 4000
+                    });
+            }
+        }
+    }
+    catch (error) { 
+        console.error("Error changing name and surname:", error);
         toast.add({ severity: 'danger', summary: 'Error', detail: error?.response?.data?.message || "Something is broked", life: 5000 });
     }
 }
@@ -328,6 +368,13 @@ const settings = ref([
         command: () => {
             confirmlogout()
         }
+    },
+    {
+        label: 'Change Name and surname',
+        icon: 'pi pi-pencil',
+        command: () => {
+            changeNameSurnameDialog.value = true;
+        }
     }
 ]);
 </script>
@@ -373,8 +420,28 @@ const settings = ref([
              -->
             <Toast />
             <ConfirmDialog></ConfirmDialog>
-            <TabMenu class="w-full settings-menu" :model="settings" icon="pi pi-cog" raised text severity="info" />
+            <TabMenu class="w-full settings-menu" :model="settings" icon="pi pi-cog" raised text severity="info"
+                :style="{ width: '25rem' }" />
         </div>
+
+        <Dialog modal v-model:visible="changeNameSurnameDialog" header="Change name and surname">
+            <div class="">
+                <div class="flex flex-column">
+                    <label for="name">Name</label>
+                    <InputText v-model.trim="nameSurname_.name" id="name" placeholder="Name" />
+                </div>
+                <div class="flex flex-column">
+                    <label for="surname">Surname</label>
+                    <InputText v-model.trim="nameSurname_.surname" id="surname" placeholder="Surname" />
+                </div>
+                <div class="mt-2">
+                    <div>
+                        <Button label="Change name surname" @click="changeNameSurname"></Button>
+                    </div>
+                </div>
+            </div>
+
+        </Dialog>
         <!-- CHANGE PASSWORD DIALOG START -->
         <Dialog modal v-model:visible="changepassworddialog" :header="'Change Password ' + username"
             :style="{ width: '25rem' }">
@@ -382,9 +449,8 @@ const settings = ref([
                 <div class="">
                     <div class="flex flex-column">
                         <label for="newPassword">New Password:</label>
-                        <InputText v-model="password_.Password" 
-                        :type="seepassword ? 'text' : 'password'"
-                        id="newPassword" />
+                        <InputText v-model="password_.Password" :type="seepassword ? 'text' : 'password'"
+                            id="newPassword" />
                     </div>
                     <div class="flex flex-column">
                         <label for="confirmnewPassword">Confirm New Password:</label>
