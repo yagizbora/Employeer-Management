@@ -3,8 +3,25 @@ const sql = require('mssql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../Middleware/verifyToken'); 
-const { response } = require('express');
+const multer = require("multer");
+const fs = require("fs");
 
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const imagePath = path.join("uploads", "profilephoto", photo.filename); 
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath); 
+        }
+        cb(null, uploadPath);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+
+const upload = multer({ storage: storage })
 
 const firstregistercontroller = async (req, res) => {
     const query = `SELECT COUNT(*) as count FROM Users WHERE is_aktif = 1`
@@ -146,6 +163,7 @@ const listusers = async (req, res) => {
     is_admin, 
     id, 
     is_logged,
+    image_path,
     email FROM Users WHERE is_aktif = 1${sqllogged}`;
 
     try {
@@ -197,6 +215,35 @@ const changepassword = async (req, res) => {
         return res.status(500).json({ message: 'Database error: ' + error.message });
     }
 };
+
+const uploadprofilephoto = async (req, res) =>
+{
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+    const { id } = req.body;
+    const photo = req.file;
+    if (!photo) {
+        return res.status(400).send("Lütfen bir fotoðraf yükleyin.");
+    }
+
+
+    const imagePath = path.join("uploads", "profilephoto", photo.filename); 
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input("id", sql.Int, id) 
+            .input("imagePath", sql.NVarChar, imagePath) 
+            .query("UPDATE Users SET image_path = @imagePath WHERE id = @id");
+
+        res.status(200).send({message: "Profil fotoðrafý baþarýyla yüklendi."});
+    } catch (error) {
+        console.error("Hata:", error);
+        res.status(500).send("Bir hata oluþtu.");
+    }
+}
 
 
 const changenameusernameyourself = async (req, res) => {
@@ -539,5 +586,6 @@ module.exports =
     changeusername,
     firstregistercontroller,
     changeemail,
-    changenameusernameyourself
+    changenameusernameyourself,
+    uploadprofilephoto
 }

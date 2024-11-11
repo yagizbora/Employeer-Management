@@ -13,10 +13,13 @@ const
     firstregister,
     firstregistercontroller,
     changeemail,
-    changenameusernameyourself
+    changenameusernameyourself,
+    uploadprofilephoto
 } = require('../controllers/UsersController')
 
 router.post('/login', login)
+
+router.post('/uploadprofilephoto', uploadprofilephoto)
 
 router.post('/usersurnamechange', changenameusernameyourself)
 
