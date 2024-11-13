@@ -9,6 +9,10 @@ import { defineAsyncComponent, onMounted, ref } from 'vue';
 const data = ref([]);
 const editemaildialog = ref(false)
 const createusers = ref(false)
+const uploadprofilephoto = ref(false)
+
+const profilephotoref = ref({})
+
 const usersservice = new UserService()
 const formData = ref({
     username: '',
@@ -157,6 +161,64 @@ const updateemail = async () => {
     }
 }
 
+const handleFileChange = (event) => {
+    const file = event.target.files[0]; // Get the first file selected
+    if (file) {
+        profilephotoref.value.photo = file; // Store the file in the ref
+        console.log('File selected:', file); // Debugging log
+    } else {
+        console.error('No file selected');
+    }
+};
+
+const uploadphoto = () => {
+    uploadprofilephoto.value = true;
+}
+
+const photoupload = async () => {
+    if (!profilephotoref.value.photo) {
+        Swal.fire({
+            title: 'No file selected',
+            icon: 'error',
+            confirmButtonText: 'OK',
+        });
+        return; // Early return if no file is selected
+    }
+
+    if (data.value && data.value.length > 0) {
+        const selectedUser = data.value[0]; 
+        profilephotoref.value.id = selectedUser.id; 
+        console.log('Uploading for user ID:', profilephotoref.value.id);
+
+        // Upload photo logic
+        const response = await usersservice.uploadprofilephoto({
+            id: selectedUser.id,
+            photo: profilephotoref.value.photo, // Pass the selected file here
+        });
+
+        if (response.status === 200) {
+            Swal.fire({
+                title: 'Profile photo uploaded successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+            });
+        } else {
+            Swal.fire({
+                title: 'Error uploading photo',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+        }
+    } else {
+        Swal.fire({
+            title: 'No user data found',
+            icon: 'error',
+            confirmButtonText: 'OK',
+        });
+    }
+};
+
+
 
 onMounted(() => {
     getallusers(),
@@ -185,10 +247,18 @@ onMounted(() => {
                     </div>
                 </div>
                 <div>
-                    <UsersTable :data="data" @deactiveuser="deactiveuser" @editemail="editemail" />
+                    <UsersTable :data="data" @deactiveuser="deactiveuser" @editemail="editemail" @uploadphoto="uploadphoto" />
                 </div>
             </div>
         </div>
+
+        <Dialog v-model:visible="uploadprofilephoto" modal header="Upload Profile Photo" :style="{ width: '35rem'}">
+            <div class="flex flex-column">
+                <label>Profile Photo</label>
+                <InputText type="file" accept="image/*" @change="handleFileChange" />
+            </div>
+            <Button label="Upload photo" @click="photoupload" ></Button>
+        </Dialog>
 
         <Dialog v-model:visible="editemaildialog" modal header="Edit Email" :style="{ width: '35rem' }">
             <div class="flex flex-column">

@@ -1,27 +1,39 @@
 const { getPool } = require('../database');
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
+const path = require('path'); 
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../Middleware/verifyToken'); 
 const multer = require("multer");
 const fs = require("fs");
 
 
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const imagePath = path.join("uploads", "profilephoto", photo.filename); 
+        const uploadPath = path.join("uploads", "profilephoto");
         if (!fs.existsSync(uploadPath)) {
-            fs.mkdirSync(uploadPath); 
+            fs.mkdirSync(uploadPath, { recursive: true }); 
         }
         cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
+        const ext = path.extname(file.originalname);
+        cb(null, Date.now() + ext); 
     }
 });
 
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif','image/png'];
+        if (!allowedTypes.includes(file.mimetype)) {
+            return cb(new Error('Invalid file type. Only jpeg, png, and gif are allowed.'));
+        }
+        cb(null, true);
+    }
+});
 
-const upload = multer({ storage: storage })
 
 const firstregistercontroller = async (req, res) => {
     const query = `SELECT COUNT(*) as count FROM Users WHERE is_aktif = 1`
@@ -216,34 +228,40 @@ const changepassword = async (req, res) => {
     }
 };
 
-const uploadprofilephoto = async (req, res) =>
-{
-    const tokenCheck = await verifyToken(req);
-    if (!tokenCheck.status) {
-        return res.status(401).json({ message: tokenCheck.message });
-    }
-    const { id } = req.body;
-    const photo = req.file;
-    if (!photo) {
-        return res.status(400).send("Lütfen bir fotoðraf yükleyin.");
-    }
+const uploadprofilephoto = async (req, res) => {
+    upload.single('photo')(req, res, async (err) => {
+        if (err) {
+            return res.status(400).send({ message: err.message }); // Dosya hatasý
+        }
 
+        // Token ve fotoðraf iþleme iþlemleri
+        const tokenCheck = await verifyToken(req);
+        if (!tokenCheck.status) {
+            return res.status(401).json({ message: tokenCheck.message });
+        }
 
-    const imagePath = path.join("uploads", "profilephoto", photo.filename); 
+        const { id } = req.body;
+        const photo = req.file;
+        if (!photo) {
+            return res.status(400).send({ message: 'No file uploaded.' });
+        }
 
-    try {
-        const pool = await getPool();
-        const result = await pool.request()
-            .input("id", sql.Int, id) 
-            .input("imagePath", sql.NVarChar, imagePath) 
-            .query("UPDATE Users SET image_path = @imagePath WHERE id = @id");
+        const uploadPath = path.join("uploads", "profilephoto", photo.filename);
 
-        res.status(200).send({message: "Profil fotoðrafý baþarýyla yüklendi."});
-    } catch (error) {
-        console.error("Hata:", error);
-        res.status(500).send("Bir hata oluþtu.");
-    }
-}
+        try {
+            const pool = await getPool();
+            const result = await pool.request()
+                .input("id", sql.Int, id)
+                .input("imagePath", sql.NVarChar, uploadPath) // Doðru dosya yolu
+                .query("UPDATE Users SET image_path = @imagePath WHERE id = @id");
+
+            res.status(200).send({ message: "Profil fotoðrafý baþarýyla yüklendi." });
+        } catch (error) {
+            console.error("Hata:", error);
+            res.status(500).send("Bir hata oluþtu.");
+        }
+    });
+};
 
 
 const changenameusernameyourself = async (req, res) => {

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/tr';
 
+export const IMG_BASE_URL = import.meta.env.VITE_IMAGE_URL;
 
 dayjs.locale('tr');
 

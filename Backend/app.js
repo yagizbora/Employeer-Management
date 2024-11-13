@@ -2,6 +2,8 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const { getPool } = require('./database');
+const multer = require('multer');
+const path = require('path'); 
 const employeerRoutes = require('./routes/employeerRoutes');
 const DepartmantRoutes = require('./routes/DepartmantRoutes');
 const ReportRoutes = require('./routes/ReportRoutes');
@@ -16,6 +18,9 @@ const cors = require('cors');
 
 const app = express();
 const PORT = 44392;
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.use(cors());
 getPool()
