@@ -83,9 +83,12 @@ const checkadmin = () => {
         </Column>
         <Column header="Profile Photo">
             <template #body="{ data }">
-                <Image width="150"
-                    :src="data.image_path && data.image_path.trim() !== '' ? `${IMG_BASE_URL}${data.image_path.replace(/\\/g, '/')}` : 'https://via.placeholder.com/150'"
-                    alt="Profile Photo" preview />
+                <Image 
+                width="150" 
+                :src="data.image_path && data.image_path.trim() !== '' ?
+                `${IMG_BASE_URL}${data.image_path.replace(/\\/g, '/')}`
+                :'https://via.placeholder.com/150'"
+                alt="Profile Photo" preview />
             </template>
         </Column>
         <Column header="Operations">
