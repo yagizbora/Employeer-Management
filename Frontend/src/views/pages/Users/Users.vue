@@ -202,12 +202,16 @@ const photoupload = async () => {
                 icon: 'success',
                 confirmButtonText: 'OK',
             });
+            getallusers()
+            uploadprofilephoto.value = false;
         } else {
             Swal.fire({
                 title: 'Error uploading photo',
                 icon: 'error',
                 confirmButtonText: 'OK',
             });
+            getallusers()
+            uploadprofilephoto.value = false;
         }
     } else {
         Swal.fire({
@@ -215,6 +219,8 @@ const photoupload = async () => {
             icon: 'error',
             confirmButtonText: 'OK',
         });
+        getallusers()
+        uploadprofilephoto.value = false;
     }
 };
 
