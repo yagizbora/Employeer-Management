@@ -18,6 +18,11 @@ export default class UserService {
     }
 
 
+    async profilephoto(data)
+    {
+        const response = await axiosApp.post(`profilephoto`,data);
+        return response;
+    }
 
     async Userlist(data) {
         const response = await axiosApp.post('listusers',data);

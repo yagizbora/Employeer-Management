@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
+import { IMG_BASE_URL } from "@/utils/helper.js";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
 // import NotesService from "@/service/NotesService"
@@ -42,6 +43,22 @@ const API_URL = import.meta.env.VITE_API_URL;
 //     importantnotes()
 // })
 
+
+//PROFILE PHOTO AREA
+const photoprofile = ref({})
+const profilephoto = async () => {
+    const response = await usersservice.profilephoto({
+        user_id: localStorage.getItem('user_id')
+    })
+    photoprofile.value = response.data.data
+}
+
+onMounted(() => {
+    profilephoto()
+    setInterval(profilephoto, 30000)
+})
+
+//
 
 const checkImportantNotes = async () => {
     const token = localStorage.getItem('token');
@@ -103,7 +120,7 @@ onMounted(() => {
 
 const changepassworddialog = ref(false)
 const password_ = ref({})
-const seepassword =ref(false)
+const seepassword = ref(false)
 const changepassword = async () => {
     let id;
     const getuserid = localStorage.getItem('user_id');
@@ -125,7 +142,7 @@ const changepassword = async () => {
             if (response) {
                 changepassworddialog.value = false;
                 // toast.add({ severity: 'success', summary: 'Success!', detail: 'Password changed successfully, you will be redirected to the login page', life: 4000 })
-                toast.add({ severity: 'success', summary: 'Success!', detail: response.data.message +  '. You will be redirected to the login page', life: 4000 })
+                toast.add({ severity: 'success', summary: 'Success!', detail: response.data.message + '. You will be redirected to the login page', life: 4000 })
                 setTimeout(() => {
                     router.push('/auth/login'); localStorage.clear();
                 }, 3000);
@@ -188,8 +205,7 @@ const changeNameSurnameDialog = ref(false)
 const nameSurname_ = ref({})
 
 
-const changeNameSurname = async () =>
-{ 
+const changeNameSurname = async () => {
     try {
         if (!nameSurname_.value.name || !nameSurname_.value.surname) {
             toast.add({ severity: 'warn', summary: 'Warning!', detail: 'Please write name and surname', life: 5000 });
@@ -215,7 +231,7 @@ const changeNameSurname = async () =>
             }
         }
     }
-    catch (error) { 
+    catch (error) {
         console.error("Error changing name and surname:", error);
         toast.add({ severity: 'danger', summary: 'Error', detail: error?.response?.data?.message || "Something is broked", life: 5000 });
     }
@@ -328,22 +344,20 @@ const logoutcontrol = async (data) => {
     try {
         const user_id = localStorage.getItem('user_id');
         const response = await usersservice.logout({ user_id: user_id });
-        if (response.status = 200)
-        {
-            toast.add({ severity: 'info', summary: 'Warn!', detail: response.data.message + '. ' +  "You'll redirect to Login page", life: 5000 });
+        if (response.status = 200) {
+            toast.add({ severity: 'info', summary: 'Warn!', detail: response.data.message + '. ' + "You'll redirect to Login page", life: 5000 });
             setTimeout(() => {
                 localStorage.clear()
                 router.push('/auth/login');
             }, 5000)
 
         }
-    } 
-    catch (e)
-    {
-        console.error('Error logging out:', e);
-        toast.add({ severity: 'error', summary: 'Error!', detail: 'Failed to log out' + response.data.message , life: 5000 });
     }
-    
+    catch (e) {
+        console.error('Error logging out:', e);
+        toast.add({ severity: 'error', summary: 'Error!', detail: 'Failed to log out' + response.data.message, life: 5000 });
+    }
+
 
 }
 
@@ -424,6 +438,11 @@ const settings = ref([
                 :style="{ width: '25rem' }" />
         </div>
 
+            <div class="profilephoto-wrapper">
+                <Image width="125" class="profilephoto" :src="photoprofile.image_path && photoprofile.image_path.trim() !== '' ?
+                    `${IMG_BASE_URL}${photoprofile.image_path.replace(/\\/g, '/')}`
+                    : 'https://via.placeholder.com/150'" alt="Profile Photo" preview />
+            </div>
         <Dialog modal v-model:visible="changeNameSurnameDialog" header="Change name and surname">
             <div class="">
                 <div class="flex flex-column">
@@ -496,5 +515,22 @@ const settings = ref([
 <style lang="scss" scoped>
 .settings-menu {
     width: 100%;
+}
+
+.profilephoto-wrapper {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profilephoto-wrapper .profilephoto {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

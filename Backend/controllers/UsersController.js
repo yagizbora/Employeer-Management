@@ -587,6 +587,34 @@ const adminstatus = async (req, res) => {
     }
 };
 
+const profilephoto = async (req, res) => {
+    const { user_id } = req.body
+
+    if (!user_id) {
+        return res.status(400).json({ message: 'User ID is required' });
+    }
+
+    const query = `SELECT image_path FROM Users WHERE id = @user_id`;
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('user_id', sql.Int, user_id)
+            .query(query);
+
+        if (result.recordset.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({
+            message: 'Image successfully fetched',
+            data: result.recordset[0]
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Database error: ' + error.message });
+    }
+};
+
 
 
 
@@ -605,5 +633,6 @@ module.exports =
     firstregistercontroller,
     changeemail,
     changenameusernameyourself,
-    uploadprofilephoto
+    uploadprofilephoto,
+    profilephoto
 }
