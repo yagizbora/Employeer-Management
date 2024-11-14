@@ -439,7 +439,7 @@ const settings = ref([
         </div>
 
             <div class="profilephoto-wrapper">
-                <Image width="125" class="profilephoto" :src="photoprofile.image_path && photoprofile.image_path.trim() !== '' ?
+                <Image width="75" class="profilephoto" :src="photoprofile.image_path && photoprofile.image_path.trim() !== '' ?
                     `${IMG_BASE_URL}${photoprofile.image_path.replace(/\\/g, '/')}`
                     : 'https://via.placeholder.com/150'" alt="Profile Photo" preview />
             </div>
@@ -517,20 +517,19 @@ const settings = ref([
     width: 100%;
 }
 
-.profilephoto-wrapper {
-    margin-left: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.profilephoto-wrapper .profilephoto {
-    border-radius: 50%;
-    height: 100px;
-    width: 100px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+ .profilephoto-wrapper {
+     margin-left: 1rem;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+ .profilephoto-wrapper .profilephoto {
+     border-radius: 50%;
+     height: 100px;
+     width: 100px;
+     overflow: hidden;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
 </style>
