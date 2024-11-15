@@ -8,10 +8,6 @@ const multer = require("multer");
 const fs = require("fs");
 
 
-
-
-
-
 const firstregistercontroller = async (req, res) => {
     const query = `SELECT COUNT(*) as count FROM Users WHERE is_aktif = 1`
     try {
@@ -621,6 +617,31 @@ const adminstatus = async (req, res) => {
     }
 };
 
+const getprofilephoto = async(req, res) =>
+{
+    const { id } = req.query;
+
+    let query = `SELECT image_path,id FROM Users WHERE id = @id AND is_aktif = 1`
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query)
+
+        if (result.recordset && result.recordset.length > 0) {
+            res.status(200).json(result.recordset);
+        } else {
+            res.status(404).json({ message: 'No records found' });
+        }
+
+    }
+    catch (error) {
+        return res.status(500).json({ message: 'Database error: ' + error.message });
+    }
+    
+}
+
 const profilephoto = async (req, res) => {
     const { user_id } = req.body
 
@@ -669,5 +690,6 @@ module.exports =
     changenameusernameyourself,
     uploadprofilephoto,
     profilephoto,
+    getprofilephoto,
     getemail
 }

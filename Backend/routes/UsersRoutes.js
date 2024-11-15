@@ -16,6 +16,7 @@ const
     changenameusernameyourself,
     uploadprofilephoto,
     getemail,
+    getprofilephoto,
     profilephoto
 } = require('../controllers/UsersController')
 
@@ -48,6 +49,8 @@ router.get('/firstregistercontroller', firstregistercontroller)
 router.post('/changeemail', changeemail)
 
 router.get('/getemail', getemail)
+
+router.get('/getprofilephoto', getprofilephoto)
 
 
 module.exports = router;

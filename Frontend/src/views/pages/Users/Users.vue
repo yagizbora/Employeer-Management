@@ -1,6 +1,5 @@
 <script setup lang="js">
 import UserService from '@/service/UsersService.js';
-import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
 import Swal from 'sweetalert2';
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 
@@ -144,7 +143,7 @@ const updateemail = async () => {
             const response = await usersservice.changeemail
                 (
                     {
-                        "id": editemaildata.value.id,   
+                        "id": editemaildata.value.id,
                         "email": editemaildata.value.confirmemail,
                         "user_id": localStorage.getItem('user_id')
                     }
@@ -159,7 +158,8 @@ const updateemail = async () => {
                         })
                     getallusers(),
                     editemaildialog.value = false;
-                    editemaildata.value = ({});
+                editemaildata.value = ({});
+
             }
         }
 
@@ -170,10 +170,10 @@ const updateemail = async () => {
 }
 
 const handleFileChange = (event) => {
-    const file = event.target.files[0]; // Get the first file selected
+    const file = event.target.files[0];
     if (file) {
-        profilephotoref.value.photo = file; // Store the file in the ref
-        console.log('File selected:', file); // Debugging log
+        profilephotoref.value.photo = file; 
+        console.log('File selected:', file);
     } else {
         console.error('No file selected');
     }

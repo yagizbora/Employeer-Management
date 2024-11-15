@@ -62,6 +62,16 @@ export default class UserService {
         return response;
     }
 
+    async getprofilephoto(data) {
+        const response = await axiosApp.get('getprofilephoto', {
+            params: {
+                id: data.id
+            }
+        });
+        console.log(response)
+        return response;
+    }
+
     async changeemail(data) {
         const response = await axiosApp.post('changeemail', data);
         return response;
