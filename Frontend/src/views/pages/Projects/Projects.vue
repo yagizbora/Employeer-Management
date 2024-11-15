@@ -66,7 +66,6 @@ const deletedata = async (data) => {
 
 const editdata = async (data) => {
     try {
-        // 1. Proje verisini al
         const res = await projectservice.getProjectsbyid(data);
         if (res && res.data.length > 0) {
             editData.value = res.data[0];
@@ -78,7 +77,6 @@ const editdata = async (data) => {
 
                 editData.value.customer_id = editData.value.customer_name_id;
             }
-            // Dialog'u aç
             editdatadialog.value = true;
         }
     } catch (error) {

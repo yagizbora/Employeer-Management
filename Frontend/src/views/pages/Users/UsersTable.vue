@@ -20,7 +20,6 @@ const uploadphoto = (data) => {
 }
 
 const editemail = (data) => { 
-    console.log('Selected user:', data); 
     emit('editemail', data)
 }
 

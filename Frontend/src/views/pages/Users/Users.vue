@@ -93,22 +93,29 @@ const deactiveuser = async (data) => {
     }
 }
 
-const editemaildata = ref({
-
-    id: "",
-    oldemail: "",
-    email: ""
-})
+const editemaildata = ref({})
 
 
-const editemail = async () => {
-    console.log('User ID:', data.value[0].id);
-    console.log('User Email:', data.value[0].email);
-    editemaildata.value.id = data.value[0].id;
-    editemaildata.value.oldemail = data.value[0].email || '';
-    console.log('Edit email data:', editemaildata.value);
-    editemaildialog.value = true;
+const editemail = async (data) => {
+    try {
+        const response = await usersservice.getemailbyid({ id: data.id });
+        console.log('API Response:', response);
+
+        if (response && response.data.length > 0) {
+            // Doğru email atanıyor
+            editemaildata.value.id = response.data[0].id;
+            editemaildata.value.oldemail = response.data[0].email;
+            editemaildialog.value = true;
+            console.log('Old Email Set:', editemaildata.value);
+        } else {
+            console.warn('No records found');
+        }
+    } catch (error) {
+        console.error('Error fetching email:', error);
+    }
 };
+
+
 
 const updateemail = async () => {
     try {
@@ -137,7 +144,7 @@ const updateemail = async () => {
             const response = await usersservice.changeemail
                 (
                     {
-                        "id": editemaildata.value.id,
+                        "id": editemaildata.value.id,   
                         "email": editemaildata.value.confirmemail,
                         "user_id": localStorage.getItem('user_id')
                     }
@@ -151,7 +158,8 @@ const updateemail = async () => {
                             confirmButtonText: 'OK',
                         })
                     getallusers(),
-                        editemaildialog.value = false;
+                    editemaildialog.value = false;
+                    editemaildata.value = ({});
             }
         }
 

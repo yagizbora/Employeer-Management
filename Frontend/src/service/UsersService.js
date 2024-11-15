@@ -52,13 +52,23 @@ export default class UserService {
         const response = await axiosApp.post('changeusername', data);
         return response;
     }
+    async getemailbyid(data) {
+        const response = await axiosApp.get('getemail', {
+            params: {
+                id: data.id 
+            }
+        });
+        console.log(response)
+        return response;
+    }
+
     async changeemail(data) {
         const response = await axiosApp.post('changeemail', data);
         return response;
     }
     async changeusernamebyself(data)
     {
-        const response = await axiosApp.post('usersurnamechange', data);
+    const response = await axiosApp.post('usersurnamechange', data);
     return response;
     } 
 }

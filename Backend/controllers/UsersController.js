@@ -9,30 +9,7 @@ const fs = require("fs");
 
 
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const uploadPath = path.join("uploads", "profilephoto");
-        if (!fs.existsSync(uploadPath)) {
-            fs.mkdirSync(uploadPath, { recursive: true }); 
-        }
-        cb(null, uploadPath);
-    },
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        cb(null, Date.now() + ext); 
-    }
-});
 
-const upload = multer({
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif','image/png'];
-        if (!allowedTypes.includes(file.mimetype)) {
-            return cb(new Error('Invalid file type. Only jpeg, png, and gif are allowed.'));
-        }
-        cb(null, true);
-    }
-});
 
 
 const firstregistercontroller = async (req, res) => {
@@ -229,6 +206,31 @@ const changepassword = async (req, res) => {
 };
 
 const uploadprofilephoto = async (req, res) => {
+    const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            const uploadPath = path.join("uploads", "profilephoto");
+            if (!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath, { recursive: true });
+            }
+            cb(null, uploadPath);
+        },
+        filename: (req, file, cb) => {
+            const ext = path.extname(file.originalname);
+            cb(null, Date.now() + ext);
+        }
+    });
+
+    const upload = multer({
+        storage: storage,
+        fileFilter: (req, file, cb) => {
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/png'];
+            if (!allowedTypes.includes(file.mimetype)) {
+                return cb(new Error('Invalid file type. Only jpeg, png, and gif are allowed.'));
+            }
+            cb(null, true);
+        }
+    });
+
     upload.single('photo')(req, res, async (err) => {
         if (err) {
             return res.status(400).send({ message: err.message }); // Dosya hatasý
@@ -458,6 +460,38 @@ const logout = async (req, res) => {
     }
 }
 
+
+const getemail = async (req, res) => {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+    const { id } = req.query;
+
+    if (!id) {
+       return res.status(500).json({message:'Id is required'})
+    }
+
+    let query = `SELECT email,id FROM Users WHERE id = @id AND is_aktif = 1`
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query)
+
+        if (result.recordset && result.recordset.length > 0) {
+            res.status(200).json(result.recordset);
+        } else {
+            res.status(404).json({ message: 'No records found' });
+        }
+
+    }
+    catch (error) {
+    return res.status(500).json({ message: 'Database error: ' + error.message });
+    }
+}
+
 const changeemail = async (req, res) => {
     const tokenCheck = await verifyToken(req);
     if (!tokenCheck.status) {
@@ -634,5 +668,6 @@ module.exports =
     changeemail,
     changenameusernameyourself,
     uploadprofilephoto,
-    profilephoto
+    profilephoto,
+    getemail
 }
