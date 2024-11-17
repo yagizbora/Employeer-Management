@@ -4,6 +4,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
 import { IMG_BASE_URL } from "@/utils/helper.js";
+import Swal from 'sweetalert2';
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
 // import NotesService from "@/service/NotesService"
@@ -326,17 +327,19 @@ const isOutsideClicked = (event) => {
 
 
 const confirmlogout = () => {
-    confirm.require({
-        message: 'Are you sure you want to log out',
-        header: 'Log out',
-        icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'p-button-secondary p-button-outlined',
-        rejectLabel: 'Cancel',
-        acceptLabel: 'Log out',
-        accept: () => {
+    Swal.fire({
+        title: 'Are you sure you want to log out?',
+        text: 'You will be logged out of the application.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, log out!'
+    }).then((result) => {
+        if (result.isConfirmed) {
             logoutcontrol()
         }
-    });
+    })
 }
 
 
