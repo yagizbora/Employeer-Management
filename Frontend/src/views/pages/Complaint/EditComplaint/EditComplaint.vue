@@ -66,7 +66,7 @@ onMounted(() => {
     if (dataid.value) {
         getdatabyid(dataid.value);
     } else {
-        console.error('No ID found in route params.');
+        console.log('No ID found in route params.');
     }
 });
 </script>
@@ -79,8 +79,7 @@ onMounted(() => {
                     <div class="error-page">
                         <div class="mb-2 button">
                             <a href="/complaint/complaint">
-                                <p>Please go back to Complaint List page because something is wrong or data is not true
-                                </p>
+                                <p>Please go back to Complaint List page because something is wrong or data is not true</p>
                             </a>
                         </div>
                         <div>
@@ -137,4 +136,5 @@ onMounted(() => {
     padding: 10px;
     border-radius: 20px;
 }
+
 </style>

@@ -179,8 +179,13 @@ const handleFileChange = (event) => {
     }
 };
 
-const uploadphoto = () => {
-    uploadprofilephoto.value = true;
+const uploadphoto = async (data) => {
+    const response = await usersservice.getprofilephoto(data)
+    if (response.data && response.data.length > 0) { 
+        profilephotoref.value = response.data[0]
+        console.log('Profile Photo:', profilephotoref.value);
+        uploadprofilephoto.value = true;
+    }
 }
 
 const photoupload = async () => {
@@ -194,13 +199,11 @@ const photoupload = async () => {
     }
 
     if (data.value && data.value.length > 0) {
-        const selectedUser = data.value[0]; 
-        profilephotoref.value.id = selectedUser.id; 
         console.log('Uploading for user ID:', profilephotoref.value.id);
 
         // Upload photo logic
         const response = await usersservice.uploadprofilephoto({
-            id: selectedUser.id,
+            id: profilephotoref.value.id,
             photo: profilephotoref.value.photo, // Pass the selected file here
         });
 

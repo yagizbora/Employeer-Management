@@ -202,6 +202,7 @@ const changepassword = async (req, res) => {
 };
 
 const uploadprofilephoto = async (req, res) => {
+
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             const uploadPath = path.join("uploads", "profilephoto");
@@ -215,11 +216,10 @@ const uploadprofilephoto = async (req, res) => {
             cb(null, Date.now() + ext);
         }
     });
-
     const upload = multer({
         storage: storage,
         fileFilter: (req, file, cb) => {
-            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/png'];
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/png'];
             if (!allowedTypes.includes(file.mimetype)) {
                 return cb(new Error('Invalid file type. Only jpeg, png, and gif are allowed.'));
             }
@@ -229,7 +229,7 @@ const uploadprofilephoto = async (req, res) => {
 
     upload.single('photo')(req, res, async (err) => {
         if (err) {
-            return res.status(400).send({ message: err.message }); // Dosya hatası
+            return res.status(400).send({ message: err.message }); 
         }
 
         // Token ve fotoğraf işleme işlemleri
