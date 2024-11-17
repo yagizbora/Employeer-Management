@@ -104,7 +104,6 @@ const editemail = async (data) => {
         console.log('API Response:', response);
 
         if (response && response.data.length > 0) {
-            // Doğru email atanıyor
             editemaildata.value.id = response.data[0].id;
             editemaildata.value.oldemail = response.data[0].email;
             editemaildialog.value = true;
@@ -203,7 +202,7 @@ const photoupload = async () => {
             icon: 'error',
             confirmButtonText: 'OK',
         });
-        return; // Early return if no file is selected
+        return uploadprofilephoto.value = false; 
     }
 
     if (data.value && data.value.length > 0) {
@@ -212,7 +211,7 @@ const photoupload = async () => {
         // Upload photo logic
         const response = await usersservice.uploadprofilephoto({
             id: profilephotoref.value.id,
-            photo: profilephotoref.value.photo, // Pass the selected file here
+            photo: profilephotoref.value.photo, 
         });
 
         if (response.status === 200) {
