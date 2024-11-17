@@ -1,6 +1,7 @@
 <script setup lang="js">
 import UserService from '@/service/UsersService.js';
 import Swal from 'sweetalert2';
+import { IMG_BASE_URL } from "@/utils/helper.js";
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 
 
@@ -9,8 +10,10 @@ const data = ref([]);
 const editemaildialog = ref(false)
 const createusers = ref(false)
 const uploadprofilephoto = ref(false)
-
 const profilephotoref = ref({})
+const previewphoto = ref({
+    preview: null
+})
 
 const usersservice = new UserService()
 const formData = ref({
@@ -147,16 +150,16 @@ const updateemail = async () => {
                         "email": editemaildata.value.confirmemail,
                         "user_id": localStorage.getItem('user_id')
                     }
-            )
+                )
             if (response) {
-                    Swal.fire
-                        ({
-                            title: 'User email updated successfully!',
-                            text: response.data.message,
-                            icon:'success',
-                            confirmButtonText: 'OK',
-                        })
-                    getallusers(),
+                Swal.fire
+                    ({
+                        title: 'User email updated successfully!',
+                        text: response.data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                    })
+                getallusers(),
                     editemaildialog.value = false;
                 editemaildata.value = ({});
 
@@ -172,8 +175,13 @@ const updateemail = async () => {
 const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-        profilephotoref.value.photo = file; 
+        profilephotoref.value.photo = file;
         console.log('File selected:', file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewphoto.value.preview = e.target.result;
+        };
+        reader.readAsDataURL(file);
     } else {
         console.error('No file selected');
     }
@@ -181,7 +189,7 @@ const handleFileChange = (event) => {
 
 const uploadphoto = async (data) => {
     const response = await usersservice.getprofilephoto(data)
-    if (response.data && response.data.length > 0) { 
+    if (response.data && response.data.length > 0) {
         profilephotoref.value = response.data[0]
         console.log('Profile Photo:', profilephotoref.value);
         uploadprofilephoto.value = true;
@@ -264,17 +272,29 @@ onMounted(() => {
                     </div>
                 </div>
                 <div>
-                    <UsersTable :data="data" @deactiveuser="deactiveuser" @editemail="editemail" @uploadphoto="uploadphoto" />
+                    <UsersTable :data="data" @deactiveuser="deactiveuser" @editemail="editemail"
+                        @uploadphoto="uploadphoto" />
                 </div>
             </div>
         </div>
 
-        <Dialog v-model:visible="uploadprofilephoto" modal header="Upload Profile Photo" :style="{ width: '35rem'}">
+        <Dialog v-model:visible="uploadprofilephoto" modal header="Upload Profile Photo" :style="{ width: '35rem' }">
             <div class="flex flex-column">
                 <label>Profile Photo</label>
                 <InputText type="file" accept="image/*" @change="handleFileChange" />
             </div>
-            <Button label="Upload photo" @click="photoupload" ></Button>
+            <div class="flex flex-column">
+                <label>Profile Photo review</label>
+                <div v-if="!profilephotoref.photo">
+                    <img :src="profilephotoref.image_path && profilephotoref.image_path.trim() !== '' ?
+                        `${IMG_BASE_URL}${profilephotoref.image_path.replace(/\\/g, '/')}`
+                        : 'https://via.placeholder.com/150'" alt="Profile Photo" style="width: 100%" />
+                </div>
+                <div v-else-if="profilephotoref.photo">
+                    <img class="preview-image" :src="previewphoto.preview"  />
+                </div>
+            </div>
+            <Button label="Upload photo" @click="photoupload"></Button>
         </Dialog>
 
         <Dialog v-model:visible="editemaildialog" modal header="Edit Email" :style="{ width: '35rem' }">
@@ -318,4 +338,13 @@ onMounted(() => {
 </template>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.preview-image {
+    .img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+}
+</style>

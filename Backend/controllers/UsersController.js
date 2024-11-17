@@ -619,6 +619,11 @@ const adminstatus = async (req, res) => {
 
 const getprofilephoto = async(req, res) =>
 {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+
     const { id } = req.query;
 
     let query = `SELECT image_path,id FROM Users WHERE id = @id AND is_aktif = 1`
@@ -643,6 +648,11 @@ const getprofilephoto = async(req, res) =>
 }
 
 const profilephoto = async (req, res) => {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+
     const { user_id } = req.body
 
     if (!user_id) {
