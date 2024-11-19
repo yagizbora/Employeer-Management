@@ -34,7 +34,8 @@ onMounted(() => {
 
 const checkfirstlogin = async () => {
     const response = await axios.get(`${API_URL}firstregistercontroller`);
-    status.value = response.data.status === "true";
+    // status.value = response.data.status === "true";
+    status.value = true
 
     if (status.value) {
         Swal.fire({
@@ -82,16 +83,24 @@ const firstregister = async () => {
             });
         }
     } catch (e) {
-        console.error(e);
-        registerforfirst.value = false;
+        console.error(e); 
+
+        let errorMessage = 'Bilinmeyen bir hata oluştu';
+
+        if (e.response?.data?.message) {
+            errorMessage = e.response.data.message; 
+        }
+
+        registerforfirst.value = false; 
+
         Swal.fire({
             title: 'Hata!',
-            text: e.response?.data?.message || 'Bilinmeyen bir hata oluştu',
+            text: errorMessage,
             icon: 'error',
             confirmButtonText: 'Tamam'
         }).then((result) => {
             if (result.isConfirmed) {
-                location.reload();
+                location.reload(); 
             }
         });
     }
