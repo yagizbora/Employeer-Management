@@ -60,7 +60,7 @@ const firstregister = async (req, res) => {
         const isregisteredfirstuser = await checkuser()
         console.log(isregisteredfirstuser)
         if (isregisteredfirstuser > 0) {
-            return res.status(404).json({message: 'Sorry this api or url ONLY for first registration'})
+            return res.status(500).json({status: 'false',message: 'Sorry this api or url ONLY for first registration'})
         }
         const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);

@@ -39,7 +39,7 @@ const checkfirstlogin = async () => {
     if (status.value) {
         Swal.fire({
             title: 'Bilgilendirme',
-            text: 'Bu uygulama ilk kez çalıştığınız için lütfen hesabınızı oluşturunuz. Şifrenizi unuttuysanız sizi hemen yeniden isteyebilirsiniz.',
+            text: 'Bu uygulama ilk kez çalıştırdığınız için lütfen hesabınızı oluşturunuz. Şifrenizi unuttuysanız sizi hemen yeniden isteyebilirsiniz.',
             icon: 'info',
             confirmButtonText: 'Tamam'
         })
@@ -63,32 +63,40 @@ const firstregister = async () => {
                 icon: 'error',
                 confirmButtonText: 'Tamam'
             });
-            registerforfirst.value = false
-
+            registerforfirst.value = false;
+            return; // Eksik veri durumunda fonksiyon bitiyor.
         }
-        else
-        {
-            const response = await axios.post(`${API_URL}firstregister`, { ...register.value })
-            if (response) {
-                registerforfirst.value = false
-                Swal.fire({
-                    title: 'Başarılı!',
-                    text: response.data.message + `. Please click Ok button page will be reload`,
-                    icon: 'success',
-                    confirmButtonText: 'Ok'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.reload()
-                    }
-                })
 
-            }
+        const response = await axios.post(`${API_URL}firstregister`, { ...register.value });
+        if (response) {
+            registerforfirst.value = false;
+            Swal.fire({
+                title: 'Başarılı!',
+                text: response.data.message + `. Please click Ok button page will be reload`,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                }
+            });
         }
     } catch (e) {
         console.error(e);
-        return;
+        registerforfirst.value = false;
+        Swal.fire({
+            title: 'Hata!',
+            text: e.response?.data?.message || 'Bilinmeyen bir hata oluştu',
+            icon: 'error',
+            confirmButtonText: 'Tamam'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        });
     }
-}
+};
+
 
 const login = async () => {
     try {
@@ -172,7 +180,7 @@ const login = async () => {
                         <div v-else-if="status">
                             <div>
                                 <label style="color: #5034bb;">Sistemde kayıtlı kullanıcı yok.<br>
-                                    Lütfen alttakibutona tıklayarak hesap oluşturma panelini açın</label>
+                                    Lütfen alttaki butona tıklayarak hesap oluşturma panelini açın</label>
                             </div>
                             <Button label="Register" class="w-full p-3 text-xl"
                                 @click="registerforfirst = true"></Button>
