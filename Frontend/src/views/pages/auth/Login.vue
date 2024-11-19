@@ -34,8 +34,7 @@ onMounted(() => {
 
 const checkfirstlogin = async () => {
     const response = await axios.get(`${API_URL}firstregistercontroller`);
-    // status.value = response.data.status === "true";
-    status.value = true
+    status.value = response.data.status === "true";
 
     if (status.value) {
         Swal.fire({
