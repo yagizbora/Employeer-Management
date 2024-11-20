@@ -129,7 +129,6 @@ const login = async () => {
                 router.push({ name: 'dashboard' });
             }, 3000);
         }
-
     } catch (error) {
         if (error.response && error.response.status === 401) {
             Swal.fire({

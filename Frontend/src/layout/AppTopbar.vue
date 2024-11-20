@@ -56,7 +56,7 @@ const profilephoto = async () => {
 
 onMounted(() => {
     profilephoto()
-    setInterval(profilephoto, 30000)
+    setInterval(profilephoto, 80000)
 })
 
 //

@@ -132,7 +132,7 @@ const iscomplatedsetbyid = async (req, res) => {
 
 
 const deleteorders = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req);
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -145,8 +145,6 @@ const deleteorders = async (req, res) => {
     const query = `UPDATE [Order] SET IS_DELETED = 1 WHERE id = @id`
     try {
         const pool = await getPool();
-
-        //console.log('Executing query:', query);
 
         const result = await pool.request()
             .input('id', sql.Int, id)
@@ -180,7 +178,7 @@ const updateorderbyid = async (req, res) => {
     ,end_date = @end_date WHERE id = @id`
     try {
         const pool = await getPool();
-        console.log('Executing query:', query);
+        //console.log('Executing query:', query);
         await pool.request()
             .input('id', sql.Int, id)
             .input('employeer_id', sql.Int, employeer_id)

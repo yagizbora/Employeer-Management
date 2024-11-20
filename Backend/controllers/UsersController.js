@@ -104,7 +104,7 @@ const register = async (req, res) => {
     try {
         const usernameCount = await checkUsernameQuery(); 
         if (usernameCount > 0) {
-            return res.status(500).json({ message: 'Username already exists, please use a different username' });
+            return res.status(400).json({ message: 'Username already exists, please use a different username' });
         }
 
         const saltRounds = 12;
@@ -119,7 +119,7 @@ const register = async (req, res) => {
             .input('email', sql.VarChar, email)
             .query(insertQuery);
 
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ message: `${username}, user created succesfully  ${username} password: ${password}` });
     } catch (error) {
         res.status(500).json({ message: 'Database error: ' + error.message });
     }

@@ -15,17 +15,16 @@ const CustomerRoutes = require('./routes/CustomerRoutes');
 const ProjectRoutes = require('./routes/ProjectRoutes');
 const UsersRoutes = require('./routes/UsersRoutes');
 const cors = require('cors');
-
 const app = express();
 const PORT = 44392;
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 app.use(cors());
 getPool()
     .then(() => {
         app.use(bodyParser.json());
+        app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
         app.use('/api', OrderRoutes);
         app.use('/api', employeerRoutes);
         app.use('/api', DepartmantRoutes);
