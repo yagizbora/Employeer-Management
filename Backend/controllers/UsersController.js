@@ -232,7 +232,6 @@ const uploadprofilephoto = async (req, res) => {
             return res.status(400).send({ message: err.message }); 
         }
 
-        // Token ve fotoðraf iþleme iþlemleri
         const tokenCheck = await verifyToken(req);
         if (!tokenCheck.status) {
             return res.status(401).json({ message: tokenCheck.message });
@@ -250,13 +249,13 @@ const uploadprofilephoto = async (req, res) => {
             const pool = await getPool();
             const result = await pool.request()
                 .input("id", sql.Int, id)
-                .input("imagePath", sql.NVarChar, uploadPath) // Doðru dosya yolu
+                .input("imagePath", sql.NVarChar, uploadPath) 
                 .query("UPDATE Users SET image_path = @imagePath WHERE id = @id");
 
-            res.status(200).send({ message: "Profil fotoðrafý baþarýyla yüklendi." });
+            res.status(200).send({ message: "Profil fotoï¿½rafï¿½ baï¿½arï¿½yla yï¿½klendi." });
         } catch (error) {
             console.error("Hata:", error);
-            res.status(500).send("Bir hata oluþtu.");
+            res.status(500).send("Bir hata oluï¿½tu.");
         }
     });
 };
@@ -330,6 +329,35 @@ const changeusername = async (req, res) => {
 };
 
 
+const getalldatausers = async (req, res) => {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+
+    const { id } = req.query
+
+    if (!id) {
+        return res.status(400).json({ message: 'User ID is required.' });
+    }
+
+    const query = `SELECT username,id,name,surname,email FROM Users WHERE id = @id AND is_aktif = 1`;
+
+    try {
+        const pool = await getPool();
+        const result = await pool.request()
+           .input('id', sql.Int, id)
+            .query(query);
+        if (result.rowsAffected[0] > 0) { 
+            return res.status(200).json({...result.recordset[0]});
+        }
+        else {
+            return res.status(404).json({ message: 'User ID may not exist.' });
+        }
+    } catch (err) { 
+
+    }
+}
 
 
 const deactiveusers = async (req, res) => {
@@ -701,5 +729,6 @@ module.exports =
     uploadprofilephoto,
     profilephoto,
     getprofilephoto,
-    getemail
+    getemail,
+    getalldatausers
 }

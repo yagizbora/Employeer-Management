@@ -17,7 +17,8 @@ const
     uploadprofilephoto,
     getemail,
     getprofilephoto,
-    profilephoto
+    profilephoto,
+    getalldatausers
 } = require('../controllers/UsersController')
 
 router.post('/login', login)
@@ -52,5 +53,6 @@ router.get('/getemail', getemail)
 
 router.get('/getprofilephoto', getprofilephoto)
 
+router.get('/getalldatausers', getalldatausers)
 
 module.exports = router;
