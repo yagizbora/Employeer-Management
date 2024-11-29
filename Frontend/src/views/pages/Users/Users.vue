@@ -3,6 +3,7 @@ import UserService from '@/service/UsersService.js';
 import Swal from 'sweetalert2';
 import { IMG_BASE_URL } from "@/utils/helper.js";
 import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
 
 
 
@@ -15,6 +16,9 @@ const previewphoto = ref({
     preview: null
 })
 
+
+const editnamesurnamedialog = ref(false)
+const editnamesurnamedata = ref({})
 const usersservice = new UserService()
 const formData = ref({
     username: '',
@@ -195,6 +199,29 @@ const uploadphoto = async (data) => {
     }
 }
 
+const changenamesurname = async (data) => {
+    try {
+        const response = await usersservice.usersurnamechange({
+            id: editnamesurnamedata.value.id,
+            name: editnamesurnamedata.value.name,
+            surname: editnamesurnamedata.value.surname
+        });
+        if (response) { 
+            Swal.fire({
+                title: 'User name and surname updated successfully!',
+                text: response.data.message,
+                icon:'success',
+                confirmButtonText: 'OK',
+            });
+            getallusers()
+            editnamesurnamedialog.value = false;
+            editnamesurnamedata.value = ({});
+        }
+    } catch (e) {
+        console.error('Error changing username:', e);
+    }
+}
+
 const photoupload = async () => {
     if (!profilephotoref.value.photo) {
         Swal.fire({
@@ -243,10 +270,24 @@ const photoupload = async () => {
 };
 
 
+const changeusernamedialog = async (data) => {
+    try {
+        const response = await usersservice.getalluserdatabyid(data);
+        editnamesurnamedata.value = {
+            id: response.data.id,
+            name: response.data.name,
+            surname: response.data.surname
+        };
+        editnamesurnamedialog.value = true;
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Kullanıcıya hata mesajı gösterebilirsiniz
+    }
+};
 
 onMounted(() => {
     getallusers(),
-        checkadmin()
+    checkadmin()
 });
 </script>
 
@@ -272,7 +313,7 @@ onMounted(() => {
                 </div>
                 <div>
                     <UsersTable :data="data" @deactiveuser="deactiveuser" @editemail="editemail"
-                        @uploadphoto="uploadphoto" />
+                        @uploadphoto="uploadphoto" @namesurname="changeusernamedialog" />
                 </div>
             </div>
         </div>
@@ -290,12 +331,24 @@ onMounted(() => {
                         : 'https://via.placeholder.com/150'" alt="Profile Photo" style="width: 100%" />
                 </div>
                 <div v-else-if="profilephotoref.photo">
-                    <img class="preview-image" :src="previewphoto.preview"  />
+                    <img class="preview-image" :src="previewphoto.preview" />
                 </div>
             </div>
             <Button label="Upload photo" @click="photoupload"></Button>
         </Dialog>
-
+        <Dialog v-model:visible="editnamesurnamedialog" modal hedaer="Edit Name and surname" :style="{width:'35rem'}">
+            <div class="flex flex-column">
+                <label>Name</label>
+                <InputText v-model.trim="editnamesurnamedata.name" />
+            </div>
+            <div class="flex flex-column">
+                <label>Surname</label>
+                <InputText v-model.trim="editnamesurnamedata.surname" />
+            </div>
+            <div class="mt-2">
+                <Button icon="pi pi-pencil" @click="changenamesurname" label="Change name surname"></Button>
+            </div>
+        </Dialog>
         <Dialog v-model:visible="editemaildialog" modal header="Edit Email" :style="{ width: '35rem' }">
             <div class="flex flex-column">
                 <label>Email</label>

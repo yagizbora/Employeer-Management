@@ -13,7 +13,7 @@ const
     firstregister,
     firstregistercontroller,
     changeemail,
-    changenameusernameyourself,
+    usersurnamechange,
     uploadprofilephoto,
     getemail,
     getprofilephoto,
@@ -27,7 +27,7 @@ router.post('/uploadprofilephoto', uploadprofilephoto)
 
 router.post('/profilephoto', profilephoto)
 
-router.post('/usersurnamechange', changenameusernameyourself)
+router.post('/usersurnamechange', usersurnamechange)
 
 router.post('/register', register)
 

@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 
-const emit = defineEmits(['deactiveuser, editemail, uploadphoto'])
+const emit = defineEmits(['deactiveuser, editemail, uploadphoto,namesurname'])
 
 const deactiveuser = (data) => {
     emit('deactiveuser', data)
@@ -21,6 +21,9 @@ const uploadphoto = (data) => {
 
 const editemail = (data) => { 
     emit('editemail', data)
+}
+const namesurname = (data) => { 
+    emit('namesurname', data)
 }
 
 const changeadminstatusbyid = async (user) => {
@@ -82,12 +85,9 @@ const checkadmin = () => {
         </Column>
         <Column header="Profile Photo">
             <template #body="{ data }">
-                <Image 
-                width="150" 
-                :src="data.image_path && data.image_path.trim() !== '' ?
+                <Image width="150" :src="data.image_path && data.image_path.trim() !== '' ?
                 `${IMG_BASE_URL}${data.image_path.replace(/\\/g, '/')}`
-                :'https://via.placeholder.com/150'"
-                alt="Profile Photo" preview />
+                :'https://via.placeholder.com/150'" alt="Profile Photo" preview />
             </template>
         </Column>
         <Column header="Operations">
@@ -97,6 +97,8 @@ const checkadmin = () => {
                 <Button text rounded icon="pi pi-envelope" severity="help" @click="() => editemail(data)"
                     :disabled="checkadmin == false"></Button>
                 <Button text rounded icon="pi pi-image" severity="help" @click="() => uploadphoto(data)"></Button>
+                <Button text rounded icon="pi pi-user" severity="help" @click="() => namesurname(data)"
+                    :disabled="checkadmin == false"></Button>
             </template>
         </Column>
     </DataTable>

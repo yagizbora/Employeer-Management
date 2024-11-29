@@ -261,7 +261,7 @@ const uploadprofilephoto = async (req, res) => {
 };
 
 
-const changenameusernameyourself = async (req, res) => {
+const usersurnamechange  = async (req, res) => {
     const tokenCheck = await verifyToken(req);
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
@@ -270,6 +270,14 @@ const changenameusernameyourself = async (req, res) => {
 
     const query = `UPDATE Users SET name = @name, surname = @surname WHERE is_aktif = 1 AND id = @id`;
 
+    const usernameget = async () => {
+        const usernamequery = `SELECT username From Users WHERE id = @id`;
+        const pool = await getPool();
+        const result = await pool.request()
+            .input("id", sql.Int, id)
+            .query(usernamequery);
+        return result.recordset[0]
+    }
     try {
         const pool = await getPool();
         const result = await pool.request()
@@ -279,11 +287,12 @@ const changenameusernameyourself = async (req, res) => {
             .query(query);
 
         const response = result.rowsAffected[0];
-        console.log('Result:', JSON.stringify(result));
-        console.log('Rows affected:', response);
+        // console.log('Result:', JSON.stringify(result));
+        // console.log('Rows affected:', response);
 
         if (response > 0) {
-            return res.status(200).json({ message: 'Okay, Name and Surname is changed' });
+            let username = await usernameget();
+            return res.status(200).json({ message: `Okay, Name and Surname is changed of this user ${username.username}` });
         } else {
             return res.status(400).json({ message: 'No rows were updated' });
         }
@@ -342,7 +351,6 @@ const getalldatausers = async (req, res) => {
     }
 
     const query = `SELECT username,id,name,surname,email FROM Users WHERE id = @id AND is_aktif = 1`;
-
     try {
         const pool = await getPool();
         const result = await pool.request()
@@ -725,7 +733,7 @@ module.exports =
     changeusername,
     firstregistercontroller,
     changeemail,
-    changenameusernameyourself,
+    usersurnamechange,
     uploadprofilephoto,
     profilephoto,
     getprofilephoto,
