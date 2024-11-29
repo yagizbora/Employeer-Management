@@ -61,7 +61,7 @@ const checkadmin = async () => {
 
 const createuser = async () => {
     try {
-        const response = await usersservice.createusers({ ...formData.value })
+        const response = await usersservice.createusers({ ...formData.value, user_id: localStorage.getItem('user_id') })
         if (response) {
             Swal.fire({
                 title: 'User created successfully!',

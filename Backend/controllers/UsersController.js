@@ -84,11 +84,22 @@ const register = async (req, res) => {
         return res.status(401).json({ message: tokenCheck.message });
     }
 
-    const { username, password, is_admin, email } = req.body;
+    const { username, password, is_admin, email,user_id } = req.body;
 
     
-    if (!username || !password || is_admin == null) {
+    if (!username || !password || is_admin == null || user_id == null) {
         return res.status(400).json({ message: 'Username, password, and is_admin are required'});
+    }
+
+    let checkadminstatus
+
+    const checkuseradmin = async () => {
+        const query = `SELECT is_admin FROM Users WHERE id = @user_id AND is_aktif = 1`
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('user_id', sql.Int, user_id)
+            .query(query)
+        return result.recordset.length > 0 ? result.recordset[0].is_admin : null;
     }
 
 
@@ -102,6 +113,12 @@ const register = async (req, res) => {
     };
 
     try {
+        checkadminstatus = await checkuseradmin();
+        if (!checkadminstatus) {
+            res.status(400).json({ message: "You're not admin you cannot delete this user!!" });
+            return;
+        }
+
         const usernameCount = await checkUsernameQuery(); 
         if (usernameCount > 0) {
             return res.status(400).json({ message: 'Username already exists, please use a different username' });
