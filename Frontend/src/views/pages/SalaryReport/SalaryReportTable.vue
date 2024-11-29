@@ -35,7 +35,8 @@ const onRowCollapse = (event) => {
         </Column>
         <Column field="TotalSalary" header="Total Salary">
             <template #body="{ data }">
-                <div style="    background: rgb(255 239 241);
+                <div style="    
+    background: rgb(255 239 241);
     width: 100%;
     padding: 12px;
     border-radius: 6px;
@@ -48,11 +49,16 @@ const onRowCollapse = (event) => {
                 <Column field="Name" header="Name Surname"></Column>
                 <Column field="Salary" header="Salary">
                     <template #body="{ data }">
-                        <div style="    background: #efefff;
-    width: 50%;
+                        <div style="   
+    display: flex;
+    justify-content: center;
+    background: #efefff;
+    width: 100%;
     padding: 12px;
     border-radius: 6px;
-    font-weight: 400;">{{ formatCurrency(data.Salary) }}</div>
+    font-weight: 400;">
+    {{ formatCurrency(data.Salary) }}
+    </div>
                     </template>
                 </Column>
                 <Column field="Position" header="Position"></Column>
