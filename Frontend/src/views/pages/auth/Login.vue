@@ -39,7 +39,7 @@ const checkfirstlogin = async () => {
     if (status.value) {
         Swal.fire({
             title: 'Bilgilendirme',
-            text: 'Bu uygulama ilk kez çalıştırdığınız için lütfen hesabınızı oluşturunuz. Şifrenizi unuttuysanız sizi hemen yeniden isteyebilirsiniz.',
+            text: 'Bu uygulama ilk kez çalıştırdığınız için lütfen hesabınızı oluşturunuz. Şifrenizi unuttuysanız bizimle iletişime geçin .',
             icon: 'info',
             confirmButtonText: 'Tamam'
         })

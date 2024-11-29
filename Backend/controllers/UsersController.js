@@ -115,7 +115,7 @@ const register = async (req, res) => {
     try {
         checkadminstatus = await checkuseradmin();
         if (!checkadminstatus) {
-            res.status(400).json({ message: "You're not admin you cannot delete this user!!" });
+            res.status(400).json({ message: "You're not admin you cannot create this user!!" });
             return;
         }
 
