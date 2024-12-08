@@ -77,6 +77,11 @@ onMounted(() => {
                                 {{ formatCurrency(data.Salary) }}
                             </template>
                         </Column>
+                        <Column field="is_work" header="Is_work">
+                            <template #body=" { data } ">
+                                <Checkbox v-model="data.is_work" binary disabled class="checkbox" />
+                            </template> 
+                        </Column>
                     </DataTable>
                 </div>
             </div>
@@ -91,5 +96,10 @@ onMounted(() => {
     @media (max-width:420px) {
         display: none;
     }
+}
+.checkbox {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
 }
 </style>
