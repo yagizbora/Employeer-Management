@@ -393,8 +393,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .preview-image {
         width: 100%;
-        height: 150px;
+        height: 100%;
         object-fit: cover;
-
 }
 </style>
