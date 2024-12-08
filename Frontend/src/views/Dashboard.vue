@@ -19,12 +19,13 @@ const props = defineProps({
 const FetchData = async () => {
     try {
         const response = await employeerservice.getEmployeers()
-        data.value = response.data.data 
-
+        const filterdata = response.data.data.filter(item => item.is_work === true)
+        data.value = filterdata
     } catch (error) {
         console.error(error)
     }
 }
+
 
 const salarystatics = async () => {
     try {
