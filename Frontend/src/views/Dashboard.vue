@@ -69,19 +69,21 @@ onMounted(() => {
                 </div>
                 <div class="card-body">
                     <DataTable :value=data paginator :rows='5' :rowsPerPageOptions="[5, 10, 20, 50]">
-                        <Column field="Name" header="Name"></Column>
-                        <Column field="Department" header="Department"></Column>
-                        <Column field="Position" header="Position"></Column>
-                        <Column field="Salary" header="Salary">
-                            <template #body=" { data } ">
-                                {{ formatCurrency(data.Salary) }}
-                            </template>
-                        </Column>
-                        <Column field="is_work" header="Is_work">
-                            <template #body=" { data } ">
-                                <Checkbox v-model="data.is_work" binary disabled class="checkbox" />
-                            </template> 
-                        </Column>
+                        <div>
+                            <Column field="Name" header="Name"></Column>
+                            <Column field="Department" header="Department"></Column>
+                            <Column field="Position" header="Position"></Column>
+                            <Column field="Salary" header="Salary">
+                                <template #body="{ data }">
+                                    {{ formatCurrency(data.Salary) }}
+                                </template>
+                            </Column>
+                            <Column field="is_work" header="Is_work">
+                                <template #body="{ data }">
+                                    <Checkbox v-model="data.is_work" binary disabled class="checkbox" />
+                                </template>
+                            </Column>
+                        </div>
                     </DataTable>
                 </div>
             </div>

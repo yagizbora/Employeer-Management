@@ -24,23 +24,30 @@ const SalaryAverageAndAllinDepartmans = async (req, res) => {
             Departmants d ON e.departmant_id = d.id
             WHERE 
             e.IS_DELETED = 0
+            AND 
+            e.is_work = 1
             GROUP BY 
             d.Departman;
         `);
 
         // Çalışan Detaylarını Getir
         const employeeDetailsResult = await pool.request().query(`
-            SELECT 
+            SELECT DISTINCT
+			e.id AS employeer_id,
             e.Name AS Name,
             e.Salary AS Salary,
             e.Position AS Position,
-            d.Departman AS Departman
+            d.Departman AS Departman,
+			e.is_work AS is_work
             FROM 
             Employeer_List e
             JOIN 
             Departmants d ON e.departmant_id = d.id
             WHERE 
-            e.IS_DELETED = 0;
+            e.IS_DELETED = 0
+			AND
+			e.is_work = 1
+            ;
         `);
 
         // JSON format�nda veri olu�turma
