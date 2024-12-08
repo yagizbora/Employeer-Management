@@ -12,7 +12,6 @@ const SalaryAverageAndAllinDepartmans = async (req, res) => {
     try {
         const pool = await getPool();
 
-        // Ortalama ve Toplam Maa�lar� Getir
         const avgAndTotalResult = await pool.request().query(`
             SELECT 
             d.Departman AS Departman,
@@ -30,7 +29,6 @@ const SalaryAverageAndAllinDepartmans = async (req, res) => {
             d.Departman;
         `);
 
-        // Çalışan Detaylarını Getir
         const employeeDetailsResult = await pool.request().query(`
             SELECT DISTINCT
 			e.id AS employeer_id,
@@ -50,7 +48,6 @@ const SalaryAverageAndAllinDepartmans = async (req, res) => {
             ;
         `);
 
-        // JSON format�nda veri olu�turma
         const departments = {};
         avgAndTotalResult.recordset.forEach(row => {
             departments[row.Departman] = {
