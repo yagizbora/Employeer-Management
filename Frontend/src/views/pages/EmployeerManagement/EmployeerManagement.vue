@@ -161,7 +161,7 @@ onMounted(() => {
                 </Toolbar>
                 <div class="card-body">
                     <EmployeerManagementTable :data="data" @deleteemployeer="deleteemployeer"
-                        @editemployeer="editemployeer">
+                        @editemployeer="editemployeer" @refreshtable="FetchData">
                     </EmployeerManagementTable>
                 </div>
             </div>

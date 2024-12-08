@@ -22,6 +22,10 @@ export default class EmployeerService {
             console.log(error);
         }
     }
+    async workstatus(data) {
+        const response = await axiosApp.post('/fireemployeer',data);
+        return response;
+    }
     async update(data) {
         try {
             const response = await axiosApp.post(`updateemployeer/${data.id}`, data);

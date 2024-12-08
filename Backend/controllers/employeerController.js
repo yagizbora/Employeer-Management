@@ -62,6 +62,34 @@ const getEmployeerById = async (req, res) => {
     }
 };
 
+const employeerfire = async (req, res) => {
+    const tokenCheck = await verifyToken(req); 
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+
+    const { id,status } = req.body;
+
+    if (!id || status == null || undefined) {
+        return res.status(400).send({message: 'Id and status is required'})
+    }
+
+    const query = `UPDATE Employeer_List SET is_work = @status WHERE id = @id`
+
+    try {
+        const pool =  await getPool();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .input('status', sql.Bit,status)
+            .query(query)
+        if (result.rowsAffected[0] > 0) {
+            return res.status(200).json({message:'Employeer status is succesfully changed'})
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Database error: ' + err.message });
+        console.error(err)
+    }
+}
 
 const createEmployeer = async (req, res) => {
     const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
@@ -78,8 +106,8 @@ const createEmployeer = async (req, res) => {
             .input('salary', sql.Decimal(10, 2), salary)
             .input('departmant_id', sql.Int, departmant_id)
             .query(`
-                INSERT INTO Employeer_List (Name, Position, Salary, IS_DELETED, departmant_id)
-                VALUES (@name, @position, @salary, 0, @departmant_id)
+                INSERT INTO Employeer_List (Name, Position, Salary, IS_DELETED, departmant_id,is_work)
+                VALUES (@name, @position, @salary, 0, @departmant_id,1)
             `);
 
         res.status(200).json({ message: 'Employee added successfully' });
@@ -194,5 +222,6 @@ module.exports = {
     createEmployeer,
     deleteEmployeerById,
     updateemployeer,
-    getEmployeersByDepartmantId
+    getEmployeersByDepartmantId,
+    employeerfire
 };
