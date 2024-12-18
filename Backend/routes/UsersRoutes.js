@@ -18,12 +18,15 @@ const
     getemail,
     getprofilephoto,
     profilephoto,
-    getalldatausers
+    getalldatausers,
+    logoutuserforsuperadmin
 } = require('../controllers/UsersController')
 
 router.post('/login', login)
 
 router.post('/uploadprofilephoto', uploadprofilephoto)
+
+router.post('/logoutuserforsuperadmin', logoutuserforsuperadmin)
 
 router.post('/profilephoto', profilephoto)
 

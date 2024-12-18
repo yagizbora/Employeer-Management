@@ -24,7 +24,8 @@ const clearlocalstorage = async () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user_id');
     localStorage.removeItem('username');
-    localStorage.removeItem('is_admin')
+    localStorage.removeItem('is_admin');
+    localStorage.removeItem('super_admin');
 }
 
 onMounted(() => {
@@ -124,6 +125,7 @@ const login = async () => {
             localStorage.setItem('user_id', response.data.user_id);
             localStorage.setItem('username', response.data.username);
             localStorage.setItem('is_admin', response.data.is_admin);
+            localStorage.setItem('super_admin', response.data.super_admin);
             toast.add({ severity: 'success', summary: 'Başarılı', detail: 'Giriş yapıldı yönlendiriliyorsunuz', life: 3000 });
             setTimeout(() => {
                 router.push({ name: 'dashboard' });

@@ -61,7 +61,10 @@ export default class UserService {
         console.log(response)
         return response;
     }
-
+    async logoutforsuperadmin(data) {
+        const response = await axiosApp.post('logoutuserforsuperadmin', data);
+        return response;
+    }
     async getprofilephoto(data) {
         const response = await axiosApp.get('getprofilephoto', {
             params: {

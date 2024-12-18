@@ -1,6 +1,6 @@
 <script setup lang="js">
 import Swal from 'sweetalert2';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { IMG_BASE_URL } from "@/utils/helper.js";
 import UserService from '@/service/UsersService.js';
 const usersservice = new UserService()
@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 
-const emit = defineEmits(['deactiveuser, editemail, uploadphoto,namesurname'])
+const emit = defineEmits(['deactiveuser, editemail, uploadphoto,namesurname,getallusers'])
 
 const deactiveuser = (data) => {
     emit('deactiveuser', data)
@@ -24,6 +24,31 @@ const editemail = (data) => {
 }
 const namesurname = (data) => { 
     emit('namesurname', data)
+}
+
+const logoutforsuperadmin = async(user) => {
+    try {
+        const response = await usersservice.logoutforsuperadmin({
+            id: user.id,
+            token: localStorage.getItem('token'),
+            user_id: localStorage.getItem('user_id')
+        })
+        if (response.status) {
+            Swal.fire({
+                title: 'Logged Out!',
+                text: response.data.message,
+                icon:'success',
+            })
+            emit('getallusers');
+        }
+    } catch (error) {
+        Swal.fire({
+            title: 'Error!',
+            text: error.response.data.message,
+            icon: 'error',
+        })
+     emit('getallusers');
+    }
 }
 
 const changeadminstatusbyid = async (user) => {
@@ -46,31 +71,35 @@ const changeadminstatusbyid = async (user) => {
         emit('getallusers');
     }
 };
-const checkadmin = () => {
-    const getadminstatus = localStorage.getItem('is_admin')
-    if (getadminstatus) {
-        admin.value = getadminstatus === 'true' ? true : false
-        return admin.value
-    }
-    else {
 
-    }
-};
+const isSuperAdmin = computed(() => {
+    const getsuperadminstats = localStorage.getItem('super_admin');
+    return getsuperadminstats === 'true';
+});
+
+const isAdmin = computed(() => {
+    const getadminstatus = localStorage.getItem('is_admin');
+    return getadminstatus === 'true';
+});
 </script>
 
 <template>
     <DataTable :value="data">
         <Column field="username" header="Username"></Column>
+        <!-- Admin Status -->
         <Column field="is_admin" header="Admin Status">
             <template #body="{ data }">
-                <InputSwitch :binary="true" v-model="data.is_admin" :disabled="checkadmin == false || data.is_logged"
-                    @change="changeadminstatusbyid(data)" />
+                <InputSwitch :binary="true" v-model="data.is_admin"
+                    :disabled="!isAdmin || !isSuperAdmin || data.is_logged" @change="changeadminstatusbyid(data)" />
             </template>
         </Column>
+
+        <!-- Log Status -->
         <Column field="is_logged" header="Log status">
             <template #body="{ data }">
-                <span :class="data.is_logged? 'text-success' : 'text-danger'">
-                    <Checkbox v-model="data.is_logged" binary disabled />
+                <span :class="data.is_logged ? 'text-success' : 'text-danger'">
+                    <Checkbox v-model="data.is_logged" binary :disabled="!isAdmin || !isSuperAdmin || !data.is_logged"
+                        @change="logoutforsuperadmin(data)" />
                 </span>
             </template>
         </Column>

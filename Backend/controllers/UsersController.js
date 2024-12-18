@@ -65,7 +65,7 @@ const firstregister = async (req, res) => {
         const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const insertQuery = `INSERT INTO Users (username, password, is_aktif, is_admin,is_logged) VALUES (@username, @password,1,1,0)`;
+        const insertQuery = `INSERT INTO Users (username, password, is_aktif, is_admin,is_logged,super_admin) VALUES (@username, @password,1,1,0,1)`;
         const pool = await getPool();
         await pool.request()
             .input('username', sql.VarChar, username)
@@ -127,7 +127,7 @@ const register = async (req, res) => {
         const saltRounds = 12;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const insertQuery = `INSERT INTO Users (username, password,email,is_aktif, is_admin,is_logged) VALUES (@username, @password,@email, 1, @is_admin,0)`;
+        const insertQuery = `INSERT INTO Users (username, password,email,is_aktif, is_admin,is_logged,super_admin) VALUES (@username, @password,@email, 1, @is_admin,0,0)`;
         const pool = await getPool();
         await pool.request()
             .input('username', sql.VarChar, username)
@@ -471,7 +471,7 @@ const login = async (req, res) => {
             .input('token', sql.VarChar, token)
             .input('id', sql.Int, user.id)
             .query('UPDATE Users SET token = @token, is_logged = 1 WHERE id = @id');
-        res.status(200).json({ message: 'Login successful', token: token, user_id: user.id, username: user.username, is_admin: user.is_admin });
+        res.status(200).json({ message: 'Login successful', token: token, user_id: user.id, username: user.username, is_admin: user.is_admin, super_admin: user.super_admin });
     } catch (error) {
         res.status(500).json({ message: 'Database error: ' + error.message });
     }
@@ -734,6 +734,80 @@ const profilephoto = async (req, res) => {
 };
 
 
+const logoutuserforsuperadmin = async (req, res) => {
+    const tokenCheck = await verifyToken(req);
+    if (!tokenCheck.status) {
+        return res.status(401).json({ message: tokenCheck.message });
+    }
+
+
+
+    const { id, user_id, token } = req.body;
+    if (id == user_id) {
+        return res.status(400).json({ message: 'You cannot logout yourself in this page!!!' })
+    }
+    if (!id || !user_id || !token) {
+        return res.status(400).json({message:'All fields is required'})
+    }
+
+    const checksuperadmin = async () => {
+        const query = `
+            SELECT COUNT(super_admin) AS count 
+            FROM users 
+            WHERE id = @user_id AND token = @token AND super_admin = 1
+        `;
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('user_id', sql.Int, user_id)
+            .input('token', sql.VarChar, token)
+            .query(query);
+        return result.recordset[0];
+    };
+
+
+    const isuserloggedin = async () => {
+        const query = `
+        SELECT COUNT(is_logged) AS count
+        FROM users
+        WHERE id = @id AND is_logged = 1
+        `
+        const pool = await getPool();
+        const result = await pool.request()
+        .input('id', sql.Int, id)
+            .query(query)
+        return result.recordset[0]
+    }
+
+
+    try {
+        const checksuperadminResult = await checksuperadmin();
+
+        if (checksuperadminResult.count === 0) {
+            return res.status(400).json({ message: 'You are not a super admin' });
+        }
+
+
+        const isuserloggedinResult = await isuserloggedin()
+        if (isuserloggedinResult.count === 0) {
+            return res.status(400).json({message:'User is not logged'})
+        }
+        const query = `UPDATE Users SET token = '', is_logged = 0 WHERE id = @id`;
+        const pool = await getPool()
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query);
+
+        if (result.rowsAffected[0] > 0) {
+            return res.status(200).json({ message: 'User is logged out' });
+        } else {
+            return res.status(200).json({ message: 'Something went wrong. Please contact the IT department.' });
+        }
+    } catch (error) {
+        console.error('Database error:', error.message);
+        return res.status(500).json({ message: 'An internal server error occurred' });
+    }
+};
+
 
 
 
@@ -755,5 +829,6 @@ module.exports =
     profilephoto,
     getprofilephoto,
     getemail,
-    getalldatausers
+    getalldatausers,
+    logoutuserforsuperadmin
 }

@@ -313,7 +313,7 @@ onMounted(() => {
                 </div>
                 <div>
                     <UsersTable :data="data" @deactiveuser="deactiveuser" @editemail="editemail"
-                        @uploadphoto="uploadphoto" @namesurname="changeusernamedialog" />
+                        @uploadphoto="uploadphoto" @namesurname="changeusernamedialog" @getallusers="getallusers" />
                 </div>
             </div>
         </div>
