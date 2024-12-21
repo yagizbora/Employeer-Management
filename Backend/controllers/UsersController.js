@@ -792,7 +792,7 @@ const logoutuserforsuperadmin = async (req, res) => {
             return res.status(400).json({message:'User is not logged'})
         }
         const query = `UPDATE Users SET token = '', is_logged = 0 WHERE id = @id`;
-        const pool = await getPool()
+        const pool = await getPool();
         const result = await pool.request()
             .input('id', sql.Int, id)
             .query(query);
@@ -811,8 +811,7 @@ const logoutuserforsuperadmin = async (req, res) => {
 
 
 
-module.exports =
-{
+module.exports = {
     login,
     logout,
     register,
@@ -831,4 +830,4 @@ module.exports =
     getemail,
     getalldatausers,
     logoutuserforsuperadmin
-}
+};
