@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const ratelimiter = require('../Middleware/ratelimiter')
 const
 {
     login,
@@ -22,7 +23,7 @@ const
     logoutuserforsuperadmin
 } = require('../controllers/UsersController')
 
-router.post('/login', login)
+router.post('/login', ratelimiter, login)
 
 router.post('/uploadprofilephoto', uploadprofilephoto)
 
