@@ -3,7 +3,6 @@ import UserService from '@/service/UsersService.js';
 import Swal from 'sweetalert2';
 import { IMG_BASE_URL } from "@/utils/helper.js";
 import { defineAsyncComponent, onMounted, ref } from 'vue';
-import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
 
 
 
@@ -45,6 +44,14 @@ const getallusers = async () => {
     if (response) {
         data.value = [];
         data.value = response.data.data;
+    }
+    if (response.data.status == false) {
+        Swal.fire({
+            title: 'Error fetching users',
+            text: response.data.message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+        })
     }
 }
 

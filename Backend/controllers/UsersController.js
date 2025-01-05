@@ -88,7 +88,7 @@ const register = async (req, res) => {
 
     
     if (!username || !password || is_admin == null || user_id == null) {
-        return res.status(400).json({ message: 'Username, password, and is_admin are required'});
+        return res.status(400).json({ message: 'Username and password are required'});
     }
 
     let checkadminstatus
@@ -149,6 +149,17 @@ const listusers = async (req, res) => {
     }
 
     const { is_logged } = req.body;
+    const userId = req.headers['user_id'];
+
+
+    const checkuseradmin = async () => {
+        const query = `SELECT is_admin FROM Users WHERE id = @user_id`;
+        const pool = await getPool();
+        const result = await pool.request()
+            .input('user_id', sql.Int, userId)
+            .query(query)
+        return result.recordset[0]
+    }
 
     if (is_logged === null || is_logged === undefined) {
         return res.status(400).json({ message: 'All fields are required' });
@@ -169,6 +180,11 @@ const listusers = async (req, res) => {
     email FROM Users WHERE is_aktif = 1${sqllogged}`;
 
     try {
+        let checkuseradminstatus = await checkuseradmin()
+        if (!checkuseradminstatus.is_admin)
+        {
+            return res.status(200).json({ status: false, message:"You are not admin you cannot see user :)" })
+        }
         const pool = await getPool();
         const result = await pool.request()
             .input('is_logged', sql.Bit, is_logged)
