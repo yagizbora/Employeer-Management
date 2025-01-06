@@ -558,71 +558,71 @@ const getemail = async (req, res) => {
     }
 }
 
-const changeemail = async (req, res) => {
-    const tokenCheck = await verifyToken(req);
-    if (!tokenCheck.status) {
-        return res.status(401).json({ message: tokenCheck.message });
-    }
+    const changeemail = async (req, res) => {
+        const tokenCheck = await verifyToken(req);
+        if (!tokenCheck.status) {
+            return res.status(401).json({ message: tokenCheck.message });
+        }
 
-    const { user_id, email, id } = req.body;
+        const { user_id, email, id } = req.body;
 
-    if (!user_id) {
-        return res.status(500).json({ message: 'We cannot auth your admin status please contact IT department' });
-    }
+        if (!user_id) {
+            return res.status(500).json({ message: 'We cannot auth your admin status please contact IT department' });
+        }
 
-    if (!email || !id) {
-        return res.status(500).json({ message: 'All fields required' });
-    }
+        if (!email || !id) {
+            return res.status(500).json({ message: 'All fields required' });
+        }
 
-    const getUsername = async () => {
-        const usernameQuery = `SELECT username FROM Users WHERE id = @id`;
+        const getUsername = async () => {
+            const usernameQuery = `SELECT username FROM Users WHERE id = @id`;
 
-        const pool = await getPool();
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .query(usernameQuery);
+            const pool = await getPool();
+            const result = await pool.request()
+                .input('id', sql.Int, id)
+                .query(usernameQuery);
 
-        const response = result.recordset[0];
-        return response ? response.username : null;  
+            const response = result.recordset[0];
+            return response ? response.username : null;  
+        };
+
+        const checkUserAdmin = async () => {
+            const query = `SELECT is_admin FROM Users WHERE id = @user_id AND is_aktif = 1`;
+            const pool = await getPool();
+            const result = await pool.request()
+                .input('user_id', sql.Int, user_id)
+                .query(query);
+
+            return result.recordset.length > 0 ? result.recordset[0].is_admin : null;
+        };
+
+        const updateEmailQuery = `UPDATE Users SET email = @email WHERE is_aktif = 1 AND id = @id`;
+
+        try {
+            const username = await getUsername();
+            if (!username) {
+                return res.status(404).json({ message: 'User not found.' });
+            }
+
+            const isAdmin = await checkUserAdmin();
+            if (!isAdmin) {
+                return res.status(500).json({ status: '500', message: `You're not an admin; you cannot update ${username} email data.`  });
+            }
+            const pool = await getPool();
+            const result = await pool.request()
+                .input('email', sql.VarChar, email)
+                .input('id', sql.Int, id)
+                .query(updateEmailQuery);
+
+            if (result.rowsAffected > 0) {
+                return res.status(200).json({ message: `${username}'s email has been updated!` });
+            } else {
+                return res.status(500).json({ message: 'Operation unsuccessful, please contact IT department.' });
+            }
+        } catch (error) {
+            return res.status(500).json({ message: 'Database error: ' + error.message });
+        }
     };
-
-    const checkUserAdmin = async () => {
-        const query = `SELECT is_admin FROM Users WHERE id = @user_id AND is_aktif = 1`;
-        const pool = await getPool();
-        const result = await pool.request()
-            .input('user_id', sql.Int, user_id)
-            .query(query);
-
-        return result.recordset.length > 0 ? result.recordset[0].is_admin : null;
-    };
-
-    const updateEmailQuery = `UPDATE Users SET email = @email WHERE is_aktif = 1 AND id = @id`;
-
-    try {
-        const username = await getUsername();
-        if (!username) {
-            return res.status(404).json({ message: 'User not found.' });
-        }
-
-        const isAdmin = await checkUserAdmin();
-        if (!isAdmin) {
-            return res.status(500).json({ status: '500', message: `You're not an admin; you cannot update ${username} email data.`  });
-        }
-        const pool = await getPool();
-        const result = await pool.request()
-            .input('email', sql.VarChar, email)
-            .input('id', sql.Int, id)
-            .query(updateEmailQuery);
-
-        if (result.rowsAffected > 0) {
-            return res.status(200).json({ message: `${username}'s email has been updated!` });
-        } else {
-            return res.status(500).json({ message: 'Operation unsuccessful, please contact IT department.' });
-        }
-    } catch (error) {
-        return res.status(500).json({ message: 'Database error: ' + error.message });
-    }
-};
 
 
 const adminstatus = async (req, res) => {

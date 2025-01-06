@@ -1,4 +1,3 @@
-const { query } = require('express');
 const { getPool } = require('../database');
 const sql = require('mssql');
 const verifyToken = require('../Middleware/verifyToken'); 
@@ -22,7 +21,7 @@ FROM Project p JOIN Customer c ON c.id = p.customer_name_id WHERE p.is_deleted =
 }
 
 const createprojects = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); 
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }

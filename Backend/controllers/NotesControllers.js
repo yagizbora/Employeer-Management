@@ -1,4 +1,3 @@
-const { query } = require('express');
 const { getPool } = require('../database');
 const sql = require('mssql');
 const verifyToken = require('../Middleware/verifyToken'); 
