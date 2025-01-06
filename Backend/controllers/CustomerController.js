@@ -64,14 +64,14 @@ const addcustomer = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const { customer_name, customer_address, customer_phone, customer_company, customer_email, is_important_customer } = req.body
+    const { customer_name, customer_address, customer_phone, customer_company, customer_email, is_important_customer, is_customer_active } = req.body
 
-    if (Object.keys(req.body).length < 5) {
+    if (Object.keys(req.body).length < 6) {
         res.status(500).json({ message: 'All fields must be required' })
         return
     }
 
-    const query = `INSERT INTO Customer(customer_name,customer_address,customer_phone,customer_company,customer_email,is_important_customer,is_deleted) VALUES(@customer_name,@customer_address,@customer_phone,@customer_company,@customer_email,@is_important_customer,0)`
+    const query = `INSERT INTO Customer(customer_name,customer_address,customer_phone,customer_company,customer_email,is_important_customer,is_deleted,is_customer_active) VALUES(@customer_name,@customer_address,@customer_phone,@customer_company,@customer_email,@is_important_customer,@is_customer_active,0)`
     try
     {
         const pool = await getPool();
@@ -81,7 +81,8 @@ const addcustomer = async (req, res) => {
             .input('customer_company', sql.VarChar,customer_company)
             .input('customer_phone', sql.VarChar, customer_phone)
             .input('customer_email', sql.VarChar, customer_email)
-            .input('is_important_customer', sql.Bit, is_important_customer)
+            .input( 'is_important_customer', sql.Bit, is_important_customer )
+            .input( 'is_customer_active', sql.Bit, is_customer_active )
             .query(query)
         res.status(201).json({ message: 'Customer created is succesfully' });
 
@@ -162,9 +163,9 @@ const updatecustomerbyid = async (req, res) => {
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
-    const { id, customer_name, customer_address, customer_phone, customer_company, customer_email, is_important_customer } = req.body
+    const { id, customer_name, customer_address, customer_phone, customer_company, customer_email, is_important_customer, is_customer_active } = req.body
 
-    if (Object.keys(req.body).length < 6) {
+    if (Object.keys(req.body).length < 7) {
         res.status(500).json({ message: 'All fields must be required' })
         return
     }
@@ -181,7 +182,7 @@ const updatecustomerbyid = async (req, res) => {
     };
 
     const query = `UPDATE Customer SET customer_name = @customer_name, customer_address = @customer_address, customer_phone = @customer_phone, customer_company = @customer_company,
-    customer_email = @customer_email, is_important_customer = @is_important_customer WHERE id = @id`
+    customer_email = @customer_email, is_important_customer = @is_important_customer,is_customer_active = @is_customer_active WHERE id = @id`
     try {
         check_customer = await check_important();
         if (check_customer) {
@@ -197,11 +198,12 @@ const updatecustomerbyid = async (req, res) => {
             .input('customer_company', sql.VarChar, customer_company)
             .input('customer_phone', sql.VarChar, customer_phone)
             .input('customer_email', sql.VarChar, customer_email)
-            .input('is_important_customer', sql.Bit, is_important_customer)
+            .input( 'is_important_customer', sql.Bit, is_important_customer )
+            .input( 'is_customer_active', sql.Bit, is_customer_active )
             .query(query)
         res.status(200).json({ message: 'Complaint Updated' });
 
-    } catch (error) {
+    } catch ( error ) {
         res.status(500).json({ message: 'Veritaban? hatas?: ' + error.message });
     }
 }

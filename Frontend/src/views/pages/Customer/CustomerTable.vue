@@ -49,6 +49,11 @@ const props = defineProps({
                 <Checkbox :binary="true" v-model="slotProps.data.is_important_customer" disabled />
             </template>
         </Column>
+        <Column header="Is the customer active?">
+        <template #body=" slotProps">
+            <Checkbox :binary="true" v-model="slotProps.data.is_customer_active" disabled />
+        </template>
+        </Column>
         <Column header="Operations">
             <template #body=" { data } ">
                 <div>

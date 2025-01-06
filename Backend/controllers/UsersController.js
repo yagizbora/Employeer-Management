@@ -97,7 +97,8 @@ const register = async (req, res) => {
         const query = `SELECT is_admin FROM Users WHERE id = @user_id AND is_aktif = 1`
         const pool = await getPool();
         const result = await pool.request()
-            .input('user_id', sql.Int, user_id)
+            .input( 'user_id', sql.Int, user_id )
+
             .query(query)
         return result.recordset.length > 0 ? result.recordset[0].is_admin : null;
     }

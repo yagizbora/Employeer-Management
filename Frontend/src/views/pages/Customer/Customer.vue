@@ -206,11 +206,18 @@ onMounted(() => {
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 xl:col-12">
+                <div class="col-12 xl:col-12 flex justify-content-between">
                     <div class="flex flex-column">
                         <label>Is important customer?</label>
-                        <Checkbox v-model="FormData.is_important_customer" :disabled="checkdisabledinputs"
-                            :binary="true" />
+                        <div class="flex justify-content-center">
+                            <Checkbox v-model="FormData.is_important_customer" :disabled="checkdisabledinputs"  :binary="true" />
+                        </div>
+                    </div>
+                    <div class="flex flex-column">
+                            <label>Is the customer active?</label>
+                        <div class="flex justify-content-center">
+                            <Checkbox v-model="FormData.is_customer_active" :disabled="checkdisabledinputs" :binary="true" />
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 xl:col-12">

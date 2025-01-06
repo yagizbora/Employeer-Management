@@ -33,18 +33,18 @@ const handleaddDialog = async () => {
 }
 
 const deleteemployeer = async (data) => {
-    confirm.require({
-        message: 'Are you sure you want to delete this employeer?',
-        header: 'Delete Employeer',
-        icon: 'pi pi-exclamation-triangle',
-        acceptLabel: 'Delete',
-        acceptClass: 'p-button-danger',
-        rejectLabel: 'Cancel',
-        rejectClass: 'p-button-secondary p-button-outlined',
-        accept: () => {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
             handledeleteemployeer(data)
-        },
-        reject: () => { }
+        }
     })
 }
 

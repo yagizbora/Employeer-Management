@@ -4,13 +4,12 @@ import { axiosApp } from "@/utils/axiosAPI";
 export default class UserService {
     async uploadprofilephoto(data) {
         const formdata = new FormData();
-        formdata.append('photo', data.photo);  // Burada 'photo' doğru şekilde ekleniyor
-        formdata.append('id', data.id);        // 'id' de doğru şekilde ekleniyor
+        formdata.append('photo', data.photo); 
+        formdata.append('id', data.id);        
 
-        // Axios isteğini yapıyoruz
         const response = await axiosApp.post('uploadprofilephoto', formdata, {
             headers: {
-                'Content-Type': 'multipart/form-data',  // Content-Type header'ını belirtmeye gerek yok ama ekleyelim
+                'Content-Type': 'multipart/form-data', 
             }
         });
 
