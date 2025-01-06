@@ -13,7 +13,8 @@ const NotesRoutes = require('./routes/NotesRoutes');
 const NeedRoutes = require('./routes/NeedRoutes');
 const CustomerRoutes = require('./routes/CustomerRoutes');
 const ProjectRoutes = require('./routes/ProjectRoutes');
-const UsersRoutes = require('./routes/UsersRoutes');
+const UsersRoutes = require( './routes/UsersRoutes' );
+const CommunactionHistoryRoutes = require( './routes/CommunactionHistoryRoutes' )
 const cors = require('cors');
 const app = express();
 const PORT = 44392;
@@ -34,7 +35,8 @@ getPool()
         app.use('/api', NeedRoutes);
         app.use('/api', CustomerRoutes);
         app.use('/api', ProjectRoutes);
-        app.use('/api', UsersRoutes);
+        app.use( '/api', UsersRoutes );
+        app.use( '/api', CommunactionHistoryRoutes )
         app.listen(PORT, () => {
             console.log(`Sunucu http://localhost: ${PORT} adresinde �al���yor`);
         });
