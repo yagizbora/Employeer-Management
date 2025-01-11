@@ -48,10 +48,15 @@ const API_URL = import.meta.env.VITE_API_URL;
 //PROFILE PHOTO AREA
 const photoprofile = ref({})
 const profilephoto = async () => {
-    const response = await usersservice.profilephoto({
-        user_id: localStorage.getItem('user_id')
-    })
-    photoprofile.value = response.data.data
+    if (localStorage.getItem('user_id') === null) {
+        // pass
+    }
+    else {
+        const response = await usersservice.profilephoto({
+            user_id: localStorage.getItem('user_id')
+        })  
+        photoprofile.value = response.data.data
+    }
 }
 
 onMounted(() => {
@@ -441,11 +446,11 @@ const settings = ref([
                 :style="{ width: '25rem' }" />
         </div>
 
-            <div class="profilephoto-wrapper">
-                <Image width="75" class="profilephoto" :src="photoprofile.image_path && photoprofile.image_path.trim() !== '' ?
-                    `${IMG_BASE_URL}${photoprofile.image_path.replace(/\\/g, '/')}`
-                    : 'https://via.placeholder.com/150'" alt="Profile Photo" preview />
-            </div>
+        <div class="profilephoto-wrapper">
+            <Image width="75" class="profilephoto" :src="photoprofile.image_path && photoprofile.image_path.trim() !== '' ?
+                `${IMG_BASE_URL}${photoprofile.image_path.replace(/\\/g, '/')}`
+                : 'https://via.placeholder.com/150'" alt="Profile Photo" preview />
+        </div>
         <Dialog modal v-model:visible="changeNameSurnameDialog" header="Change name and surname">
             <div class="">
                 <div class="flex flex-column">
@@ -520,19 +525,20 @@ const settings = ref([
     width: 100%;
 }
 
- .profilephoto-wrapper {
-     margin-left: 1rem;
-     display: flex;
-     align-items: center;
-     justify-content: center;
- }
- .profilephoto-wrapper .profilephoto {
-     border-radius: 50%;
-     height: 100px;
-     width: 100px;
-     overflow: hidden;
-     display: flex;
-     justify-content: center;
-     align-items: center;
- }
+.profilephoto-wrapper {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profilephoto-wrapper .profilephoto {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 </style>

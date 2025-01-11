@@ -1,8 +1,7 @@
 const express = require('express');
-const axios = require('axios');
+const ratelimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const { getPool } = require('./database');
-const multer = require('multer');
 const path = require('path'); 
 const employeerRoutes = require('./routes/employeerRoutes');
 const DepartmantRoutes = require('./routes/DepartmantRoutes');
@@ -19,11 +18,21 @@ const cors = require('cors');
 const app = express();
 const PORT = 44392;
 
+const limiter = ratelimit({
+    windowMs: 5 * 60 * 1000, 
+    limit: 1000, 
+    standardHeaders: true, 
+    legacyHeaders: false, 
+    message: {
+        message: 'Too many login attempts, please try again later.'
+    },
+});
 
 
 app.use(cors());
 getPool()
     .then(() => {
+        app.use(limiter);
         app.use(bodyParser.json());
         app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
         app.use('/api', OrderRoutes);

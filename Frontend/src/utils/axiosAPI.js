@@ -44,7 +44,6 @@ axiosApp.interceptors.response.use(
     }
 
     if (error?.response.status === 401) {
-      // 401 hatası geldiğinde toast aç
       Swal.fire({
         title: "Hata!",
         text: `${error?.response?.data?.message || "Yetkisiz erişim!"}.`,
@@ -52,7 +51,16 @@ axiosApp.interceptors.response.use(
         confirmButtonText: "Tamam",
       });
       router.push("/auth/login");
-    } else {
+    }
+    else if (error?.response.status === 429) {
+      Swal.fire({
+        title: "Warning!",
+        text: error?.response?.data?.message,
+        icon: "error",
+        confirmButtonText: "Tamam",
+      });
+    }
+    else {
       if (error?.response?.data?.message) {
         Swal.fire({
           title: `Hata!`,
@@ -156,7 +164,16 @@ axiosFileApp.interceptors.response.use(
         confirmButtonText: "Tamam",
       });
       router.push("/auth/login");
-    } else {
+    }
+    else if (error?.response.status === 429) {
+      Swal.fire({
+        title: "Warning!",
+        text: error?.response?.data?.message,
+        icon: "error",
+        confirmButtonText: "Tamam",
+      });
+    }
+    else {
       if (error?.response?.data?.message) {
         Swal.fire({
           title: `Hata!`,
