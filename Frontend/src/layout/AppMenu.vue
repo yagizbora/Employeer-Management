@@ -129,6 +129,17 @@ const model = ref([
         ]
     },
     {
+        label: 'Communaction History',
+        icon: '',
+        items: [
+            {
+                label: 'Communaction History List',
+                icon: 'pi pi-list',
+                to: '/communaction/listAllCommunaction'
+            }
+        ]
+    },
+    {
         label: 'Request Management',
         icon: '',
         items: [

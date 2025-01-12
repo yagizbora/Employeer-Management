@@ -36,6 +36,17 @@ const router = createRouter({
             ]
         },
         {
+            path: '/communaction',
+            component: AppLayout,
+            children: [
+                {
+                    path: 'listAllCommunaction',
+                    name: 'communaction-history',
+                    component: () => import('@/views/pages/CommunactionHistory/CommunactionHistory.vue')
+                }
+            ]
+        },
+        {
             path: '/report',
             component: AppLayout,
             children: [

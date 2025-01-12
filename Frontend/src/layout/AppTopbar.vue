@@ -45,7 +45,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 // })
 
 
-//PROFILE PHOTO AREA
 const photoprofile = ref({})
 const profilephoto = async () => {
     if (localStorage.getItem('user_id') === null) {
