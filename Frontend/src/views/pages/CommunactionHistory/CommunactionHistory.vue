@@ -41,7 +41,17 @@ const createdatadialog = async () => {
 
 const createdata = async () => {
     const response = await communactionhistoryservice.createhistory({ ...FormData.value })
-    console.log('Created communaction history:', response.data);
+    if (response) { 
+        Swal.fire({
+            title: 'Success',
+            text: response.data.message,
+            icon: 'success',
+            confirmButtonText: 'Okay'
+        })
+        fetchdata()
+        createcommunactionhistory.value = false
+    }
+
 }
 
 const deletedata = async (data) =>

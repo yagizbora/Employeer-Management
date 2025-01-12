@@ -59,7 +59,7 @@ const getcustomer = async (req, res) => {
 }
 
 const addcustomer = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -70,7 +70,7 @@ const addcustomer = async (req, res) => {
         return
     }
 
-    const query = `INSERT INTO Customer(customer_name,customer_address,customer_phone,customer_company,customer_email,is_important_customer,is_deleted,is_customer_active) VALUES(@customer_name,@customer_address,@customer_phone,@customer_company,@customer_email,@is_important_customer,@is_customer_active,0)`
+    const query = `INSERT INTO Customer(customer_name,customer_address,customer_phone,customer_company,customer_email,is_important_customer,is_customer_active,is_deleted) VALUES(@customer_name,@customer_address,@customer_phone,@customer_company,@customer_email,@is_important_customer,@is_customer_active,0)`
     try
     {
         const pool = await getPool();
@@ -158,7 +158,7 @@ const getcustomerbyid = async (req, res) => {
 }
 
 const updatecustomerbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
