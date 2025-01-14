@@ -24,7 +24,7 @@ const limiter = ratelimit({
     standardHeaders: true, 
     legacyHeaders: false, 
     message: {
-        message: 'Too many login attempts, please try again later.'
+        message: 'Too many request attempts, please try again later.'
     },
 });
 
