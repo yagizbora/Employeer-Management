@@ -5,7 +5,7 @@ const verifyToken = require('../Middleware/verifyToken');
 
 
 const getcomplaints = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -20,7 +20,7 @@ const getcomplaints = async (req, res) => {
     }
 }
 const createcomplaints = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -39,7 +39,7 @@ const createcomplaints = async (req, res) => {
             .input('complaint_title', sql.VarChar, complaint_title)
             .input('complaint_description',sql.VarChar,complaint_description)
         .query(query);
-        res.status(201).json({ message: 'Complaints creatd is succesfully' });
+        res.status(201).json({ message: 'Complaints create is succesfully' });
 
     } catch (err) {
         res.status(500).json({ message: 'Veritaban? hatas?: ' + err.message });
@@ -47,7 +47,7 @@ const createcomplaints = async (req, res) => {
 };
 
 const deletecomplaintsbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -76,7 +76,7 @@ const deletecomplaintsbyid = async (req, res) => {
 }
 
 const getcomplaintsbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -108,7 +108,7 @@ const getcomplaintsbyid = async (req, res) => {
 }
 
 const updatecomplaintsbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }

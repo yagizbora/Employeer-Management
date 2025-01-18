@@ -38,16 +38,16 @@ const props = defineProps({
         </Column>
         <Column field="customer_phone" header="Customer phone">
             <template #body="slotProps">
-                +90-{{ formatPhone(slotProps.data.customer_phone) }}
+                <div class="phone">
+                    +90-{{ formatPhone(slotProps.data.customer_phone) }}
+                </div>
             </template>
         </Column>
         <Column field="customer_address" header="Customer Address"></Column>
-
         <Column field="project_name" header="Project Name"></Column>
         <Column field="project_web_url" header="Project Web url">
             <template #body="slotProps">
-                <a :href="prepareUrl(slotProps.data.project_web_url)" target="_blank">{{ slotProps.data.project_web_url
-                    }}</a>
+                <a :href="prepareUrl(slotProps.data.project_web_url)" target="_blank">{{ slotProps.data.project_web_url }}</a>
             </template>
         </Column>
         <Column header="Is important Customer?">
@@ -67,4 +67,11 @@ const props = defineProps({
 </template>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.phone {
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+</style>

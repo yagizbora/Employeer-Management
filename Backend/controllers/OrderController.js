@@ -51,6 +51,10 @@ const createorder = async (req, res) => {
     }
     const { employeer_id, departman_id, order_name, order_description, is_complated, start_date, end_date } = req.body;
 
+if( !employeer_id || !departman_id || !order_name || !order_description || !is_complated || !start_date || !end_date ) {
+    return res.status(500).json({message:'All fields must be required'})
+}
+
     // Sorgu tan�mlamas�
     const query = `INSERT INTO [Order] (employeer_id, departman_id, order_name, order_description, is_complated, start_date, end_date, IS_DELETED) 
     VALUES (@employeer_id, @departman_id, @order_name, @order_description, @is_complated, @start_date, @end_date, 0)`;

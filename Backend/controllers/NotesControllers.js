@@ -5,7 +5,7 @@ const verifyToken = require('../Middleware/verifyToken');
 
 
 const getnotes = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -21,7 +21,7 @@ const getnotes = async (req, res) => {
 };
 
 const getnotesbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -45,7 +45,7 @@ const getnotesbyid = async (req, res) => {
 }
 
 const updatenotes = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -53,6 +53,9 @@ const updatenotes = async (req, res) => {
 
     if (!id) {
         res.status(500).json({message: 'Id is required'})
+    }
+    if (!note_title || note_description || is_important === null ) {
+        return res.status(500).json({message:'All fields is required'})
     }
 
     const query = `UPDATE Notes SET note_title = @note_title,note_description = @note_description, is_important = @is_important WHERE id = @id`
@@ -72,7 +75,7 @@ const updatenotes = async (req, res) => {
 }
 
 const createnotes = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -93,7 +96,7 @@ const createnotes = async (req, res) => {
 }
 
 const deletenotes = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
@@ -125,7 +128,7 @@ const deletenotes = async (req, res) => {
 };
 
 const notesimportant = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); // Token kontrolï¿½nï¿½ asenkron olarak yap
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }

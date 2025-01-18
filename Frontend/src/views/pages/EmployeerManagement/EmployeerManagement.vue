@@ -168,7 +168,7 @@ onMounted(() => {
         </div>
         <Dialog v-model:visible="AddEmployeerDialog" modal header="Add Employeer">
             <div class="col-12 xl:flex">
-                <div class=" col-12 xl:col-6 w-full-max">
+                <div class="xl:col-6 w-full-max">
                     <div class="flex flex-column">
                         <label>Name Surname</label>
                         <InputText placeholder="Name Surname" v-model="formData.name" />
@@ -179,7 +179,7 @@ onMounted(() => {
                             optionLabel="Departman" optionValue="id" />
                     </div>
                 </div>
-                <div class="col-12 xl:col-6">
+                <div class="xl:col-6">
                     <div class="flex flex-column w-full-max">
                         <label>Position</label>
                         <InputText placeholder="Position" v-model="formData.position" />
@@ -190,8 +190,10 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <Button class="pi pi-plus" label="Add Employeer" @click="addemployee"></Button>
+            <div class="flex justify-content-center">
+                <div class="flex ">
+                    <Button class="pi pi-plus" label="Add Employeer" @click="addemployee"></Button>
+                </div>
             </div>
         </Dialog>
         <Dialog v-model:visible="EditEmployeerDialog" modal header="Edit Employeer">

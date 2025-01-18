@@ -462,9 +462,10 @@ const deactiveusers = async (req, res) => {
 const login = async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
-        res.status(400).json({ message: 'All fields is required' })
-        return
+        res.status(400).json({ message: 'All fields are required' });
+        return;
     }
+
     try {
         const pool = await getPool();
         const result = await pool.request()
@@ -482,17 +483,30 @@ const login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
 
+        if (user.super_admin) {
+            user.is_admin = true; 
+        }
+
         const token = jwt.sign({ id: user.id, username: user.username }, 'YOUR_SECRET_KEY', { expiresIn: '90m' });
 
         await pool.request()
             .input('token', sql.VarChar, token)
             .input('id', sql.Int, user.id)
             .query('UPDATE Users SET token = @token, is_logged = 1 WHERE id = @id');
-        res.status(200).json({ message: 'Login successful', token: token, user_id: user.id, username: user.username, is_admin: user.is_admin, super_admin: user.super_admin });
+
+        res.status(200).json({
+            message: 'Login successful',
+            token: token,
+            user_id: user.id,
+            username: user.username,
+            is_admin: user.is_admin,
+            super_admin: user.super_admin
+        });
     } catch (error) {
         res.status(500).json({ message: 'Database error: ' + error.message });
     }
 };
+
 
 const logout = async (req, res) => { 
     const tokenCheck = await verifyToken(req);

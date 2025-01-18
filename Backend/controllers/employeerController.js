@@ -92,12 +92,15 @@ const employeerfire = async (req, res) => {
 }
 
 const createEmployeer = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+    const tokenCheck = await verifyToken(req); 
     if (!tokenCheck.status) {
         return res.status(401).json({ message: tokenCheck.message });
     }
     const { name, position, salary, departmant_id } = req.body;
 
+    if (!name || !position || !salary || !departmant_id) {
+        return res.status(500).json({message:'All fields must be REQUIRED'})
+    }
     try {
         const pool = await getPool();
         await pool.request()
@@ -113,7 +116,6 @@ const createEmployeer = async (req, res) => {
         res.status(200).json({ message: 'Employee added successfully' });
     } catch (err) {
         res.status(500).json({ message: 'Database error: ' + err.message });
-        console.error(err)
     }
 };
 
