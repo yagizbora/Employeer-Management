@@ -221,7 +221,7 @@ onMounted(() => {
                                     <div class="col-6">
                                         <div class="flex flex-column">
                                             <label>Details</label>
-                                            <Textarea v-model="editData.details"></Textarea>
+                                            <Textarea v-model="editData.details" autoResize ></Textarea>
                                         </div>
                                         <div class="flex flex-column">
                                             <label>Communaction Date</label>
@@ -260,7 +260,7 @@ onMounted(() => {
                                     <div class="col-6">
                                         <div class="flex flex-column">
                                             <label>Details</label>
-                                            <Textarea v-model="FormData.details"></Textarea>
+                                            <Textarea v-model="FormData.details" autoResize></Textarea>
                                         </div>
                                         <div class="flex flex-column">
                                             <label>Communaction Date</label>

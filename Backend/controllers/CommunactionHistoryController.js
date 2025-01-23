@@ -28,8 +28,14 @@ const createhistory = async (req, res) => {
   if (!tokenCheck.status) {
     return res.status(401).json({ message: tokenCheck.message });
   }
-  const { customer_id, employeer_id, communaction_type, details, timestamp , rating } =
-    req.body;
+  const {
+    customer_id,
+    employeer_id,
+    communaction_type,
+    details,
+    timestamp,
+    rating,
+  } = req.body;
 
   if (
     !customer_id ||
@@ -53,7 +59,7 @@ const createhistory = async (req, res) => {
       .input("communaction_type", sql.VarChar, communaction_type)
       .input("details", sql.VarChar, details)
       .input("timestamp", sql.DateTime, timestamp)
-      .input("rating",sql.Int,rating)
+      .input("rating", sql.Int, rating)
       .query(query);
     res.status(201).json({ message: "History created successfully" });
   } catch (error) {
@@ -72,9 +78,9 @@ const listallhistorybyid = async (req, res) => {
     return res.status(400).json({ message: "ID is required" });
   }
   const query = `
-SELECT co.id,co.customer_id,co.employeer_id,co.communaction_type,co.details,co.timestamp,c.customer_name,e.Name FROM Communication_History co 
-INNER JOIN Customer c ON c.id = co.customer_id
-INNER JOIN Employeer_List e ON e.id = co.employeer_id WHERE co.is_deleted = 0 AND co.id = @id`;
+   SELECT co.id,co.customer_id,co.employeer_id,co.communaction_type,co.details,co.timestamp,co.rating,c.customer_name,e.Name FROM Communication_History co 
+   INNER JOIN Customer c ON c.id = co.customer_id
+   INNER JOIN Employeer_List e ON e.id = co.employeer_id WHERE co.is_deleted = 0 AND co.id = @id`;
 
   try {
     const pool = await getPool();
@@ -175,5 +181,5 @@ module.exports = {
   listallhistorybyid,
   deletehistorybyid,
   createhistory,
-  updatehistorybyid
+  updatehistorybyid,
 };
