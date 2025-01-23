@@ -28,7 +28,7 @@ const createhistory = async (req, res) => {
   if (!tokenCheck.status) {
     return res.status(401).json({ message: tokenCheck.message });
   }
-  const { customer_id, employeer_id, communaction_type, details, timestamp } =
+  const { customer_id, employeer_id, communaction_type, details, timestamp , rating } =
     req.body;
 
   if (
@@ -36,12 +36,13 @@ const createhistory = async (req, res) => {
     !employeer_id ||
     !communaction_type ||
     !details ||
-    !timestamp
+    !timestamp ||
+    !rating
   ) {
     return res.status(400).json({ message: "All fields is required!" });
   }
-  const query = `INSERT INTO Communication_History (customer_id,employeer_id,communaction_type,details,timestamp,is_deleted)
-    VALUES (@customer_id,@employeer_id,@communaction_type,@details,@timestamp,0)`;
+  const query = `INSERT INTO Communication_History (customer_id,employeer_id,communaction_type,details,timestamp,rating,is_deleted)
+    VALUES (@customer_id,@employeer_id,@communaction_type,@details,@timestamp,@rating,0)`;
 
   try {
     const pool = await getPool();
@@ -52,6 +53,7 @@ const createhistory = async (req, res) => {
       .input("communaction_type", sql.VarChar, communaction_type)
       .input("details", sql.VarChar, details)
       .input("timestamp", sql.DateTime, timestamp)
+      .input("rating",sql.Int,rating)
       .query(query);
     res.status(201).json({ message: "History created successfully" });
   } catch (error) {
@@ -70,7 +72,7 @@ const listallhistorybyid = async (req, res) => {
     return res.status(400).json({ message: "ID is required" });
   }
   const query = `
-SELECT co.*,c.customer_name,e.Name FROM Communication_History co 
+SELECT co.id,co.customer_id,co.employeer_id,co.communaction_type,co.details,co.timestamp,c.customer_name,e.Name FROM Communication_History co 
 INNER JOIN Customer c ON c.id = co.customer_id
 INNER JOIN Employeer_List e ON e.id = co.employeer_id WHERE co.is_deleted = 0 AND co.id = @id`;
 

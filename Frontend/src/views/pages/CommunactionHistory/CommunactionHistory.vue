@@ -29,6 +29,7 @@ const fetchdata = async () => {
     try {
         const response = await communactionhistoryservice.getcommunactionHistory()
         data.value = response.data.data;
+        console.log(data.value.rating)
     } catch (err) {
         console.error('Error fetching data:', err);
     }
@@ -265,6 +266,10 @@ onMounted(() => {
                                             <label>Communaction Date</label>
                                             <Calendar v-model="FormData.timestamp" showTime dateFormat="dd/mm/yy">
                                             </Calendar>
+                                        </div>
+                                        <div class="flex flex-column">
+                                            <label>Rating</label>
+                                            <Rating v-model="FormData.rating" :stars="5" :cancel="false" />
                                         </div>
                                     </div>
                                 </div>
