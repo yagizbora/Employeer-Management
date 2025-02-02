@@ -481,17 +481,17 @@ const login = async (req, res) => {
         const user = await findUser(pool, username);
 
         if (!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'Invalid username or password' });
+            return res.status(401).json({ message: 'Invalid username or password' });
         }
 
-        const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '90m' });
+        const token = jwt.sign({ id: user.id, username: user.username }, 'YOUR_SECRET_KEY', { expiresIn: '90m' });
 
         await pool.request()
             .input('token', sql.VarChar, token)
             .input('id', sql.Int, user.id)
             .query('UPDATE Users SET token = @token, is_logged = 1 WHERE id = @id');
 
-        res.status(HTTP_STATUS.OK).json({
+        res.status(200).json({
             message: 'Login successful',
             token: token,
             user_id: user.id,
@@ -501,7 +501,7 @@ const login = async (req, res) => {
         });
     } catch (error) {
         console.error('Login error:', error);
-        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: 'An error occurred during login' });
+        res.status(500).json({ message: 'An error occurred during login' });
     }
 };
 
