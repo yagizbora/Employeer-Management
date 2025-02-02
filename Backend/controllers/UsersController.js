@@ -236,7 +236,10 @@ const changepassword = async (req, res) => {
 };
 
 const uploadprofilephoto = async (req, res) => {
-
+        const tokenCheck = await verifyToken(req);
+        if (!tokenCheck.status) {
+            return res.status(401).json({ message: tokenCheck.message });
+        }
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             const uploadPath = path.join("uploads", "profilephoto");
@@ -266,10 +269,7 @@ const uploadprofilephoto = async (req, res) => {
             return res.status(400).send({ message: err.message }); 
         }
 
-        const tokenCheck = await verifyToken(req);
-        if (!tokenCheck.status) {
-            return res.status(401).json({ message: tokenCheck.message });
-        }
+
 
         const { id } = req.body;
         const photo = req.file;
