@@ -26,9 +26,15 @@ const props = defineProps({
                 {{ formatDate(data.data.timestamp) }}
             </template>
         </Column>
+        <Column header="Rate">
+            <template #body="{ data }">
+                <Rating v-model="data.rating" :stars="5" readonly :cancel="false" />
+            </template>
+        </Column>
         <Column header="Operations">
             <template #body="{ data }">
-                <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancel" @click="deletedata(data)" />
+                <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancel"
+                    @click="deletedata(data)" />
                 <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Cancel" @click="editdata(data)" />
             </template>
         </Column>

@@ -15,10 +15,10 @@ const firstregistercontroller = async (req, res) => {
         const result = await pool.request()
             .query(query)
         if (result.recordset[0].count > 0) {
-            res.status(200).json({ status: 'false'})
+            res.status(200).json({ status: 'false' , message: 'System is occupied'})
         }
         else {
-            res.status(200).json({status:'true'})
+            res.status(200).json({status:'true', message: 'No one registered in system'})
         }
     } catch (error) {
         res.status(500).json({ message: 'Database error: ' + error.message });
@@ -236,7 +236,10 @@ const changepassword = async (req, res) => {
 };
 
 const uploadprofilephoto = async (req, res) => {
-
+        const tokenCheck = await verifyToken(req);
+        if (!tokenCheck.status) {
+            return res.status(401).json({ message: tokenCheck.message });
+        }
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             const uploadPath = path.join("uploads", "profilephoto");
@@ -266,10 +269,7 @@ const uploadprofilephoto = async (req, res) => {
             return res.status(400).send({ message: err.message }); 
         }
 
-        const tokenCheck = await verifyToken(req);
-        if (!tokenCheck.status) {
-            return res.status(401).json({ message: tokenCheck.message });
-        }
+
 
         const { id } = req.body;
         const photo = req.file;
@@ -459,42 +459,39 @@ const deactiveusers = async (req, res) => {
         res.status(500).json({ message: 'Database error: ' + error.message });
     }
 }
-const login = async (req, res) => {
-    const { username, password } = req.body;
+const validateInput = (username, password) => {
     if (!username || !password) {
-        res.status(400).json({ message: 'All fields are required' });
-        return;
+        throw new Error('All fields are required');
     }
+};
 
+const findUser = async (pool, username) => {
+    const result = await pool.request()
+        .input('username', sql.VarChar, username)
+        .query('SELECT * FROM Users WHERE username = @username AND is_aktif = 1');
+    return result.recordset[0];
+};
+
+const login = async (req, res) => {
     try {
+        const { username, password } = req.body;
+        validateInput(username, password);
+
         const pool = await getPool();
-        const result = await pool.request()
-            .input('username', sql.VarChar, username)
-            .query('SELECT * FROM Users WHERE username = @username AND is_aktif = 1');
+        const user = await findUser(pool, username);
 
-        const user = result.recordset[0];
-
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid username or password' });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: 'Invalid username or password' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid username or password' });
-        }
-
-        if (user.super_admin) {
-            user.is_admin = true; 
-        }
-
-        const token = jwt.sign({ id: user.id, username: user.username }, 'YOUR_SECRET_KEY', { expiresIn: '90m' });
+        const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '90m' });
 
         await pool.request()
             .input('token', sql.VarChar, token)
             .input('id', sql.Int, user.id)
             .query('UPDATE Users SET token = @token, is_logged = 1 WHERE id = @id');
 
-        res.status(200).json({
+        res.status(HTTP_STATUS.OK).json({
             message: 'Login successful',
             token: token,
             user_id: user.id,
@@ -503,7 +500,8 @@ const login = async (req, res) => {
             super_admin: user.super_admin
         });
     } catch (error) {
-        res.status(500).json({ message: 'Database error: ' + error.message });
+        console.error('Login error:', error);
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: 'An error occurred during login' });
     }
 };
 

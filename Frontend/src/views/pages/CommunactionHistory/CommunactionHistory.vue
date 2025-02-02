@@ -1,6 +1,11 @@
 <script setup lang="js">
-import dayjs from "dayjs";
-import { formatDate } from "@/utils/helper.js";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
 import Swal from 'sweetalert2';
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 import CommunactionHistoryService from "@/service/communactionHistoryService";
@@ -24,6 +29,7 @@ const fetchdata = async () => {
     try {
         const response = await communactionhistoryservice.getcommunactionHistory()
         data.value = response.data.data;
+        console.log(data.value.rating)
     } catch (err) {
         console.error('Error fetching data:', err);
     }
@@ -85,7 +91,10 @@ const editdata = async (data) => {
         }
 
         const rawTimestamp = response.data.data.timestamp;
-        response.data.data.timestamp = formatDate(rawTimestamp);
+        console.log("Raw Timestamp (UTC):", rawTimestamp);
+
+        const localTime = dayjs.utc(rawTimestamp).local();
+        response.data.data.timestamp = localTime.format("DD/MM/YYYY HH:mm");
 
         editData.value = response.data.data;
         editcommunactionhistory.value = true;
@@ -94,23 +103,50 @@ const editdata = async (data) => {
 
 
 const editdatarequest = async () => {
-    if (editData.value.timestamp) {
-        editData.value.timestamp = dayjs(editData.value.timestamp, "DD/MM/YYYY HH:mm").toISOString();
-    }
+    try {
+        if (editData.value.timestamp) {
+            console.log("Original Timestamp:", editData.value.timestamp);
 
-    const response = await communactionhistoryservice.edithistory({ ...editData.value });
-    if (response) {
-        Swal.fire({
-            title: 'Success',
-            text: response.data.message,
-            icon: 'success',
-            confirmButtonText: 'Okay',
-        });
-        editcommunactionhistory.value = false; 
-        fetchdata(); 
+            let parsedTimestamp;
+
+            // Handle different formats
+            if (dayjs(editData.value.timestamp, "DD/MM/YYYY HH:mm", true).isValid()) {
+                // If the timestamp is in DD/MM/YYYY HH:mm format
+                parsedTimestamp = dayjs(editData.value.timestamp, "DD/MM/YYYY HH:mm");
+            } else if (dayjs(editData.value.timestamp).isValid()) {
+                // If the timestamp is already ISO 8601 or JavaScript Date format
+                parsedTimestamp = dayjs(new Date(editData.value.timestamp));
+            } else {
+                // If the format is invalid
+                console.error("Invalid timestamp format:", editData.value.timestamp);
+                return; // Stop execution if the timestamp is invalid
+            }
+
+            // Convert to ISO 8601 format for the API
+            editData.value.timestamp = parsedTimestamp.toISOString();
+            console.log("Formatted Timestamp for API:", editData.value.timestamp);
+        }
+
+        // Send data to the API
+        const response = await communactionhistoryservice.edithistory({ ...editData.value });
+
+        if (response) {
+            Swal.fire({
+                title: "Success",
+                text: response.data.message,
+                icon: "success",
+                confirmButtonText: "Okay",
+            });
+            editcommunactionhistory.value = false; // Close the modal
+            fetchdata(); // Refresh the data
+        }
+    } catch (error) {
+        console.error("Error sending data to API:", error);
     }
-    fetchdata(); 
 };
+
+
+
 
 
 const deletedatarequest = async (data) => { 
@@ -185,7 +221,7 @@ onMounted(() => {
                                     <div class="col-6">
                                         <div class="flex flex-column">
                                             <label>Details</label>
-                                            <Textarea v-model="editData.details"></Textarea>
+                                            <Textarea v-model="editData.details" autoResize ></Textarea>
                                         </div>
                                         <div class="flex flex-column">
                                             <label>Communaction Date</label>
@@ -224,12 +260,16 @@ onMounted(() => {
                                     <div class="col-6">
                                         <div class="flex flex-column">
                                             <label>Details</label>
-                                            <Textarea v-model="FormData.details"></Textarea>
+                                            <Textarea v-model="FormData.details" autoResize></Textarea>
                                         </div>
                                         <div class="flex flex-column">
                                             <label>Communaction Date</label>
                                             <Calendar v-model="FormData.timestamp" showTime dateFormat="dd/mm/yy">
                                             </Calendar>
+                                        </div>
+                                        <div class="flex flex-column">
+                                            <label>Rating</label>
+                                            <Rating v-model="FormData.rating" :stars="5" :cancel="false" />
                                         </div>
                                     </div>
                                 </div>
