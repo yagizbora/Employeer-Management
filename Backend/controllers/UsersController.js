@@ -302,6 +302,9 @@ const usersurnamechange  = async (req, res) => {
     }
     const { name, surname, id } = req.body;
 
+    if (!name || !surname || !id) {
+        return res.status(400).json({message:' All fields must be required'})
+    }
     const query = `UPDATE Users SET name = @name, surname = @surname WHERE is_aktif = 1 AND id = @id`;
 
     const usernameget = async () => {

@@ -220,7 +220,7 @@ const changeNameSurname = async () => {
         else if (nameSurname_.value.surname.length < 2) {
         }
         else {
-            const response = await usersservice.changeusernamebyself({
+            const response = await usersservice.usersurnamechange({
                 ...nameSurname_.value,
                 id: localStorage.getItem('user_id')
             })
