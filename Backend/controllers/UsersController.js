@@ -462,31 +462,36 @@ const deactiveusers = async (req, res) => {
         res.status(500).json({ message: 'Database error: ' + error.message });
     }
 }
-const validateInput = (username, password) => {
-    if (!username || !password) {
-        throw new Error('All fields are required');
-    }
-};
 
-const findUser = async (pool, username) => {
-    const result = await pool.request()
-        .input('username', sql.VarChar, username)
-        .query('SELECT * FROM Users WHERE username = @username AND is_aktif = 1');
-    return result.recordset[0];
-};
 
 const login = async (req, res) => {
     try {
         const { username, password } = req.body;
+        const validateInput = (username, password) => {
+            if (!username || !password) {
+                return res.status(400).json({message:'All fields are required'});
+            }
+        };
         validateInput(username, password);
 
+        const findUser = async (pool, username) => {
+            const result = await pool.request()
+                .input('username', sql.VarChar, username)
+                .query('SELECT * FROM Users WHERE username = @username AND is_aktif = 1');
+            return result.recordset[0];
+        };
+        
         const pool = await getPool();
         const user = await findUser(pool, username);
 
         if (!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(401).json({ message: 'Invalid username or password' });
+            setTimeout(() => {
+                return res.status(401).json({ message: 'Invalid username or password' });
+            }, 5000);
+            return;
         }
 
+        
         const token = jwt.sign({ id: user.id, username: user.username }, 'YOUR_SECRET_KEY', { expiresIn: '90m' });
 
         await pool.request()
@@ -494,14 +499,17 @@ const login = async (req, res) => {
             .input('id', sql.Int, user.id)
             .query('UPDATE Users SET token = @token, is_logged = 1 WHERE id = @id');
 
-        res.status(200).json({
-            message: 'Login successful',
-            token: token,
-            user_id: user.id,
-            username: user.username,
-            is_admin: user.is_admin,
-            super_admin: user.super_admin
-        });
+            setTimeout(() => {
+                res.status(200).json({
+                    message: 'Login successful',
+                    token,
+                    user_id: user.id,
+                    username: user.username,
+                    is_admin: user.is_admin,
+                    super_admin: user.super_admin
+                });
+            }, 5000); 
+
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'An error occurred during login' });

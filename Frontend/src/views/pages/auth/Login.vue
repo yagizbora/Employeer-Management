@@ -65,7 +65,7 @@ const firstregister = async () => {
                 confirmButtonText: 'Tamam'
             });
             registerforfirst.value = false;
-            return; // Eksik veri durumunda fonksiyon bitiyor.
+            return; 
         }
 
         const response = await axios.post(`${API_URL}firstregister`, { ...register.value });
@@ -118,7 +118,16 @@ const login = async () => {
             });
             return;
         }
+
+        toast.add({
+            severity: 'info',
+            summary: 'Lütfen bekleyin',
+            detail: 'Giriş bilgileriniz kontrol ediliyor',
+            life: 3000
+        });
+
         const response = await axios.post(`${API_URL}login`, { ...formData.value });
+
         if (response.status === 200) {
             console.log(response);
             localStorage.setItem('token', response.data.token);
@@ -126,7 +135,14 @@ const login = async () => {
             localStorage.setItem('username', response.data.username);
             localStorage.setItem('is_admin', response.data.is_admin);
             localStorage.setItem('super_admin', response.data.super_admin);
-            toast.add({ severity: 'success', summary: 'Başarılı', detail: 'Giriş yapıldı yönlendiriliyorsunuz', life: 3000 });
+
+            toast.add({
+                severity: 'success',
+                summary: 'Başarılı',
+                detail: 'Giriş yapıldı, yönlendiriliyorsunuz...',
+                life: 3000
+            });
+
             setTimeout(() => {
                 router.push({ name: 'dashboard' });
             }, 3000);
@@ -135,21 +151,34 @@ const login = async () => {
         if (error.response && error.response.status === 401) {
             Swal.fire({
                 title: 'Hata!',
-                text: error?.response?.data?.message,
+                text: error?.response?.data?.message || 'Geçersiz kullanıcı adı veya şifre!',
                 icon: 'error',
                 confirmButtonText: 'Tamam'
+            });
+            toast.add({
+                severity: 'error',
+                summary: 'Giriş Başarısız',
+                detail: 'Kullanıcı adı veya şifre hatalı!',
+                life: 3000
             });
         } else {
             console.error(error);
             Swal.fire({
                 title: 'Hata!',
-                text: error?.response?.data?.message,
+                text: error?.response?.data?.message || 'Bilinmeyen bir hata oluştu!',
                 icon: 'error',
                 confirmButtonText: 'Tamam'
+            });
+            toast.add({
+                severity: 'error',
+                summary: 'Sunucu Hatası',
+                detail: 'Bir hata oluştu, lütfen daha sonra tekrar deneyin!',
+                life: 3000
             });
         }
     }
 };
+
 
 
 
