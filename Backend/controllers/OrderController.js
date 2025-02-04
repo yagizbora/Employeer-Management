@@ -111,27 +111,22 @@ const iscomplatedsetbyid = async (req, res) => {
     });
   }
 
-  //console.log(req.body);
-
-  //if (is_complated === true) {
-  //    isComplatedValue = 1; // true i�in 1
-  //} else if (is_complated === false) {
-  //    isComplatedValue = 0; // false i�in 0
-  //} else {
-  //    return res.status(400).json({ message: 'Ge�ersiz is_complated de�eri' });
-  //}
-
-  const query = `UPDATE [Order] SET is_complated = @is_complated WHERE id = @id`;
+  const query = `UPDATE [Order] SET is_complated = @is_complated , complated_date = @datenow WHERE id = @id`;
 
   try {
     const pool = await getPool();
 
     //console.log('Executing query:', query);
 
+const now = new Date();
+
+const datenow = now.toISOString().split('T')[0]
+
     await pool
       .request()
       .input("id", sql.Int, id)
       .input("is_complated", sql.Bit, is_complated)
+      .input("datenow",sql.Date,datenow)
       .query(query);
 
     // G�ncelleme i�leminden sonra veriyi sorgula

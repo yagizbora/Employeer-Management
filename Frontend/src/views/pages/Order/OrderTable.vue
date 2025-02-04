@@ -48,7 +48,8 @@ const props = defineProps({
         <Column field="is_complated" header="Is Complated?">
             <template #body="{ data }">
                 <!-- Doğru v-model kullanımı -->
-                <InputSwitch v-model="data.is_complated" :disabled="data.is_complated" @change="handleSwitchChange(data)" />
+                <InputSwitch v-model="data.is_complated" :disabled="data.is_complated"
+                    @change="handleSwitchChange(data)" />
             </template>
         </Column>
         <Column field="start_date" header="Start Date">
@@ -61,6 +62,14 @@ const props = defineProps({
                 {{formatDateWithoutTime(data.end_date)}}
             </template>
         </Column>
+        <Column header="Complated Date">
+            <template #body="{ data }">
+                <div>
+                    {{ data.complated_date ? formatDateWithoutTime(data.complated_date) : 'Not Complated' }}
+                </div>
+            </template>
+        </Column>
+
         <Column header="Operations">
             <template #body="{ data }">
                 <Button icon="pi pi-pencil" severity="info" text rounded aria-label="Edit" @click="editorders(data)" />
