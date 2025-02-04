@@ -191,7 +191,6 @@ const updateorderbyid = async (req, res) => {
     !departman_id ||
     !order_name ||
     !order_description ||
-    !is_complated ||
     !start_date ||
     !end_date
   ) {
