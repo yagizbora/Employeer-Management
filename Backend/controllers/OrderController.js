@@ -1,22 +1,20 @@
-const { getPool } = require('../database');
-const sql = require('mssql');
-const verifyToken = require('../Middleware/verifyToken'); 
-
-
+const { getPool } = require("../database");
+const sql = require("mssql");
+const verifyToken = require("../Middleware/verifyToken");
 
 const getOrders = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
-    if (!tokenCheck.status) {
-        return res.status(401).json({ message: tokenCheck.message });
-    }
-    const { is_complated } = req.body;
+  const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+  if (!tokenCheck.status) {
+    return res.status(401).json({ message: tokenCheck.message });
+  }
+  const { is_complated } = req.body;
 
-    //console.log('Received is_complated:', is_complated);
+  //console.log('Received is_complated:', is_complated);
 
-    try {
-        const pool = await getPool();
+  try {
+    const pool = await getPool();
 
-        let query = `
+    let query = `
         SELECT
         o.*,
         e.Name AS employeer_name,
@@ -31,191 +29,221 @@ const getOrders = async (req, res) => {
         o.IS_DELETED = 0
         `;
 
-        if (is_complated !== undefined) {
-            query += ` AND o.is_complated = ${is_complated ? 1 : 0}`;
-        }
+    if (is_complated !== undefined) {
+      query += ` AND o.is_complated = ${is_complated ? 1 : 0}`;
+    }
 
-        //console.log('Executing query:', query); // Kontrol etmek i�in
+    //console.log('Executing query:', query); // Kontrol etmek i�in
 
-        const result = await pool.request().query(query);
-        res.json({ data: result.recordset });
-    } catch (err) {
-        console.error('Database Error:', err);
-        res.status(500).json({ message: 'Database Error' });    }
+    const result = await pool.request().query(query);
+    res.json({ data: result.recordset });
+  } catch (err) {
+    console.error("Database Error:", err);
+    res.status(500).json({ message: "Database Error" });
+  }
 };
 
 const createorder = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
-    if (!tokenCheck.status) {
-        return res.status(401).json({ message: tokenCheck.message });
-    }
-    const { employeer_id, departman_id, order_name, order_description, is_complated, start_date, end_date } = req.body;
+  const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+  if (!tokenCheck.status) {
+    return res.status(401).json({ message: tokenCheck.message });
+  }
+  const {
+    employeer_id,
+    departman_id,
+    order_name,
+    order_description,
+    is_complated,
+    start_date,
+    end_date,
+  } = req.body;
 
-if( !employeer_id || !departman_id || !order_name || !order_description || !is_complated || !start_date || !end_date ) {
-    return res.status(500).json({message:'All fields must be required'})
-}
+  if (
+    !employeer_id ||
+    !departman_id ||
+    !order_name ||
+    !order_description ||
+    !start_date ||
+    !end_date ||
+    typeof is_complated !== "boolean"
+  ) {
+    return res.status(500).json({ message: "All fields must be required" });
+  }
 
-    // Sorgu tan�mlamas�
-    const query = `INSERT INTO [Order] (employeer_id, departman_id, order_name, order_description, is_complated, start_date, end_date, IS_DELETED) 
+  const query = `INSERT INTO [Order] (employeer_id, departman_id, order_name, order_description, is_complated, start_date, end_date, IS_DELETED) 
     VALUES (@employeer_id, @departman_id, @order_name, @order_description, @is_complated, @start_date, @end_date, 0)`;
 
-    try {
-        const pool = await getPool();
-        await pool.request()
-            .input('employeer_id', sql.Int, employeer_id)
-            .input('departman_id', sql.Int, departman_id)
-            .input('order_name', sql.NVarChar, order_name)
-            .input('order_description', sql.NVarChar, order_description)
-            .input('is_complated', sql.Bit, is_complated)
-            .input('start_date', sql.Date, start_date)
-            .input('end_date', sql.Date, end_date)
-            .query(query);
-       res.status(201).json({ message: 'Order ba�ar�yla olu�turuldu.' });
-    } catch (err) {
-        console.error('Database Error:', err);
-        res.status(500).json({ message: 'Database Error' });   
-    }
-}
-
-
-
-const iscomplatedsetbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
-    if (!tokenCheck.status) {
-        return res.status(401).json({ message: tokenCheck.message });
-    }
-    const { is_complated, id } = req.body;
-
-    //let isComplatedValue;
-
-    if (!is_complated == null) {
-        res.json(404).json({ message: 'Value cannot be NULL' })
-    }
-
-    if (!req.body) {
-        res.json(404).json({
-            message: 'Request cannot be empty!'
-        })
-    }
-
-    //console.log(req.body);
-
-    //if (is_complated === true) {
-    //    isComplatedValue = 1; // true i�in 1
-    //} else if (is_complated === false) {
-    //    isComplatedValue = 0; // false i�in 0
-    //} else {
-    //    return res.status(400).json({ message: 'Ge�ersiz is_complated de�eri' });
-    //}
-
-    const query = `UPDATE [Order] SET is_complated = @is_complated WHERE id = @id`;
-
-    try {
-        const pool = await getPool();
-
-        //console.log('Executing query:', query);
-
-        await pool.request()
-            .input('id', sql.Int, id)
-            .input('is_complated', sql.Bit, is_complated)
-            .query(query);
-
-        // G�ncelleme i�leminden sonra veriyi sorgula
-        const updatedOrder = await pool.request()
-            .input('id', sql.Int, id)
-            .query('SELECT * FROM [Order] WHERE id = @id');
-
-        //console.log('Updated order:', updatedOrder.recordset);
-
-        res.status(200).json({ message: 'G�ncelleme ba�ar�l�' });
-    } catch (err) {
-        console.error('Database Error:', err);
-        res.status(500).json({ message: 'Database Error' });    }
+  try {
+    const pool = await getPool();
+    await pool
+      .request()
+      .input("employeer_id", sql.Int, employeer_id)
+      .input("departman_id", sql.Int, departman_id)
+      .input("order_name", sql.NVarChar, order_name)
+      .input("order_description", sql.NVarChar, order_description)
+      .input("is_complated", sql.Bit, is_complated)
+      .input("start_date", sql.Date, start_date)
+      .input("end_date", sql.Date, end_date)
+      .query(query);
+    res.status(201).json({ message: "Order başarıyla oluşturuldu." });
+  } catch (err) {
+    console.error("Database Error:", err);
+    res.status(500).json({ message: "Database Error" });
+  }
 };
 
+const iscomplatedsetbyid = async (req, res) => {
+  const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+  if (!tokenCheck.status) {
+    return res.status(401).json({ message: tokenCheck.message });
+  }
+  const { is_complated, id } = req.body;
 
+  //let isComplatedValue;
+
+  if (!is_complated == null) {
+    res.json(404).json({ message: "Value cannot be NULL" });
+  }
+
+  if (!req.body) {
+    res.json(404).json({
+      message: "Request cannot be empty!",
+    });
+  }
+
+  //console.log(req.body);
+
+  //if (is_complated === true) {
+  //    isComplatedValue = 1; // true i�in 1
+  //} else if (is_complated === false) {
+  //    isComplatedValue = 0; // false i�in 0
+  //} else {
+  //    return res.status(400).json({ message: 'Ge�ersiz is_complated de�eri' });
+  //}
+
+  const query = `UPDATE [Order] SET is_complated = @is_complated WHERE id = @id`;
+
+  try {
+    const pool = await getPool();
+
+    //console.log('Executing query:', query);
+
+    await pool
+      .request()
+      .input("id", sql.Int, id)
+      .input("is_complated", sql.Bit, is_complated)
+      .query(query);
+
+    // G�ncelleme i�leminden sonra veriyi sorgula
+    const updatedOrder = await pool
+      .request()
+      .input("id", sql.Int, id)
+      .query("SELECT * FROM [Order] WHERE id = @id");
+
+    //console.log('Updated order:', updatedOrder.recordset);
+
+    res.status(200).json({ message: "G�ncelleme ba�ar�l�" });
+  } catch (err) {
+    console.error("Database Error:", err);
+    res.status(500).json({ message: "Database Error" });
+  }
+};
 
 const deleteorders = async (req, res) => {
-    const tokenCheck = await verifyToken(req);
-    if (!tokenCheck.status) {
-        return res.status(401).json({ message: tokenCheck.message });
-    }
-    const { id } = req.body
+  const tokenCheck = await verifyToken(req);
+  if (!tokenCheck.status) {
+    return res.status(401).json({ message: tokenCheck.message });
+  }
+  const { id } = req.body;
 
-    if (!id) {
-        res.status(400).json({ message: 'Id is required' })
-        return
-    }
-    const query = `UPDATE [Order] SET IS_DELETED = 1 WHERE id = @id`
-    try {
-        const pool = await getPool();
+  if (!id) {
+    res.status(400).json({ message: "Id is required" });
+    return;
+  }
+  const query = `UPDATE [Order] SET IS_DELETED = 1 WHERE id = @id`;
+  try {
+    const pool = await getPool();
 
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .query(query);
-        if (result.rowsAffected[0] > 0) {
-            res.status(200).json({ message: 'Employeer is deleted' });
-        } else {
-            res.status(404).json({ message: 'Employeer is not found' });
-        }
-    } catch (err) {
-        console.error('Database Error:', err);
-        res.status(500).json({ message: 'Database Error' });    }
-}
+    const result = await pool.request().input("id", sql.Int, id).query(query);
+    if (result.rowsAffected[0] > 0) {
+      res.status(200).json({ message: "Employeer is deleted" });
+    } else {
+      res.status(404).json({ message: "Employeer is not found" });
+    }
+  } catch (err) {
+    console.error("Database Error:", err);
+    res.status(500).json({ message: "Database Error" });
+  }
+};
 
 const updateorderbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
-    if (!tokenCheck.status) {
-        return res.status(401).json({ message: tokenCheck.message });
-    }
-    const { id, employeer_id, departman_id, order_name, order_description, start_date, end_date } = req.body
+  const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+  if (!tokenCheck.status) {
+    return res.status(401).json({ message: tokenCheck.message });
+  }
+  const {
+    id,
+    employeer_id,
+    departman_id,
+    order_name,
+    order_description,
+    start_date,
+    end_date,
+  } = req.body;
 
-    if (req.body.length == 0) {
-        res.status(404).json({ message: 'All field must be required' })
-        return
-    }
-    if (!id) {
-        res.status(404).json({ message: 'Id is required' })
-        return
-    }
-    const query = `UPDATE [ORDER] SET employeer_id = @employeer_id, departman_id = @departman_id,order_name = @order_name,order_description = @order_description,start_date = @start_date
-    ,end_date = @end_date WHERE id = @id`
-    try {
-        const pool = await getPool();
-        //console.log('Executing query:', query);
-        await pool.request()
-            .input('id', sql.Int, id)
-            .input('employeer_id', sql.Int, employeer_id)
-            .input('departman_id', sql.Int, departman_id)
-            .input('order_name', sql.NVarChar, order_name)
-            .input('order_description', sql.NVarChar, order_description)
-            .input('start_date', sql.Date, start_date)
-            .input('end_date', sql.Date, end_date)
-            .query(query);
+  if (
+    !employeer_id ||
+    !departman_id ||
+    !order_name ||
+    !order_description ||
+    !is_complated ||
+    !start_date ||
+    !end_date
+  ) {
+    return res.status(500).json({ message: "All fields must be required" });
+  }
+  if (!id) {
+    res.status(404).json({ message: "Id is required" });
+    return;
+  }
+  const query = `UPDATE [ORDER] SET employeer_id = @employeer_id, departman_id = @departman_id,order_name = @order_name,order_description = @order_description,start_date = @start_date
+    ,end_date = @end_date WHERE id = @id`;
+  try {
+    const pool = await getPool();
+    //console.log('Executing query:', query);
+    await pool
+      .request()
+      .input("id", sql.Int, id)
+      .input("employeer_id", sql.Int, employeer_id)
+      .input("departman_id", sql.Int, departman_id)
+      .input("order_name", sql.NVarChar, order_name)
+      .input("order_description", sql.NVarChar, order_description)
+      .input("start_date", sql.Date, start_date)
+      .input("end_date", sql.Date, end_date)
+      .query(query);
 
-        res.status(201).json({ message: 'Order is changed' });
-    } catch (err) {
-        //console.error('Database Error:', err);
-        res.status(500).json({ message: 'Database Error' });    }
+    res.status(201).json({ message: "Order is changed" });
+  } catch (err) {
+    //console.error('Database Error:', err);
+    res.status(500).json({ message: "Database Error" });
+  }
 };
 
 const getordersbyid = async (req, res) => {
-    const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
-    if (!tokenCheck.status) {
-        return res.status(401).json({ message: tokenCheck.message });
-    }
-    //const { id } = req.query;
-    const id = req.query.id; 
+  const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
+  if (!tokenCheck.status) {
+    return res.status(401).json({ message: tokenCheck.message });
+  }
+  //const { id } = req.query;
+  const id = req.query.id;
 
-    if (!id) {
-        res.status(400).json({ message: 'Id is required' })
-        return
-    }
-    try {
-        const pool = await getPool();
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .query(`SELECT
+  if (!id) {
+    res.status(400).json({ message: "Id is required" });
+    return;
+  }
+  try {
+    const pool = await getPool();
+    const result = await pool.request().input("id", sql.Int, id).query(`SELECT
                     o.id,
                     o.order_name,
                     o.order_description,
@@ -235,11 +263,18 @@ const getordersbyid = async (req, res) => {
                     WHERE
                         o.IS_DELETED = 0 AND o.id = @id`);
 
-        res.json(result.recordset);
-    } catch (err) {
-        console.error('Database Error:', err);
-        res.status(500).json({ message: 'Database Error' });    }
+    res.json(result.recordset);
+  } catch (err) {
+    console.error("Database Error:", err);
+    res.status(500).json({ message: "Database Error" });
+  }
 };
 
-
-module.exports = { getOrders, getordersbyid, iscomplatedsetbyid, updateorderbyid, createorder, deleteorders };
+module.exports = {
+  getOrders,
+  getordersbyid,
+  iscomplatedsetbyid,
+  updateorderbyid,
+  createorder,
+  deleteorders,
+};
