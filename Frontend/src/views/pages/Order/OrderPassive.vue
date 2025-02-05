@@ -95,8 +95,8 @@ const deleteorder = async (data) => {
                 title: 'Success',
                 text: response.data.message,
                 icon: 'success',
-
             })
+            FetchData();
         }
     } catch (err) {
         console.log(err)
@@ -108,9 +108,9 @@ const deleteorders = async (data) => {
         title: 'Are you sure you want to delete this order?',
         text: 'You will not be able to recover this order!',
         icon: 'warning',
-        showCancelButton: true,  // Bu, iptal butonunu göstermek için kullanılır
+        showCancelButton: true,  
         confirmButtonText: 'Yes',
-        cancelButtonText: 'No',  // İptal butonunun metni
+        cancelButtonText: 'No', 
     }).then((result) => {
         if (result.isConfirmed) {
             deleteorder(data);

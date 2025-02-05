@@ -96,12 +96,22 @@ const deleteorder = async (data) => {
 
             })
         }
+        FetchData();
     } catch (err) {
         console.log(err)
     }
 }
 
 const deleteorders = async (data) => {
+    // console.log(data)
+    // if (data.is_complated) {
+    //     Swal.fire({
+    //         title: 'Warning',
+    //         text: 'You can not delete complated orders',
+    //         icon: 'warning',
+    //     });
+    //     return;
+    // }
     Swal.fire({
         title: 'Are you sure you want to delete this order?',
         text: 'You will not be able to recover this order!',

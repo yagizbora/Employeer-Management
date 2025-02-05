@@ -149,27 +149,46 @@ const deleteorders = async (req, res) => {
   if (!tokenCheck.status) {
     return res.status(401).json({ message: tokenCheck.message });
   }
+
   const { id } = req.body;
-
   if (!id) {
-    res.status(400).json({ message: "Id is required" });
-    return;
+    return res.status(400).json({ message: "Id is required" });
   }
-  const query = `UPDATE [Order] SET IS_DELETED = 1 WHERE id = @id`;
-  try {
-    const pool = await getPool();
 
+  const checkstatus = async () => {
+    try {
+      const checkquery = `SELECT is_complated FROM [Order] WHERE id = @id`;
+      const pool = await getPool();
+      const result = await pool.request().input("id", sql.Int, id).query(checkquery);
+      return result.recordset[0]?.is_complated; // Fixing array access
+    } catch (error) {
+      console.error("Error checking order status:", error);
+      throw new Error("Database Error");
+    }
+  };
+
+  try {
+    let checkstatusresult = await checkstatus(); // Awaiting async function
+
+    if (checkstatusresult) {
+      return res.status(400).json({ message: "You cannot delete completed orders!" });
+    }
+
+    const query = `UPDATE [Order] SET IS_DELETED = 1 WHERE id = @id`;
+    const pool = await getPool();
     const result = await pool.request().input("id", sql.Int, id).query(query);
+
     if (result.rowsAffected[0] > 0) {
-      res.status(200).json({ message: "Employeer is deleted" });
+      res.status(200).json({ message: "Order is deleted" }); // Correcting message
     } else {
-      res.status(404).json({ message: "Employeer is not found" });
+      res.status(404).json({ message: "Order not found" });
     }
   } catch (err) {
     console.error("Database Error:", err);
     res.status(500).json({ message: "Database Error" });
   }
 };
+
 
 const updateorderbyid = async (req, res) => {
   const tokenCheck = await verifyToken(req); // Token kontrolünü asenkron olarak yap
@@ -257,7 +276,7 @@ const getordersbyid = async (req, res) => {
                     WHERE
                         o.IS_DELETED = 0 AND o.id = @id`);
 
-    res.json(result.recordset);
+    res.status(200).json(result.recordset);
   } catch (err) {
     console.error("Database Error:", err);
     res.status(500).json({ message: "Database Error" });
