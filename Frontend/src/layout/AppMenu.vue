@@ -3,9 +3,11 @@ import { ref } from 'vue';
 import AppMenuItem from './AppMenuItem.vue';
 
 const checkadmin = () => {
-    let admin = localStorage.getItem(`is_admin`)
-    return JSON.parse(admin)
-}
+    let admin = localStorage.getItem("is_admin") === "true";
+    let super_admin = localStorage.getItem("super_admin") === "true";
+
+    return !admin && super_admin;
+};
 
 const model = ref([
     {

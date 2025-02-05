@@ -150,23 +150,23 @@ const listusers = async (req, res) => {
     }
 
     const { is_logged } = req.body;
-    const userId = req.headers['user_id'];
-
+    const userId = req.headers["user_id"];
 
     const checkuseradmin = async () => {
-        const query = `SELECT is_admin FROM Users WHERE id = @user_id`;
+        const query = `SELECT is_admin, super_admin FROM Users WHERE id = @user_id`;
         const pool = await getPool();
-        const result = await pool.request()
-            .input('user_id', sql.Int, userId)
-            .query(query)
-        return result.recordset[0]
-    }
+        const result = await pool
+            .request()
+            .input("user_id", sql.Int, userId)
+            .query(query);
+        return result.recordset[0];
+    };
 
     if (is_logged === null || is_logged === undefined) {
-        return res.status(400).json({ message: 'All fields are required' });
+        return res.status(400).json({ message: "All fields are required" });
     }
 
-    let sqllogged = ""; 
+    let sqllogged = "";
     if (is_logged !== null && is_logged !== undefined) {
         sqllogged += ` AND is_logged = @is_logged`;
     }
@@ -181,20 +181,28 @@ const listusers = async (req, res) => {
     email FROM Users WHERE is_aktif = 1${sqllogged}`;
 
     try {
-        let checkuseradminstatus = await checkuseradmin()
-        if (!checkuseradminstatus.is_admin)
-        {
-            return res.status(200).json({ status: false, message:"You are not admin you cannot see user :)" })
+        let checkuseradminstatus = await checkuseradmin();
+
+        if (checkuseradminstatus.super_admin) {
+            checkuseradminstatus.is_admin = true;
         }
+
+        if (!checkuseradminstatus.is_admin) {
+            return res.status(400).json({ status: false, message: "You are not admin, you cannot see users :)" });
+        }
+
         const pool = await getPool();
         const result = await pool.request()
-            .input('is_logged', sql.Bit, is_logged)
+            .input("is_logged", sql.Bit, is_logged)
             .query(query);
+
         res.status(200).json({ data: result.recordset });
+
     } catch (error) {
-        res.status(500).json({ message: 'Database error', error: error.message });
+        res.status(500).json({ message: "Database error", error: error.message });
     }
 };
+
 
 
 const changepassword = async (req, res) => {

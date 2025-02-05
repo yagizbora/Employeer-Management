@@ -192,14 +192,23 @@ const router = createRouter({
     ]
 });
 
+const checkadmin = () => {
+    let admin = localStorage.getItem("is_admin") === "true";
+    let super_admin = localStorage.getItem("super_admin") === "true";
+
+    return !admin && super_admin;
+};
+
+
+
 router.beforeEach((to, from, next) => {
-    const userRole = localStorage.getItem('is_admin');
-    if (to.meta.requiresAdmin && userRole !== 'true') {
-        next({ name: 'acces-denied' });
+    if (to.meta.requiresAdmin && !checkadmin()) {
+        next({ name: "access-denied" }); 
     } else {
         next();
     }
 });
+
 
 
 
