@@ -6,7 +6,8 @@ import UserService from '@/service/UsersService.js';
 const usersservice = new UserService()
 const admin = ref()
 const props = defineProps({
-    data: Array
+    data: Array,
+    checkadmin: Boolean
 });
 
 
@@ -78,8 +79,12 @@ const isSuperAdmin = computed(() => {
 });
 
 const isAdmin = computed(() => {
-    const getadminstatus = localStorage.getItem('is_admin');
-    return getadminstatus === 'true';
+    try {
+        return localStorage.getItem('is_admin') === 'true';
+    } catch (error) {
+        console.error('Error accessing localStorage:', error);
+        return false;
+    }
 });
 </script>
 
@@ -127,7 +132,7 @@ const isAdmin = computed(() => {
                     :disabled="checkadmin == false"></Button>
                 <Button text rounded icon="pi pi-image" severity="help" @click="() => uploadphoto(data)"></Button>
                 <Button text rounded icon="pi pi-user" severity="help" @click="() => namesurname(data)"
-                    :disabled="checkadmin == false"></Button>
+                    :disabled="checkadmin === false"></Button>
             </template>
         </Column>
     </DataTable>
