@@ -285,7 +285,7 @@ const uploadprofilephoto = async (req, res) => {
             return res.status(400).send({ message: 'No file uploaded.' });
         }
 
-        const uploadPath = path.join("uploads", "profilephoto", photo.filename);
+        const uploadPath = path.join("profilephoto", photo.filename);
 
         try {
             const pool = await getPool();
